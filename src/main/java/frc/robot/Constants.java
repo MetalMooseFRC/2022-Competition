@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.lang.reflect.Array;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -12,4 +14,29 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants {}
+public final class Constants {
+    public final class Buttons {
+
+    }
+
+    public final class MotorIDs {
+        public static final int DT_LEFT_BACK = 1;
+        public static final int DT_LEFT_MIDDLE = 2;
+        public static final int DT_LEFT_FRONT = 3;
+        
+        public static final int DT_RIGHT_FRONT = 4;
+        public static final int DT_RIGHT_MIDDLE = 5;
+        public static final int DT_RIGHT_BACK = 6;    
+    }
+
+    public final class DSPorts {
+        public static final int DRIVER_STICK_PORT = 0;
+        public static final int OP_STICK_PORT = 1;
+    }
+
+    public final class Preferences {
+        public static final double DEADBAND = 0.07;
+        public static final double JOYSTICK_SPEED_FACTOR = 1;
+        public static final double JOYSTICK_TURN_FACTOR = 0.6;
+    }
+}
