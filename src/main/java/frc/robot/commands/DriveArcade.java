@@ -19,10 +19,10 @@ public class DriveArcade extends CommandBase {
 
 
   /** Creates a new DriveArcade. */
-  public DriveArcade(DoubleSupplier speedSupplier, DoubleSupplier turnSupplier, Drivetrain driveTrain) {
+  public DriveArcade(DoubleSupplier speedSupplier, DoubleSupplier turnSupplier, Drivetrain drivetrain) {
     // Use addRequirements() here to declare subsystem dependencies.
   
-    m_drivetrain = driveTrain;
+    m_drivetrain = drivetrain;
     addRequirements(m_drivetrain);
 
     m_speedSupplier = speedSupplier;
