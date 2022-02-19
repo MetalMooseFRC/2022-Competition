@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DriveArcade;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
@@ -24,7 +24,7 @@ public class RobotContainer {
   private static final Joystick driverStick = new Joystick(Constants.DSPorts.DRIVER_STICK_PORT);
   
   // ************  Subsystems  **************
-  private DriveTrain m_driveTrain = new DriveTrain();
+  private Drivetrain m_drivetrain = new Drivetrain();
 
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -32,10 +32,10 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
     
-    m_driveTrain.setDefaultCommand(new DriveArcade(
+    m_drivetrain.setDefaultCommand(new DriveArcade(
       () -> -driverStick.getY(),
       () -> driverStick.getZ(),
-      m_driveTrain));
+      m_drivetrain));
 
   }
 

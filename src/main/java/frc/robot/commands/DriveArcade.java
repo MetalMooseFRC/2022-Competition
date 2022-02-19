@@ -8,22 +8,22 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Drivetrain;
 
 public class DriveArcade extends CommandBase {
 
-  private final DriveTrain m_driveTrain;
+  private final Drivetrain m_drivetrain;
   
   private DoubleSupplier m_speedSupplier;
   private DoubleSupplier m_turnSupplier;
 
 
   /** Creates a new DriveArcade. */
-  public DriveArcade(DoubleSupplier speedSupplier, DoubleSupplier turnSupplier, DriveTrain driveTrain) {
+  public DriveArcade(DoubleSupplier speedSupplier, DoubleSupplier turnSupplier, Drivetrain driveTrain) {
     // Use addRequirements() here to declare subsystem dependencies.
   
-    m_driveTrain = driveTrain;
-    addRequirements(m_driveTrain);
+    m_drivetrain = driveTrain;
+    addRequirements(m_drivetrain);
 
     m_speedSupplier = speedSupplier;
     m_turnSupplier = turnSupplier;
@@ -43,7 +43,7 @@ public class DriveArcade extends CommandBase {
     // lr for left/right
     double drive_lr = Constants.Preferences.JOYSTICK_TURN_FACTOR * m_turnSupplier.getAsDouble();
     // true squares inputs
-    m_driveTrain.diffDrive.arcadeDrive(drive_fb, drive_lr, true);
+    m_drivetrain.diffDrive.arcadeDrive(drive_fb, drive_lr, true);
   }
   
   // Called once the command ends or is interrupted.

@@ -19,7 +19,7 @@ public final class Constants {
 
     }
 
-    public final class MotorIDs {
+    public final class CANIDs {
         public static final int DT_LEFT_BACK = 1;
         public static final int DT_LEFT_MIDDLE = 2;
         public static final int DT_LEFT_FRONT = 3;
