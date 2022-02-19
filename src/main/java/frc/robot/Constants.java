@@ -50,4 +50,10 @@ public final class Constants {
         public static final double KI = 0.0;
         public static final double KD = 0.0;
     }
+    public final class Etcetera {
+        public static final int NEO_MAX_RPM = 5676;
+    }
+
+    public static final boolean WONKY = true;
+
 }
