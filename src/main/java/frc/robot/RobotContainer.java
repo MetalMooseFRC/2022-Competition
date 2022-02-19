@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DriveArcade;
+import frc.robot.commands.ShooterControl;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
@@ -25,17 +27,22 @@ public class RobotContainer {
   
   // ************  Subsystems  **************
   private Drivetrain m_drivetrain = new Drivetrain();
-
+  private Shooter m_shooter = new Shooter();
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    
+
+    // ************  DEFAULT COMMANDS  ***************
     m_drivetrain.setDefaultCommand(new DriveArcade(
       () -> -driverStick.getY(),
       () -> driverStick.getZ(),
       m_drivetrain));
+
+    m_shooter.setDefaultCommand(new ShooterControl(
+      () -> Constants.Shooter.DEFAULT_SPEED, 
+      m_shooter));
 
   }
 

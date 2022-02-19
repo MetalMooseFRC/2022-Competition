@@ -26,7 +26,10 @@ public final class Constants {
         
         public static final int DT_RIGHT_FRONT = 4;
         public static final int DT_RIGHT_MIDDLE = 5;
-        public static final int DT_RIGHT_BACK = 6;    
+        public static final int DT_RIGHT_BACK = 6; 
+        
+        public static final int SH_LEFT = 7;
+        public static final int SH_RIGHT = 8;
     }
 
     public final class DSPorts {
@@ -38,5 +41,13 @@ public final class Constants {
         public static final double DEADBAND = 0.07;
         public static final double JOYSTICK_SPEED_FACTOR = 1;
         public static final double JOYSTICK_TURN_FACTOR = 0.6;
+    }
+    public final class DefaultValues{
+    }
+    public final class Shooter {
+        public static final double DEFAULT_SPEED = 10;
+        public static final double KP = 0.2;
+        public static final double KI = 0.0;
+        public static final double KD = 0.0;
     }
 }
