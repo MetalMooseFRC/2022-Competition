@@ -7,11 +7,15 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.CollectorControl;
 import frc.robot.commands.DriveArcade;
+import frc.robot.commands.LifterControl;
 import frc.robot.commands.ShooterControl;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Lifter;
 import frc.robot.subsystems.Shooter;
-import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.Collector;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -28,6 +32,8 @@ public class RobotContainer {
   // ************  Subsystems  **************
   private Drivetrain m_drivetrain = new Drivetrain();
   private Shooter m_shooter = new Shooter();
+  private Lifter m_lifter = new Lifter();
+  private Collector m_collector = new Collector();
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -41,9 +47,17 @@ public class RobotContainer {
       m_drivetrain));
 
     m_shooter.setDefaultCommand(new ShooterControl(
-      () -> Constants.Shooter.DEFAULT_SPEED, 
+      () -> m_shooter.getSliderValue(),
       m_shooter));
 
+    m_lifter.setDefaultCommand(new LifterControl(
+      () -> m_lifter.getSliderValue(), 
+      m_lifter));
+
+    m_collector.setDefaultCommand(new CollectorControl(
+      () -> m_collector.getArmSliderValue(),
+      () -> m_collector.getGateSliderValue(),
+      m_collector));
   }
 
   /**

@@ -9,21 +9,21 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Lifter;
 
-public class ShooterControl extends CommandBase {
+public class LifterControl extends CommandBase {
 
-  private final Shooter m_shooter;
+  private final Lifter m_lifter;
   private final DoubleSupplier m_speedSupplier;
-  private final PIDController m_pidController = new PIDController(Constants.Shooter.KP, Constants.Shooter.KI, Constants.Shooter.KD);
+  private final PIDController m_pidController = new PIDController(Constants.Lifter.KP, Constants.Lifter.KI, Constants.Lifter.KD);
   
-  /** Creates a new ShooterControl. */
-  public ShooterControl(DoubleSupplier speedSupplier, Shooter shooter) {
+  /** Creates a new LifterControl. */
+  public LifterControl(DoubleSupplier speedSupplier, Lifter lifter) {
     m_speedSupplier = speedSupplier;
     
-    m_shooter = shooter;
+    m_lifter = lifter;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(shooter);
+    addRequirements(lifter);
 
   }
 
@@ -37,14 +37,11 @@ public class ShooterControl extends CommandBase {
     // Set the PID loop to aim to converge on the speedSupplier value
     m_pidController.setSetpoint(m_speedSupplier.getAsDouble());
     // PID loop calculates target speed for wheels. 
-    double m_leftPID = m_pidController.calculate(m_shooter.getLeftWheelSpeed());
-    double m_rightPID = m_pidController.calculate(m_shooter.getRightWheelSpeed());
-
-    // Set shooter wheels to calculated speeds
-    m_shooter.setLeftWheelSpeed(m_speedSupplier.getAsDouble());
-
-    m_shooter.setRightWheelSpeed(m_speedSupplier.getAsDouble());
-  }
+    double m_motorPID = m_pidController.calculate(m_lifter.getWheelSpeed());
+  
+    // Set lifter wheels to calculated speeds
+    m_lifter.setWheelSpeed(m_speedSupplier.getAsDouble());
+    }
 
   // Called once the command ends or is interrupted.
   @Override

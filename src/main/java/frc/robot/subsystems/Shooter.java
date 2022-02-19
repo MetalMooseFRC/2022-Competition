@@ -4,21 +4,27 @@
 
 package frc.robot.subsystems;
 
-import java.util.function.DoubleSupplier;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
+  private ShuffleboardTab TestingTab = Shuffleboard.getTab("Testing");
+  NetworkTableEntry m_ShooterSpeed = TestingTab.add("Shooter Speed", 0).getEntry();
 
   public final CANSparkMax m_motorLeft = new CANSparkMax(Constants.CANIDs.SH_LEFT, CANSparkMaxLowLevel.MotorType.kBrushless);
   public final CANSparkMax m_motorRight = new CANSparkMax(Constants.CANIDs.SH_RIGHT, CANSparkMaxLowLevel.MotorType.kBrushless);
 
   /** Creates a new Shooter. */
-  public Shooter() {}
+  public Shooter() {
+    m_motorLeft.setInverted(true);
+
+  }
 
   @Override
   public void periodic() {
@@ -42,5 +48,10 @@ public class Shooter extends SubsystemBase {
   public void setRightWheelSpeed(double speed) {
     m_motorRight.set(speed);
   }
+
+  public double getSliderValue() {
+    return m_ShooterSpeed.getDouble(0);
+  }
+
 
 }
