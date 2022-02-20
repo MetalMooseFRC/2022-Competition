@@ -36,9 +36,17 @@ public class ShooterControl extends CommandBase {
   public void execute() {
     // Set the PID loop to aim to converge on the speedSupplier value
     m_pidController.setSetpoint(m_speedSupplier.getAsDouble());
-    // PID loop calculates target speed for wheels. 
-    double m_leftPID = m_pidController.calculate(m_shooter.getLeftWheelSpeed());
-    double m_rightPID = m_pidController.calculate(m_shooter.getRightWheelSpeed());
+    // PID loop calculates target speed for wheels.
+    System.out.println("Speedsupplier: " + m_speedSupplier.getAsDouble());
+    double m_leftPID = m_pidController.calculate(m_shooter.getLeftWheelSpeed() / 5676);
+    if(m_leftPID < 0) {m_leftPID = 0;}
+    double m_rightPID = m_pidController.calculate(m_shooter.getRightWheelSpeed() / 5676);
+    if (m_rightPID < 0) {m_rightPID = 0;}
+
+
+    System.out.println("LeftPID: " + m_leftPID);
+    System.out.println("RightPID: " + m_rightPID);
+
 
     // Set shooter wheels to calculated speeds
     m_shooter.setLeftWheelSpeed(m_speedSupplier.getAsDouble());

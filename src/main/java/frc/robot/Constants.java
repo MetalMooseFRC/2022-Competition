@@ -51,7 +51,7 @@ public final class Constants {
     public final class Shooter {
         // Percent of max speed
         public static final double DEFAULT_SPEED = 0.5;
-        public static final double KP = 0.01;
+        public static final double KP = 0.1;
         public static final double KI = 0.0;
         public static final double KD = 0.0;
     }
