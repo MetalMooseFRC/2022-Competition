@@ -14,7 +14,8 @@ package frc.robot;
  */
 public final class Constants {
     public final class Buttons {
-        public static final int ARM_TOGGLE_BUTTON = 2;
+        public static final int ARM_TOGGLE = 2;
+        public static final int HANGER_PNEUMATICS_TOGGLE = 4;
     }
 
     public final class CANIDs {
@@ -35,13 +36,25 @@ public final class Constants {
         public static final int CL_GATE_LEFT = 13;
         public static final int CL_GATE_RIGHT = 14;
 
+        public static final int HA_LEFT = 15;
+        public static final int HA_RIGHT = 16;
+
         public static final int PNEUMATICS_HUB = 21;
+
+    }
+
+    public final class PneumaticsIDs {
+        public static final int COLLECTOR_1 = 0;
+        public static final int COLLECTOR_2 = 1;
+
+        public static final int HANGER_1 = 2;
+        public static final int HANGER_2 = 3;
 
     }
 
     public final class DSPorts {
         public static final int DRIVER_STICK_PORT = 0;
-        public static final int OP_STICK_PORT = 1;
+        public static final int OPERATOR_STICK_PORT = 1;
     }
 
     public final class Preferences {

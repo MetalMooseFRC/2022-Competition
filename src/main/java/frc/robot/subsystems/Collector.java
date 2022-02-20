@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
-import com.ctre.phoenix.motorcontrol.TalonSRXSimCollection;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
@@ -29,7 +28,7 @@ public class Collector extends SubsystemBase {
 
   private final TalonSRX m_motorGateLeft = new TalonSRX(Constants.CANIDs.CL_GATE_LEFT);
   private final TalonSRX m_motorGateRight= new TalonSRX(Constants.CANIDs.CL_GATE_RIGHT);
-  DoubleSolenoid m_armSolenoid = new DoubleSolenoid(Constants.CANIDs.PNEUMATICS_HUB, PneumaticsModuleType.REVPH, 0, 1);
+  DoubleSolenoid m_armSolenoid = new DoubleSolenoid(Constants.CANIDs.PNEUMATICS_HUB, PneumaticsModuleType.REVPH, Constants.PneumaticsIDs.COLLECTOR_1, Constants.PneumaticsIDs.COLLECTOR_2);
   
   /** Creates a new Collector. */
   public Collector() {
@@ -59,7 +58,7 @@ public class Collector extends SubsystemBase {
     return m_gateSpeed.getDouble(0);
   }
 
-  public void toggleArm() {
+  public void toggleCollector() {
     m_armSolenoid.toggle();
     if(m_armSolenoid.get()==kReverse) {
       setArm(Constants.Collector.ARM_SPEED);

@@ -7,22 +7,18 @@ package frc.robot.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Collector;
+import frc.robot.subsystems.Hanger;
 
-public class CollectorControl extends CommandBase {
-  
-  private final DoubleSupplier m_armSpeedSupplier;
-  private final DoubleSupplier m_gateSpeedSupplier;
-  private final Collector m_collector;
+public class HangerControl extends CommandBase {
+  private final DoubleSupplier m_speedSupplier;
+  private final Hanger m_hanger;
+  /** Creates a new HangerControl. */
+  public HangerControl(DoubleSupplier speedSupplier, Hanger hanger) {
+    m_speedSupplier = speedSupplier;
 
-  /** Creates a new CollectorControl. */
-  public CollectorControl(DoubleSupplier armSpeedSupplier, DoubleSupplier gateSpeedSupplier, Collector collector) {
-    m_armSpeedSupplier = armSpeedSupplier;
-    m_gateSpeedSupplier = gateSpeedSupplier;
-    
-    m_collector = collector;
+    m_hanger = hanger;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(collector);
+    addRequirements(m_hanger);
   }
 
   // Called when the command is initially scheduled.
@@ -31,7 +27,9 @@ public class CollectorControl extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    m_hanger.controlHanger(m_speedSupplier.getAsDouble());
+  }
 
   // Called once the command ends or is interrupted.
   @Override
@@ -42,6 +40,4 @@ public class CollectorControl extends CommandBase {
   public boolean isFinished() {
     return false;
   }
-
-
 }
