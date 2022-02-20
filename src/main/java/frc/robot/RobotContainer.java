@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.CollectorControl;
 import frc.robot.commands.DriveArcade;
 import frc.robot.commands.LifterControl;
-import frc.robot.commands.ShooterControl;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Lifter;
 import frc.robot.subsystems.Shooter;
@@ -42,7 +41,7 @@ public class RobotContainer {
   private Collector m_collector = new Collector();
 
   //************ Pneumatics **********/
-  Compressor phCompressor = new Compressor(21, PneumaticsModuleType.REVPH);
+  Compressor phCompressor = new Compressor(Constants.CANIDs.PNEUMATICS_HUB, PneumaticsModuleType.REVPH);
   
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -50,7 +49,6 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    
 
     // ************  DEFAULT COMMANDS  ***************
     m_drivetrain.setDefaultCommand(new DriveArcade(
@@ -58,22 +56,11 @@ public class RobotContainer {
       () -> driverStick.getZ(),
       m_drivetrain));
 
-    m_shooter.setDefaultCommand(new ShooterControl(
-      () -> m_shooter.getSliderValue(),
-      m_shooter));
-
     m_lifter.setDefaultCommand(new LifterControl(
       () -> m_lifter.getSliderValue(), 
       m_lifter));
 
-    m_collector.setDefaultCommand(new CollectorControl(
-      () -> m_collector.getArmSliderValue(),
-      () -> m_collector.getGateSliderValue(),
-      m_collector));
   }
-
-  
-  
 
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
@@ -82,8 +69,8 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    armToggleButton = new JoystickButton(driverStick, 2);
-    armToggleButton.whenPressed(m_collector::toggleArm);
+    armToggleButton = new JoystickButton(driverStick, Constants.Buttons.ARM_TOGGLE_BUTTON);
+      armToggleButton.whenPressed(m_collector::toggleArm);
 
     //armCollectButton = new JoystickButton(driverStick, 1);
     //armCollectButton.whenPressed(m_collector::setArm(.4));

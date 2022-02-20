@@ -29,7 +29,7 @@ public class Collector extends SubsystemBase {
 
   private final TalonSRX m_motorGateLeft = new TalonSRX(Constants.CANIDs.CL_GATE_LEFT);
   private final TalonSRX m_motorGateRight= new TalonSRX(Constants.CANIDs.CL_GATE_RIGHT);
-  DoubleSolenoid m_armSolenoid = new DoubleSolenoid(21, PneumaticsModuleType.REVPH, 0, 1);
+  DoubleSolenoid m_armSolenoid = new DoubleSolenoid(Constants.CANIDs.PNEUMATICS_HUB, PneumaticsModuleType.REVPH, 0, 1);
   
   /** Creates a new Collector. */
   public Collector() {
@@ -62,7 +62,8 @@ public class Collector extends SubsystemBase {
   public void toggleArm() {
     m_armSolenoid.toggle();
     if(m_armSolenoid.get()==kReverse) {
-      m_motorArm.set(.4);
+      setArm(Constants.Collector.ARM_SPEED);
+      setGate(Constants.Collector.GATE_SPEED);
     }
     else {
       m_motorArm.set(0);
