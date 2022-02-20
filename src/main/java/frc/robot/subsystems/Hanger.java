@@ -28,7 +28,7 @@ public class Hanger extends SubsystemBase {
   
   /** Creates a new Hanger. */
   public Hanger() {
-    m_lifterSolenoid.set(kReverse);
+    m_motorClimberLeft.setInverted(true);
   }
 
   @Override

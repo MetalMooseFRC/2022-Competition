@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DriveArcade;
 import frc.robot.commands.HangerControl;
 import frc.robot.commands.LifterControl;
+import frc.robot.commands.ShooterControl;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Hanger;
 import frc.robot.subsystems.Lifter;
@@ -33,7 +34,7 @@ public class RobotContainer {
   private static final Joystick driverStick = new Joystick(Constants.DSPorts.DRIVER_STICK_PORT);
   JoystickButton armToggleButton, armCollectButton, hangerPneumaticsToggleButton;
 
-  private static final Joystick operatorStick = new Joystick(Constants.DSPorts.OPERATOR_STICK_PORT);
+  // private static final Joystick operatorStick = new Joystick(Constants.DSPorts.OPERATOR_STICK_PORT);
 
 
   // ************  Subsystems  **************
@@ -63,9 +64,11 @@ public class RobotContainer {
       () -> m_lifter.getSliderValue(), 
       m_lifter));
 
-      m_hanger.setDefaultCommand(new HangerControl(
-        () -> operatorStick.getY(), 
-        m_hanger));
+    m_shooter.setDefaultCommand((new ShooterControl(() -> m_shooter.getSliderValue(), m_shooter)));
+
+      // m_hanger.setDefaultCommand(new HangerControl(
+      //   () -> operatorStick.getY(), 
+      //   m_hanger));
 
   }
 
@@ -81,8 +84,8 @@ public class RobotContainer {
     armToggleButton = new JoystickButton(driverStick, Constants.Buttons.ARM_TOGGLE);
       armToggleButton.whenPressed(m_collector::toggleCollector);
 
-    hangerPneumaticsToggleButton = new JoystickButton(driverStick, Constants.Buttons.HANGER_PNEUMATICS_TOGGLE);
-      hangerPneumaticsToggleButton.whenPressed(m_hanger::toggleSolenoid);
+    // hangerPneumaticsToggleButton = new JoystickButton(operatorStick, Constants.Buttons.HANGER_PNEUMATICS_TOGGLE);
+    //   hangerPneumaticsToggleButton.whenPressed(m_hanger::toggleSolenoid);
 
       // ************  OPERATOR STICK  ***************
 

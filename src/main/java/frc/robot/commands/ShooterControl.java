@@ -9,21 +9,20 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.Lifter;
+import frc.robot.subsystems.Shooter;
 
-public class LifterControl extends CommandBase {
+public class ShooterControl extends CommandBase {
 
-  private final Lifter m_lifter;
+  private final Shooter m_shooter;
   private final DoubleSupplier m_speedSupplier;
-  private final PIDController m_pidController = new PIDController(Constants.Lifter.KP, Constants.Lifter.KI, Constants.Lifter.KD);
   
-  /** Creates a new LifterControl. */
-  public LifterControl(DoubleSupplier speedSupplier, Lifter lifter) {
+  /** Creates a new ShooterControl. */
+  public ShooterControl(DoubleSupplier speedSupplier, Shooter shooter) {
     m_speedSupplier = speedSupplier;
     
-    m_lifter = lifter;
+    m_shooter = shooter;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(lifter);
+    addRequirements(shooter);
 
   }
 
@@ -34,14 +33,10 @@ public class LifterControl extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Set the PID loop to aim to converge on the speedSupplier value
-    m_pidController.setSetpoint(m_speedSupplier.getAsDouble());
-    // PID loop calculates target speed for wheels. 
-    double m_motorPID = m_pidController.calculate(m_lifter.getWheelSpeed());
-  
-    // Set lifter wheels to calculated speeds
+    // Set shooter wheels to calculated speeds
     System.out.println(m_speedSupplier.getAsDouble());
-    m_lifter.setWheelSpeed(m_speedSupplier.getAsDouble());
+    m_shooter.m_motorLeft.set(m_speedSupplier.getAsDouble());
+    m_shooter.m_motorRight.set(m_speedSupplier.getAsDouble());
     }
 
   // Called once the command ends or is interrupted.
