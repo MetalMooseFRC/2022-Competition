@@ -40,7 +40,7 @@ public class Hanger extends SubsystemBase {
 
   public void toggleSolenoid() {
     m_lifterSolenoid.toggle();
-  }m
+  }
 
   public void controlHanger(double speed) {
     m_motorClimberLeft.set(speed);
