@@ -11,6 +11,9 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -26,12 +29,13 @@ public class Collector extends SubsystemBase {
 
   private final TalonSRX m_motorGateLeft = new TalonSRX(Constants.CANIDs.CL_GATE_LEFT);
   private final TalonSRX m_motorGateRight= new TalonSRX(Constants.CANIDs.CL_GATE_RIGHT);
-
+  DoubleSolenoid m_armSolenoid = new DoubleSolenoid(21, PneumaticsModuleType.REVPH, 0, 1);
   
   /** Creates a new Collector. */
   public Collector() {
     m_motorGateRight.setInverted(true);
-    m_motorArm.setInverted(true);
+    m_motorArm.setInverted(true); 
+    m_armSolenoid.set(kReverse);
   }
 
   @Override
@@ -53,6 +57,16 @@ public class Collector extends SubsystemBase {
 
   public double getGateSliderValue() {
     return m_gateSpeed.getDouble(0);
+  }
+
+  public void toggleArm() {
+    m_armSolenoid.toggle();
+    if(m_armSolenoid.get()==kReverse) {
+      m_motorArm.set(.4);
+    }
+    else {
+      m_motorArm.set(0);
+    }
   }
 
 }
