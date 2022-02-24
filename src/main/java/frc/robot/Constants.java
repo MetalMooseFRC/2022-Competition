@@ -19,12 +19,12 @@ public final class Constants {
     }
 
     public final class CANIDs {
-        public static final int DT_LEFT_BACK = 1;
-        public static final int DT_LEFT_MIDDLE = 2;
-        public static final int DT_LEFT_FRONT = 3;
+        public static final int DT_LEFT_BACK = 5;
+        public static final int DT_LEFT_MIDDLE = 3;
+        public static final int DT_LEFT_FRONT = 1;
         
-        public static final int DT_RIGHT_FRONT = 4;
-        public static final int DT_RIGHT_MIDDLE = 5;
+        public static final int DT_RIGHT_FRONT = 2;
+        public static final int DT_RIGHT_MIDDLE = 4;
         public static final int DT_RIGHT_BACK = 6; 
         
         public static final int SH_LEFT = 7;
