@@ -61,8 +61,8 @@ public class Collector extends SubsystemBase {
   public void toggleCollector() {
     m_armSolenoid.toggle();
     if(m_armSolenoid.get()==kReverse) {
-      setArm(Constants.Collector.ARM_SPEED);
-      setGate(Constants.Collector.GATE_SPEED);
+      setArm(getArmSliderValue());
+      setGate(getGateSliderValue());
     }
     else {
       m_motorArm.set(0);
