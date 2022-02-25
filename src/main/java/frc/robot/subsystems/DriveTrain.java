@@ -31,7 +31,9 @@ public class Drivetrain extends SubsystemBase {
     // create deadband
     diffDrive.setDeadband(Constants.Preferences.DEADBAND);
     // invert right motors
-    m_motorsRight.setInverted(true);
+    m_motorRightMiddle.setInverted(true);
+    m_motorRightBack.setInverted(true);
+    m_motorRightFront.setInverted(true);
   }
 
   @Override
