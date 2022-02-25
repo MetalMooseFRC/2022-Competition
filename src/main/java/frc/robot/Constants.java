@@ -44,9 +44,13 @@ public final class Constants {
     }
 
     public final class PneumaticsIDs {
+        //Collector_1 is A on solenoid(currently the extending one)
+        //Collector_2 is B on solenoid(currently the retracting one)
         public static final int COLLECTOR_1 = 0;
         public static final int COLLECTOR_2 = 1;
 
+        //Hanger_1 is A on solenoid(currently the extending one)
+        //Hanger_2 is B on solenoid(currently the retracting one)
         public static final int HANGER_1 = 2;
         public static final int HANGER_2 = 3;
 
