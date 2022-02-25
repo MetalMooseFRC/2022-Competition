@@ -18,6 +18,21 @@ public final class Constants {
         public static final int HANGER_PNEUMATICS_TOGGLE = 4;
     }
 
+    public final class Limelight {
+        //Units = CM
+        
+        public static final double LIMELIGHT_HEIGHT = 40;
+        public static final double TARGET_HEIGHT = 264;
+        public static final double LIMELIGHT_ANGLE = 29.962;
+
+        public final class PID {
+            public static final double kP = 0.0;
+            public static final double kI = 0.0;
+            public static final double kD = 0.0;
+            public static final double VISION_ERROR = 0.0;
+            public static final double TURRET_SETPOINT = 0.0;
+        }
+    }
     public final class CANIDs {
         public static final int DT_LEFT_BACK = 5;
         public static final int DT_LEFT_MIDDLE = 3;
@@ -40,6 +55,8 @@ public final class Constants {
         public static final int HA_RIGHT = 16;
 
         public static final int PNEUMATICS_HUB = 21;
+
+        public static final int TURRET_AIM = 11;
 
     }
 
@@ -88,7 +105,9 @@ public final class Constants {
     }
 
     public final class Etcetera {}
-
+    //    (/ oo \)
+    //     \(__)/
+    //     /|  |\
     public static final boolean WONKY = true;
-
+    public static final int SCROMBLO = 4;
 }

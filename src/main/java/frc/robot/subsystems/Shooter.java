@@ -17,8 +17,8 @@ public class Shooter extends SubsystemBase {
   private ShuffleboardTab TestingTab = Shuffleboard.getTab("Testing");
   NetworkTableEntry m_ShooterSpeed = TestingTab.add("Shooter Speed", 0).getEntry();
 
-  public final CANSparkMax m_motorLeft = new CANSparkMax(Constants.CANIDs.SH_LEFT, CANSparkMaxLowLevel.MotorType.kBrushless);
-  public final CANSparkMax m_motorRight = new CANSparkMax(Constants.CANIDs.SH_RIGHT, CANSparkMaxLowLevel.MotorType.kBrushless);
+  private final CANSparkMax m_motorLeft = new CANSparkMax(Constants.CANIDs.SH_LEFT, CANSparkMaxLowLevel.MotorType.kBrushless);
+  private final CANSparkMax m_motorRight = new CANSparkMax(Constants.CANIDs.SH_RIGHT, CANSparkMaxLowLevel.MotorType.kBrushless);
 
   /** Creates a new Shooter. */
   public Shooter() {

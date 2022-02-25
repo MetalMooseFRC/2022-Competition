@@ -18,7 +18,7 @@ public class Lifter extends SubsystemBase {
   NetworkTableEntry m_LifterSpeed = TestingTab.add("Lifter Speed", 0).getEntry();
 
 
-  public final CANSparkMax m_motor = new CANSparkMax(Constants.CANIDs.LF_MAIN, CANSparkMaxLowLevel.MotorType.kBrushless);
+  private final CANSparkMax m_motor = new CANSparkMax(Constants.CANIDs.LF_MAIN, CANSparkMaxLowLevel.MotorType.kBrushless);
 
   /** Creates a new Lifter. */
   public Lifter() {  

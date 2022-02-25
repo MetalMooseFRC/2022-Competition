@@ -4,39 +4,52 @@
 
 package frc.robot.commands;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
+
+import frc.robot.subsystems.Turret;
 import frc.robot.subsystems.Shooter;
 
-public class ShooterControl extends CommandBase {
+import frc.robot.Constants;
 
+
+
+public class VisionFollow extends CommandBase {
+
+  private final Turret m_turret;
   private final Shooter m_shooter;
-  private final DoubleSupplier m_speedSupplier;
-  
-  /** Creates a new ShooterControl. */
-  public ShooterControl(DoubleSupplier speedSupplier, Shooter shooter) {
-    m_speedSupplier = speedSupplier;
+
+  private final double m_turretkP = Constants.Limelight.PID.kP;
+  private final double m_turretkI = Constants.Limelight.PID.kI;
+  private final double m_turretkD = Constants.Limelight.PID.kD;
+
+  private final PIDController m_turretPID = new PIDController(m_turretkP, m_turretkI, m_turretkD);
+
+  /** Creates a new VisionFollow. */
+  public VisionFollow(Turret turret, Shooter shooter) {
     
+    m_turret = turret;
     m_shooter = shooter;
+
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(shooter);
+    addRequirements(m_turret, m_shooter);
 
   }
-
+  
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
-  
+  public void initialize() {
+    m_turretPID.setSetpoint(Constants.Limelight.PID.TURRET_SETPOINT);
+    m_turretPID.setTolerance(Constants.Limelight.PID.VISION_ERROR);
+  }
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Set shooter wheels to given speeds
-    m_shooter.setLeftWheelSpeed(m_speedSupplier.getAsDouble());
-    m_shooter.setRightWheelSpeed(m_speedSupplier.getAsDouble());
-    }
+    final double m_turretPIDOut = m_turretPID.calculate(m_turret.limelightGetTx());
+
+    m_turret.setTurretSpeed(m_turretPIDOut);
+  }
 
   // Called once the command ends or is interrupted.
   @Override

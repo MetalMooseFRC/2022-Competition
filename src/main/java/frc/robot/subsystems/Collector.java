@@ -44,7 +44,9 @@ public class Collector extends SubsystemBase {
   public void setArm(double speed) {
     m_motorArm.set(speed);
   }
-
+//    (/ oo \)
+//     \(__)/
+//     /|  |\
   public double getArmSliderValue() {
     return m_ArmSpeed.getDouble(0);
   }
