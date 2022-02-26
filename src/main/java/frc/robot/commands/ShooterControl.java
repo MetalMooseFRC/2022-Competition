@@ -34,7 +34,6 @@ public class ShooterControl extends CommandBase {
   @Override
   public void execute() {
     // Set shooter wheels to calculated speeds
-    System.out.println(m_speedSupplier.getAsDouble());
     m_shooter.m_motorLeft.set(m_speedSupplier.getAsDouble());
     m_shooter.m_motorRight.set(m_speedSupplier.getAsDouble());
     }

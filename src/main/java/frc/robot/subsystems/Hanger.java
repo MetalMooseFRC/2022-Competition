@@ -16,19 +16,20 @@ import com.revrobotics.CANSparkMaxLowLevel;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Hanger extends SubsystemBase {
-  DoubleSolenoid m_lifterSolenoid = new DoubleSolenoid(Constants.CANIDs.PNEUMATICS_HUB, PneumaticsModuleType.REVPH, Constants.PneumaticsIDs.HANGER_A, Constants.PneumaticsIDs.HANGER_B);
+  DoubleSolenoid m_hangerSolenoid = new DoubleSolenoid(Constants.CANIDs.PNEUMATICS_HUB, PneumaticsModuleType.REVPH, Constants.PneumaticsIDs.HANGER_A, Constants.PneumaticsIDs.HANGER_B);
   CANSparkMax m_motorClimberLeft = new CANSparkMax(Constants.CANIDs.HA_LEFT, CANSparkMaxLowLevel.MotorType.kBrushless);
   CANSparkMax m_motorClimberRight = new CANSparkMax(Constants.CANIDs.HA_RIGHT, CANSparkMaxLowLevel.MotorType.kBrushless);
   
-  //TODO: Deadband
   /** Creates a new Hanger. */
   public Hanger() {
-    m_motorClimberRight.setInverted(true);
+    m_hangerSolenoid.set(kReverse);
+    m_motorClimberLeft.setInverted(true);
   }
 
   @Override
@@ -60,7 +61,8 @@ public class Hanger extends SubsystemBase {
 
 
   public void toggleSolenoid() {
-    m_lifterSolenoid.toggle();
+    System.out.print(m_hangerSolenoid.get());
+    m_hangerSolenoid.toggle();
   }
 
   public void controlHanger(double speed) {

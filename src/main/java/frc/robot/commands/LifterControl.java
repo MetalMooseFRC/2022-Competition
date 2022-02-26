@@ -40,7 +40,6 @@ public class LifterControl extends CommandBase {
     double m_motorPID = m_pidController.calculate(m_lifter.getWheelSpeed());
   
     // Set lifter wheels to calculated speeds
-    System.out.println(m_speedSupplier.getAsDouble());
     m_lifter.setWheelSpeed(m_speedSupplier.getAsDouble());
     }
 

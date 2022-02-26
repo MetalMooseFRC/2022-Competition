@@ -34,7 +34,7 @@ public class Collector extends SubsystemBase {
   public Collector() {
     m_motorGateRight.setInverted(true);
     m_motorArm.setInverted(true); 
-    m_armSolenoid.set(kReverse);
+    m_armSolenoid.set(kForward);
   }
 
   @Override
@@ -62,7 +62,9 @@ public class Collector extends SubsystemBase {
     m_armSolenoid.toggle();
     if(m_armSolenoid.get()==kReverse) {
       setArm(getArmSliderValue());
+      // setArm(Constants.Collector.ARM_SPEED);
       setGate(getGateSliderValue());
+      // setGate(Constants.Collector.GATE_SPEED);
     }
     else {
       m_motorArm.set(0);

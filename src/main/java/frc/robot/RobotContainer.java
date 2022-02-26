@@ -47,12 +47,10 @@ public class RobotContainer {
   //************ Pneumatics **********/
   Compressor phCompressor = new Compressor(Constants.CANIDs.PNEUMATICS_HUB, PneumaticsModuleType.REVPH);
   
-  
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-
 
     // ************  DEFAULT COMMANDS  ***************
     m_drivetrain.setDefaultCommand(new DriveArcade(
