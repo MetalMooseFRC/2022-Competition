@@ -37,7 +37,7 @@ public class LifterControl extends CommandBase {
     // Set the PID loop to aim to converge on the speedSupplier value
     m_pidController.setSetpoint(m_speedSupplier.getAsDouble());
     // PID loop calculates target speed for wheels. 
-    double m_motorPID = m_pidController.calculate(m_lifter.getWheelSpeed());
+    // double m_motorPID = m_pidController.calculate(m_lifter.getWheelSpeed());
   
     // Set lifter wheels to calculated speeds
     m_lifter.setWheelSpeed(m_speedSupplier.getAsDouble());
