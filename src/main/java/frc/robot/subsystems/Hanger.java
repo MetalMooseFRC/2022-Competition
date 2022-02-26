@@ -28,7 +28,7 @@ public class Hanger extends SubsystemBase {
   //TODO: Deadband
   /** Creates a new Hanger. */
   public Hanger() {
-    m_motorClimberLeft.setInverted(true);
+    m_motorClimberRight.setInverted(true);
   }
 
   @Override
