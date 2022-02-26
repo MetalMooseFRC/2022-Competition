@@ -82,10 +82,9 @@ public class RobotContainer {
     armToggleButton = new JoystickButton(driverStick, Constants.Buttons.ARM_TOGGLE);
       armToggleButton.whenPressed(m_collector::toggleCollector);
 
+    // ************  OPERATOR STICK  ***************
     hangerPneumaticsToggleButton = new JoystickButton(operatorStick, Constants.Buttons.HANGER_PNEUMATICS_TOGGLE);
       hangerPneumaticsToggleButton.whenPressed(m_hanger::toggleSolenoid);
-
-      // ************  OPERATOR STICK  ***************
 
   }
 }
