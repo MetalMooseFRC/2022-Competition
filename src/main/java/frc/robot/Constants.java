@@ -26,8 +26,8 @@ public final class Constants {
         public static final int SHOOT_ENEMY_BALL = 2;
         public static final int TURRET_RIGHT = 11;
         public static final int TURRET_LEFT = 9;
-        public static final int TURRET_SPEED_DOWN = 12;
-        public static final int TURRET_SPEED_UP = 10;
+        public static final int SHOOTER_SPEED_DOWN = 12;
+        public static final int SHOOTER_SPEED_UP = 10;
         public static final int TURRET_TO_ZERO = 7;
         public static final int ELEVATOR_MAX_UP = 0;
         public static final int ELEVATOR_MAX_DOWN = 180;
@@ -112,6 +112,14 @@ public final class Constants {
     public final class Collector {
         public static final double ARM_SPEED = 0.4;
         public static final double GATE_SPEED = 0.4;
+    }
+
+    public final class Limelight {
+        //Units = CM
+        
+        public static final double LIMELIGHT_HEIGHT = 40;
+        public static final double TARGET_HEIGHT = 264;
+        public static final double LIMELIGHT_ANGLE = 29.962;
     }
 
     public final class Etcetera {}
