@@ -31,10 +31,10 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   
   // ************  OI Controller  ***************
-  private static final Joystick driverStick = new Joystick(Constants.DSPorts.DRIVER_STICK_PORT);
+  public static final Joystick driverStick = new Joystick(Constants.DSPorts.DRIVER_STICK_PORT);
   JoystickButton armToggleButton, armCollectButton, hangerPneumaticsToggleButton;
 
-  private static final Joystick operatorStick = new Joystick(Constants.DSPorts.OPERATOR_STICK_PORT);
+  public static final Joystick operatorStick = new Joystick(Constants.DSPorts.OPERATOR_STICK_PORT);
 
 
   // ************  Subsystems  **************

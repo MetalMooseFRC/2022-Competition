@@ -14,8 +14,23 @@ package frc.robot;
  */
 public final class Constants {
     public final class Buttons {
-        public static final int ARM_TOGGLE = 2;
+        //Drive Stick
+        public static final int ARM_TOGGLE = 1;
+        public static final int COLLECTOR_REVERSE = 2;
+        
+        //Op Stick
         public static final int HANGER_PNEUMATICS_TOGGLE = 4;
+        public static final int SLIDER_AXIS = 3;
+        public static final int AIM_TOGGLE = 3;
+        public static final int SHOOT_ALLIANCE_BALL = 1;
+        public static final int SHOOT_ENEMY_BALL = 2;
+        public static final int TURRET_RIGHT = 11;
+        public static final int TURRET_LEFT = 9;
+        public static final int TURRET_SPEED_DOWN = 12;
+        public static final int TURRET_SPEED_UP = 10;
+        public static final int RESET_TURRET_ENCODER = 7;
+        public static final int ELEVATOR_MAX_UP = 0;
+        public static final int ELEVATOR_MAX_DOWN = 180;
     }
 
     public final class CANIDs {
@@ -29,7 +44,9 @@ public final class Constants {
         
         public static final int SH_LEFT = 7;
         public static final int SH_RIGHT = 8;
-        
+
+        public static final int TURRET_MOTOR = 11;
+
         public static final int LF_MAIN = 10;
 
         public static final int CL_ARM = 9;
