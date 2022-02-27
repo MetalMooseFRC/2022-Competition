@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 
-public class DriveArcade extends CommandBase {
+public class DriveArcadeWithJoystick extends CommandBase {
 
   private final Drivetrain m_drivetrain;
   
@@ -18,8 +18,8 @@ public class DriveArcade extends CommandBase {
   private DoubleSupplier m_turnSupplier;
 
 
-  /** Creates a new DriveArcade. */
-  public DriveArcade(DoubleSupplier speedSupplier, DoubleSupplier turnSupplier, Drivetrain drivetrain) {
+  /** Creates a new DriveArcadeWithJoystick. */
+  public DriveArcadeWithJoystick(DoubleSupplier speedSupplier, DoubleSupplier turnSupplier, Drivetrain drivetrain) {
     m_speedSupplier = speedSupplier;
     m_turnSupplier = turnSupplier;
     
@@ -42,6 +42,9 @@ public class DriveArcade extends CommandBase {
     double drive_fb = Constants.Preferences.JOYSTICK_SPEED_FACTOR * m_speedSupplier.getAsDouble();
     // lr for left/right
     double drive_lr = Constants.Preferences.JOYSTICK_TURN_FACTOR * m_turnSupplier.getAsDouble();
+    
+
+    
     // true squares inputs
     m_drivetrain.diffDrive.arcadeDrive(drive_fb, drive_lr, true);
   }

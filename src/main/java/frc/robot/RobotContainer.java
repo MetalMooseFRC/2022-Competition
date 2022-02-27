@@ -10,10 +10,12 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.DriveArcade;
+import frc.robot.commands.DriveArcadeWithJoystick;
 import frc.robot.commands.HangerControl;
 import frc.robot.commands.LifterControl;
 import frc.robot.commands.ShooterControl;
+import frc.robot.commands.RunCollectorVariable;
+import frc.robot.commands.RunCollectorDefault;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Hanger;
 import frc.robot.subsystems.Lifter;
@@ -53,7 +55,7 @@ public class RobotContainer {
     configureButtonBindings();
 
     // ************  DEFAULT COMMANDS  ***************
-    m_drivetrain.setDefaultCommand(new DriveArcade(
+    m_drivetrain.setDefaultCommand(new DriveArcadeWithJoystick(
       () -> -driverStick.getY(),
       () -> driverStick.getZ(),
       m_drivetrain));
@@ -61,6 +63,12 @@ public class RobotContainer {
     m_lifter.setDefaultCommand(new LifterControl(
       () -> m_lifter.getSliderValue(), 
       m_lifter));
+
+    //m_collector.setDefaultCommand(new RunCollectorVariable(
+      //() -> m_collector.getArmSliderValue(), 
+    // m_collector));
+
+    
 
     m_shooter.setDefaultCommand((new ShooterControl(() -> m_shooter.getSliderValue(), m_shooter)));
 
@@ -81,7 +89,7 @@ public class RobotContainer {
     // ************  DRIVER STICK  ***************
     armToggleButton = new JoystickButton(driverStick, Constants.Buttons.ARM_TOGGLE);
       armToggleButton.whenPressed(m_collector::toggleCollector);
-
+      
     // ************  OPERATOR STICK  ***************
     hangerPneumaticsToggleButton = new JoystickButton(operatorStick, Constants.Buttons.HANGER_PNEUMATICS_TOGGLE);
       hangerPneumaticsToggleButton.whenPressed(m_hanger::toggleSolenoid);
