@@ -4,37 +4,22 @@
 
 package frc.robot.commands;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
+import java.lang.Math;
 
-public class ShooterControl extends CommandBase {
-
-  private final Shooter m_shooter;
-  private final DoubleSupplier m_speedSupplier;
-  
-  /** Creates a new ShooterControl. */
-  public ShooterControl(DoubleSupplier speedSupplier, Shooter shooter) {
-    m_speedSupplier = speedSupplier;
-    
-    m_shooter = shooter;
+public class ElevatorToHeight extends CommandBase {
+  /** Creates a new ElevatorToHeight. */
+  public ElevatorToHeight() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_shooter);
-
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
-  
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    // Set shooter wheels to calculated speeds
-    m_shooter.m_motorLeft.set(m_speedSupplier.getAsDouble());
-    m_shooter.m_motorRight.set(m_speedSupplier.getAsDouble());
-    }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override

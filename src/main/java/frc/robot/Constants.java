@@ -28,7 +28,7 @@ public final class Constants {
         public static final int TURRET_LEFT = 9;
         public static final int TURRET_SPEED_DOWN = 12;
         public static final int TURRET_SPEED_UP = 10;
-        public static final int RESET_TURRET_ENCODER = 7;
+        public static final int TURRET_TO_ZERO = 7;
         public static final int ELEVATOR_MAX_UP = 0;
         public static final int ELEVATOR_MAX_DOWN = 180;
     }
@@ -87,16 +87,10 @@ public final class Constants {
     public final class Shooter {
         // Percent of max speed
         public static final double DEFAULT_SPEED = 0.5;
-        public static final double KP = 0.1;
-        public static final double KI = 0.0;
-        public static final double KD = 0.0;
     }
 
     public final class Lifter {
         public static final double DEFAULT_SPEED = 0.5;
-        public static final double KP = 0.01;
-        public static final double KI = 0.0;
-        public static final double KD = 0.0;
     }
 
     public final class Collector {
