@@ -12,12 +12,14 @@ import java.util.function.DoubleSupplier;
 public class RunCollectorVariable extends CommandBase {
 
   private final Collector m_collector;
-  private final DoubleSupplier m_collectorSpeedSupplier;
+  private final DoubleSupplier m_collectorArmSupplier,m_collectorGateSupplier ;
 
   /** Creates a new RunCollectorVariable. */
-  public RunCollectorVariable(DoubleSupplier speedSupplier, Collector collector) {
+  public RunCollectorVariable(DoubleSupplier armSupplier,DoubleSupplier gateSupplier, Collector collector) {
     m_collector = collector;
-    m_collectorSpeedSupplier = speedSupplier;
+    m_collectorArmSupplier = armSupplier;
+    m_collectorGateSupplier = gateSupplier;
+
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_collector);
   }
@@ -29,7 +31,8 @@ public class RunCollectorVariable extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_collector.setArm(m_collectorSpeedSupplier.getAsDouble());
+    m_collector.setArm(m_collectorArmSupplier.getAsDouble());
+    m_collector.setGate(m_collectorGateSupplier.getAsDouble());
 
   }
 

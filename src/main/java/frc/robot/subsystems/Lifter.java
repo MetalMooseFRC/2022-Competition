@@ -10,12 +10,17 @@ import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import java.util.Map; 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Lifter extends SubsystemBase {
   private ShuffleboardTab TestingTab = Shuffleboard.getTab("Testing");
-  NetworkTableEntry m_LifterSpeed = TestingTab.add("Lifter Speed", 0).getEntry();
+  NetworkTableEntry m_LifterSpeed = TestingTab.add("Lifter Speed", 0)
+    .withWidget(BuiltInWidgets.kNumberSlider)
+    .withProperties(Map.of("min", -1, "max", 1))
+    .getEntry();
 
 
   public final CANSparkMax m_motor = new CANSparkMax(Constants.CANIDs.LF_MAIN, CANSparkMaxLowLevel.MotorType.kBrushless);
