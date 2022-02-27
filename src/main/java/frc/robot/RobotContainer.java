@@ -17,6 +17,7 @@ import frc.robot.commands.ShooterControl;
 import frc.robot.commands.TurnTurretWithJoystick;
 import frc.robot.commands.RunCollectorVariable;
 import frc.robot.commands.RunCollectorDefault;
+import frc.robot.commands.ToggleCollector;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Hanger;
 import frc.robot.subsystems.Lifter;
@@ -67,10 +68,10 @@ public class RobotContainer {
       () -> m_lifter.getSliderValue(), 
       m_lifter));
 
-    m_collector.setDefaultCommand(new RunCollectorVariable(
-     () -> m_collector.getArmSliderValue(),
-     () -> m_collector.getGateSliderValue(),  
-     m_collector));
+    //m_collector.setDefaultCommand(new RunCollectorVariable(
+     //() -> m_collector.getArmSliderValue(),
+     //() -> m_collector.getGateSliderValue(),  
+     //m_collector));
 
     m_turret.setDefaultCommand((new TurnTurretWithJoystick(
       () -> operatorStick.getZ(),
@@ -94,11 +95,13 @@ public class RobotContainer {
 
     // ************  DRIVER STICK  ***************
     armToggleButton = new JoystickButton(driverStick, Constants.Buttons.ARM_TOGGLE);
-      armToggleButton.whenPressed(m_collector::toggleCollector);
+    armToggleButton.whenPressed(new ToggleCollector(m_collector));
+      //armToggleButton.whenPressed(m_collector::toggleCollector);
+
       
     // ************  OPERATOR STICK  ***************
     hangerPneumaticsToggleButton = new JoystickButton(operatorStick, Constants.Buttons.HANGER_PNEUMATICS_TOGGLE);
-      hangerPneumaticsToggleButton.whenPressed(m_hanger::toggleSolenoid);
+    hangerPneumaticsToggleButton.whenPressed(m_hanger::toggleSolenoid);
 
   }
 }

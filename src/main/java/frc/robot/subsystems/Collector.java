@@ -69,16 +69,17 @@ public class Collector extends SubsystemBase {
   }
 
   public void toggleCollector() {
-    m_armSolenoid.toggle();
-    if(m_armSolenoid.get()==kReverse) {
-      setArm(getArmSliderValue());
-      // setArm(Constants.Collector.ARM_SPEED);
-      setGate(getGateSliderValue());
-      // setGate(Constants.Collector.GATE_SPEED);
+    if(m_armSolenoid.get()==kForward) {
+      //setArm(getArmSliderValue());
+      setArm(Constants.Collector.ARM_SPEED);
+      //setGate(getGateSliderValue());
+      setGate(Constants.Collector.GATE_SPEED);
     }
     else {
-      m_motorArm.set(0);
+      setArm(0);
+      setGate(0);
     }
+    m_armSolenoid.toggle();
   }
 
 }
