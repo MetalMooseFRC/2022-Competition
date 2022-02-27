@@ -7,6 +7,7 @@ package frc.robot.commands;
 import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Turret;
 
 public class TurnTurretWithJoystick extends CommandBase {
@@ -28,7 +29,7 @@ public class TurnTurretWithJoystick extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_turret.m_turretMotor.set(MathUtil.clamp(m_speedSupplier.getAsDouble(),-0.3,0.3));
+    m_turret.turretMotor.set(MathUtil.clamp(m_turret.getDeadbandSpeed(m_speedSupplier.getAsDouble()),-Constants.Turret.CLAMP,Constants.Turret.CLAMP));
   }
 
   // Called once the command ends or is interrupted.

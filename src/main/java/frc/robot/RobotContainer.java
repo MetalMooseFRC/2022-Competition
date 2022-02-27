@@ -19,6 +19,7 @@ import frc.robot.commands.RunCollectorVariable;
 import frc.robot.commands.RunCollectorDefault;
 import frc.robot.commands.ToggleCollector;
 import frc.robot.commands.ShootDefault;
+import frc.robot.commands.TurnTurretToAngle;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Hanger;
 import frc.robot.subsystems.Lifter;
@@ -41,7 +42,7 @@ public class RobotContainer {
   JoystickButton armToggleButton, armCollectButton, hangerPneumaticsToggleButton;
 
   public static final Joystick operatorStick = new Joystick(Constants.DSPorts.OPERATOR_STICK_PORT);
-  JoystickButton shootCargoButton;
+  JoystickButton shootCargoButton, turnTurretToZeroButton;
 
 
 
@@ -102,7 +103,6 @@ public class RobotContainer {
     armToggleButton = new JoystickButton(driverStick, Constants.Buttons.ARM_TOGGLE);
     armToggleButton.whenPressed(new ToggleCollector(m_collector));
       //armToggleButton.whenPressed(m_collector::toggleCollector);
-
       
     // ************  OPERATOR STICK  ***************
     hangerPneumaticsToggleButton = new JoystickButton(operatorStick, Constants.Buttons.HANGER_PNEUMATICS_TOGGLE);
@@ -114,6 +114,11 @@ public class RobotContainer {
       m_shooter,
       () -> Constants.Lifter.DEFAULT_SPEED,
       m_lifter));
+
+    turnTurretToZeroButton = new JoystickButton(operatorStick, Constants.Buttons.TURRET_TO_ZERO);
+    turnTurretToZeroButton.whenPressed(new TurnTurretToAngle(
+       Constants.Turret.ZERO,
+       m_turret));
 
   }
 }

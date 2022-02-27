@@ -84,6 +84,22 @@ public final class Constants {
         public static final double JOYSTICK_TURN_FACTOR = 0.6;
     }
 
+    public final class Turret {
+        public static final int GEAR_RATIO = 10*4;
+        public static final double DEFAULT_SPEED = 0.3;
+        public static final double ZERO = 0;
+        public static final double CLAMP = 0.3;
+        
+        public final class PID {
+            public static final double kP = 0.01;
+            public static final double kI = 0.0;
+            public static final double kD = 0.0;
+            public static final double FF = 0.1;
+            public static final double TOLERANCE = 1.0;
+            public static final int TOLERANCE_BUFFER = 5;
+        }
+    }
+
     public final class Shooter {
         // Percent of max speed
         public static final double DEFAULT_SPEED = 0.5;
