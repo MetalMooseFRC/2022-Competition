@@ -64,9 +64,9 @@ public class RobotContainer {
       () -> m_lifter.getSliderValue(), 
       m_lifter));
 
-    //m_collector.setDefaultCommand(new RunCollectorVariable(
-      //() -> m_collector.getArmSliderValue(), 
-    // m_collector));
+    m_collector.setDefaultCommand(new RunCollectorVariable(
+     () -> m_collector.getArmSliderValue(), 
+     m_collector));
 
     
 
