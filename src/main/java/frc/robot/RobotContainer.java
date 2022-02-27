@@ -14,6 +14,7 @@ import frc.robot.commands.DriveArcadeWithJoystick;
 import frc.robot.commands.HangerControl;
 import frc.robot.commands.LifterControl;
 import frc.robot.commands.ShooterControl;
+import frc.robot.commands.TurnTurretWithJoystick;
 import frc.robot.commands.RunCollectorVariable;
 import frc.robot.commands.RunCollectorDefault;
 import frc.robot.subsystems.Drivetrain;
@@ -21,6 +22,7 @@ import frc.robot.subsystems.Hanger;
 import frc.robot.subsystems.Lifter;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Collector;
+import frc.robot.subsystems.Turret;
 
 
 /**
@@ -45,6 +47,7 @@ public class RobotContainer {
   private Lifter m_lifter = new Lifter();
   private Collector m_collector = new Collector();
   private Hanger m_hanger = new Hanger();
+  private Turret m_turret = new Turret();
 
   //************ Pneumatics **********/
   Compressor phCompressor = new Compressor(Constants.CANIDs.PNEUMATICS_HUB, PneumaticsModuleType.REVPH);
@@ -69,7 +72,9 @@ public class RobotContainer {
      () -> m_collector.getGateSliderValue(),  
      m_collector));
 
-    
+    m_turret.setDefaultCommand((new TurnTurretWithJoystick(
+      () -> operatorStick.getZ(),
+       m_turret)));
 
     m_shooter.setDefaultCommand((new ShooterControl(() -> m_shooter.getSliderValue(), m_shooter)));
 
