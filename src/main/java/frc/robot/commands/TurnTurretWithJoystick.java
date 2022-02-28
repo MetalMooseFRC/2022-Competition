@@ -19,7 +19,7 @@ public class TurnTurretWithJoystick extends CommandBase {
     m_speedSupplier =speedSupplier;
     m_turret = turret;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(turret);
+    addRequirements(m_turret);
   }
 
   // Called when the command is initially scheduled.

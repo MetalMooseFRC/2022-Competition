@@ -10,13 +10,17 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
+import frc.robot.Constants.Buttons;
 import frc.robot.commands.DriveArcadeWithJoystick;
+import frc.robot.commands.ElevatorToHeight;
 import frc.robot.commands.HangerControl;
 import frc.robot.commands.LifterControl;
 import frc.robot.commands.ShooterControl;
 import frc.robot.commands.TurnTurretWithJoystick;
 import frc.robot.commands.RunCollectorVariable;
 import frc.robot.commands.RunCollectorDefault;
+import frc.robot.commands.TrackTargetWithLimelight;
 import frc.robot.commands.ToggleCollector;
 import frc.robot.commands.ShootDefault;
 import frc.robot.commands.TurnTurretToAngle;
@@ -42,7 +46,8 @@ public class RobotContainer {
   JoystickButton armToggleButton, armCollectButton, hangerPneumaticsToggleButton;
 
   public static final Joystick operatorStick = new Joystick(Constants.DSPorts.OPERATOR_STICK_PORT);
-  JoystickButton shootCargoButton, turnTurretToZeroButton;
+  JoystickButton shootCargoButton, turnTurretToZeroButton, shootingSpeedUpButton, shootingSpeedDownButton, turretAimToggleButton;
+  POVButton turnTurretTo90Button, turnTurretToN90Button;
 
 
 
@@ -77,11 +82,8 @@ public class RobotContainer {
      //() -> m_collector.getGateSliderValue(),  
      //m_collector));
 
-    
 
-    m_turret.setDefaultCommand((new TurnTurretWithJoystick(
-      () -> operatorStick.getZ(),
-       m_turret)));
+    m_turret.setDefaultCommand((new TrackTargetWithLimelight(m_turret)));
 
     m_shooter.setDefaultCommand((new ShooterControl(() -> m_shooter.getSliderValue(), m_shooter)));
 
@@ -110,7 +112,7 @@ public class RobotContainer {
 
     shootCargoButton = new JoystickButton(operatorStick, Constants.Buttons.SHOOT_ALLIANCE_BALL);
     shootCargoButton.whileHeld(new ShootDefault(
-      () -> Constants.Shooter.DEFAULT_SPEED,
+      () -> (m_shooter.getSliderValue()),
       m_shooter,
       () -> Constants.Lifter.DEFAULT_SPEED,
       m_lifter));
@@ -119,6 +121,16 @@ public class RobotContainer {
     turnTurretToZeroButton.whenPressed(new TurnTurretToAngle(
        Constants.Turret.ZERO,
        m_turret));
+      
+    turretAimToggleButton = new JoystickButton(operatorStick, Constants.Buttons.AIM_TOGGLE);
+    turretAimToggleButton.whenHeld(new TurnTurretWithJoystick(() -> operatorStick.getZ(), m_turret));
+    
+    // turnTurretTo90Button = new POVButton(operatorStick, Constants.Buttons.ELEVATOR_MAX_UP);
+    // turnTurretTo90Button.whenPressed(new ElevatorToHeight(90, m_turret));
+
+    // turnTurretToN90Button = new POVButton(operatorStick, Constants.Buttons.ELEVATOR_MAX_DOWN);
+    // turnTurretToN90Button.whenPressed(new ElevatorToHeight(-90, m_turret));
+    
 
   }
 }

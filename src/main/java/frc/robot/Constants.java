@@ -91,7 +91,7 @@ public final class Constants {
         public static final double CLAMP = 0.3;
         
         public final class PID {
-            public static final double kP = 0.01;
+            public static final double kP = 0.0155;
             public static final double kI = 0.0;
             public static final double kD = 0.0;
             public static final double FF = 0.1;
@@ -102,7 +102,8 @@ public final class Constants {
 
     public final class Shooter {
         // Percent of max speed
-        public static final double DEFAULT_SPEED = 0.5;
+        public static final double DEFAULT_SPEED = 0.58;
+        public static final double ADJUST_INCREMENT = 0.05;
     }
 
     public final class Lifter {
@@ -120,6 +121,8 @@ public final class Constants {
         public static final double LIMELIGHT_HEIGHT = 40;
         public static final double TARGET_HEIGHT = 264;
         public static final double LIMELIGHT_ANGLE = 29.962;
+
+        public static final double SEARCH_SPEED = 0.3;
     }
 
     public final class Etcetera {}

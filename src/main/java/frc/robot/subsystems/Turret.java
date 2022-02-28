@@ -9,8 +9,11 @@ import com.revrobotics.CANSparkMaxLowLevel;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
@@ -18,6 +21,7 @@ public class Turret extends SubsystemBase {
   private final NetworkTable m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
   public final CANSparkMax turretMotor = new CANSparkMax(Constants.CANIDs.TURRET_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
   
+  private ShuffleboardTab TestingTab = Shuffleboard.getTab("Testing");
   /** Creates a new Turret. */
   public Turret() {
     turretMotor.getEncoder().setPosition(0);
@@ -25,8 +29,8 @@ public class Turret extends SubsystemBase {
 
   @Override
   public void periodic() {
-    System.out.println(getTurretAngle());
     SmartDashboard.putBoolean("Limelight has target", limelightHasValidTarget());
+
     // This method will be called once per scheduler run
   }
 
@@ -46,6 +50,8 @@ public class Turret extends SubsystemBase {
   }
 
   public double limelightGetTx() {
+      System.out.println("Giving Tx");
+      System.out.println(m_limelightTable.getEntry("tx").getDouble(0.0));
       return m_limelightTable.getEntry("tx").getDouble(0.0);
   }
 
@@ -62,7 +68,7 @@ public class Turret extends SubsystemBase {
 
   //does the limelight see a viable target
   public boolean limelightHasValidTarget() {
-    return m_limelightTable.getEntry("tv").getDouble(0.0) == 1;
+    return m_limelightTable.getEntry("tv").getDouble(0.0) == 1.0;
   }
 
   //calculate the distance based on trig
