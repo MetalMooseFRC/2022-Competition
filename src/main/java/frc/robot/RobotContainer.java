@@ -16,7 +16,7 @@ import frc.robot.commands.DriveArcadeWithJoystick;
 import frc.robot.commands.ElevatorToHeight;
 import frc.robot.commands.HangerControl;
 import frc.robot.commands.LifterControl;
-import frc.robot.commands.ShooterControl;
+import frc.robot.commands.RunShooter;
 import frc.robot.commands.TurnTurretWithJoystick;
 import frc.robot.commands.RunCollectorVariable;
 import frc.robot.commands.RunCollectorDefault;
@@ -84,9 +84,9 @@ public class RobotContainer {
      //m_collector));
 
 
-    m_turret.setDefaultCommand((new TrackTargetWithLimelight(m_turret, m_shooter)));
+    m_turret.setDefaultCommand((new TrackTargetWithLimelight(m_turret)));
 
-    m_shooter.setDefaultCommand((new ShooterControl(() -> m_shooter.getSliderValue(), m_shooter)));
+    m_shooter.setDefaultCommand((new RunShooter(() -> m_shooter.getSliderValue(), m_shooter)));
 
     m_hanger.setDefaultCommand(new HangerControl(
       () -> operatorStick.getY(), 

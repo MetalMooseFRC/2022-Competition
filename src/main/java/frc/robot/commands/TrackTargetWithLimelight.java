@@ -14,16 +14,16 @@ import edu.wpi.first.math.MathUtil;
 public class TrackTargetWithLimelight extends CommandBase {
 
   private final Turret m_turret;
-  private final Shooter m_shooter;
+  // private final Shooter m_shooter;
   private final PIDController turretController = new PIDController(Constants.Turret.PID.kP, Constants.Turret.PID.kI, Constants.Turret.PID.kD);
 
   /** Creates a new TrackTargetWithLimelight. */
-  public TrackTargetWithLimelight(Turret turret, Shooter shooter) {
+  public TrackTargetWithLimelight(Turret turret) {
 
-    m_shooter = shooter;
+    // m_shooter = shooter;
     m_turret = turret;
 
-    addRequirements(m_turret, m_shooter);
+    addRequirements(m_turret);
     turretController.setTolerance(Constants.Turret.PID.TOLERANCE, Constants.Turret.PID.TOLERANCE_BUFFER);
     // Use addRequirements() here to declare subsystem dependencies.
   }

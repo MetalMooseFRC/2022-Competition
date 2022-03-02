@@ -9,13 +9,13 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 
-public class ShooterControl extends CommandBase {
+public class RunShooter extends CommandBase {
 
   private final Shooter m_shooter;
   private final DoubleSupplier m_speedSupplier;
   
   /** Creates a new ShooterControl. */
-  public ShooterControl(DoubleSupplier speedSupplier, Shooter shooter) {
+  public RunShooter(DoubleSupplier speedSupplier, Shooter shooter) {
     m_speedSupplier = speedSupplier;
     
     m_shooter = shooter;
