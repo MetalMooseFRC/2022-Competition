@@ -30,6 +30,7 @@ public class Turret extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putBoolean("Limelight has target", limelightHasValidTarget());
+    SmartDashboard.putNumber("Distance", getTurretDistance());
 
     // This method will be called once per scheduler run
   }
@@ -50,8 +51,8 @@ public class Turret extends SubsystemBase {
   }
 
   public double limelightGetTx() {
-      System.out.println("Giving Tx");
-      System.out.println(m_limelightTable.getEntry("tx").getDouble(0.0));
+      // System.out.println("Giving Tx");
+      // System.out.println(m_limelightTable.getEntry("tx").getDouble(0.0));
       return m_limelightTable.getEntry("tx").getDouble(0.0);
   }
 
@@ -73,6 +74,25 @@ public class Turret extends SubsystemBase {
 
   //calculate the distance based on trig
   public double limelightGetDistance() {
-      return (Constants.Limelight.TARGET_HEIGHT - Constants.Limelight.LIMELIGHT_HEIGHT)/Math.tan((limelightGetTy() + Constants.Limelight.LIMELIGHT_ANGLE)*Math.PI/180);
+    return (Constants.Limelight.TARGET_HEIGHT - Constants.Limelight.LIMELIGHT_HEIGHT)/Math.tan((limelightGetTy() + Constants.Limelight.LIMELIGHT_ANGLE)*Math.PI/180);
   }
+
+  public double getTurretDistance() {
+    // double turretDistance;
+    // //LIMELIGHT CENTERED BEHIND AT 60* AND CENTERED IN FRONT AT -120*
+    // if (105.0 >= getTurretAngle() && getTurretAngle() >= 15.0){
+    //   turretDistance = limelightGetDistance()-27;
+    // } else if (-150<= getTurretAngle() && -60 >= getTurretAngle()){
+    //   turretDistance = limelightGetDistance()+27;
+    // } else {
+    //   turretDistance = limelightGetDistance();
+    // };
+    // return (turretDistance);
+    double offset = 27 * -Math.cos((getTurretAngle() + 31.989)*Math.PI/180);
+    return limelightGetDistance() + offset;
+  }
+  // public double getShooterSpeed() {
+  //   double shooterSpeed = getTurretDistance()*0.0005+0.4;
+  //   return shooterSpeed;
+  // }
 }

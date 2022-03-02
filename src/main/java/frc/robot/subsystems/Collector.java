@@ -35,7 +35,7 @@ public class Collector extends SubsystemBase {
     .getEntry();
 
   private final CANSparkMax m_motorArm = new CANSparkMax(Constants.CANIDs.CL_ARM, CANSparkMaxLowLevel.MotorType.kBrushless);
-
+  private static double direction = 1;
   private final TalonSRX m_motorGateLeft = new TalonSRX(Constants.CANIDs.CL_GATE_LEFT);
   private final TalonSRX m_motorGateRight= new TalonSRX(Constants.CANIDs.CL_GATE_RIGHT);
   DoubleSolenoid m_armSolenoid = new DoubleSolenoid(Constants.CANIDs.PNEUMATICS_HUB, PneumaticsModuleType.REVPH, Constants.PneumaticsIDs.COLLECTOR_A, Constants.PneumaticsIDs.COLLECTOR_B);
@@ -55,6 +55,15 @@ public class Collector extends SubsystemBase {
     m_motorArm.set(speed);
   }
 
+  public void invertDirection() {
+    if(m_armSolenoid.get()==kReverse){
+      direction*= -1;
+      setArm(Constants.Collector.ARM_SPEED*direction);
+    }
+    else {
+    }
+  }
+
   public double getArmSliderValue() {
     return m_ArmSpeed.getDouble(0);
   }
@@ -71,7 +80,7 @@ public class Collector extends SubsystemBase {
   public void toggleCollector() {
     if(m_armSolenoid.get()==kForward) {
       //setArm(getArmSliderValue());
-      setArm(Constants.Collector.ARM_SPEED);
+      setArm(Constants.Collector.ARM_SPEED*direction);
       //setGate(getGateSliderValue());
       setGate(Constants.Collector.GATE_SPEED);
     }

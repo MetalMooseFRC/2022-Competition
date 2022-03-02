@@ -7,21 +7,23 @@ package frc.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Turret;
 import edu.wpi.first.math.MathUtil;
 
 public class TrackTargetWithLimelight extends CommandBase {
 
   private final Turret m_turret;
-
+  private final Shooter m_shooter;
   private final PIDController turretController = new PIDController(Constants.Turret.PID.kP, Constants.Turret.PID.kI, Constants.Turret.PID.kD);
 
   /** Creates a new TrackTargetWithLimelight. */
-  public TrackTargetWithLimelight(Turret turret) {
+  public TrackTargetWithLimelight(Turret turret, Shooter shooter) {
 
+    m_shooter = shooter;
     m_turret = turret;
 
-    addRequirements(turret);
+    addRequirements(m_turret, m_shooter);
     turretController.setTolerance(Constants.Turret.PID.TOLERANCE, Constants.Turret.PID.TOLERANCE_BUFFER);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -35,15 +37,18 @@ public class TrackTargetWithLimelight extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Running TrackTargetWithLimelight");
+    // System.out.println("Running TrackTargetWithLimelight");
+    // double shooterSpeed = m_turret.getShooterSpeed();
+    // m_shooter.m_motorLeft.set(shooterSpeed);
+    // m_shooter.m_motorRight.set(shooterSpeed);
     if(m_turret.limelightHasValidTarget()) {
-      System.out.println("Not at setpoint");
+      // System.out.println("Not at setpoint");
       double offBy = m_turret.limelightGetTx();
       double power = turretController.calculate(offBy);
       power =  MathUtil.clamp(power, -Constants.Turret.CLAMP, Constants.Turret.CLAMP);
       m_turret.turretMotor.set(-power);
     } else {
-      System.out.println("Searching");
+      // System.out.println("Searching");
       m_turret.turretMotor.set(Constants.Limelight.SEARCH_SPEED);
     }
   }

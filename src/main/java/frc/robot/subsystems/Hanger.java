@@ -18,9 +18,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Hanger extends SubsystemBase {
   DoubleSolenoid m_hangerSolenoid = new DoubleSolenoid(Constants.CANIDs.PNEUMATICS_HUB, PneumaticsModuleType.REVPH, Constants.PneumaticsIDs.HANGER_A, Constants.PneumaticsIDs.HANGER_B);
-  CANSparkMax m_motorClimberLeft = new CANSparkMax(Constants.CANIDs.HA_LEFT, CANSparkMaxLowLevel.MotorType.kBrushless);
-  CANSparkMax m_motorClimberRight = new CANSparkMax(Constants.CANIDs.HA_RIGHT, CANSparkMaxLowLevel.MotorType.kBrushless);
-  
+  public CANSparkMax m_motorClimberLeft = new CANSparkMax(Constants.CANIDs.HA_LEFT, CANSparkMaxLowLevel.MotorType.kBrushless);
+  public CANSparkMax m_motorClimberRight = new CANSparkMax(Constants.CANIDs.HA_RIGHT, CANSparkMaxLowLevel.MotorType.kBrushless);
   /** Creates a new Hanger. */
   public Hanger() {
     m_hangerSolenoid.set(kForward);
@@ -29,8 +28,6 @@ public class Hanger extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Left Motor", m_motorClimberLeft.getOutputCurrent());
-    SmartDashboard.putNumber("Right Motor", m_motorClimberRight.getOutputCurrent());
     // This method will be called once per scheduler run
   }
 
