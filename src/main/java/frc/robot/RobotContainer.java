@@ -24,7 +24,6 @@ import frc.robot.commands.TrackTargetWithLimelight;
 import frc.robot.commands.ToggleCollector;
 import frc.robot.commands.ShootDefault;
 import frc.robot.commands.TurnTurretToAngle;
-import frc.robot.commands.InvertCollectorDirection;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Hanger;
 import frc.robot.subsystems.Lifter;
@@ -47,7 +46,7 @@ public class RobotContainer {
   JoystickButton armToggleButton, armCollectButton, hangerPneumaticsToggleButton;
 
   public static final Joystick operatorStick = new Joystick(Constants.DSPorts.OPERATOR_STICK_PORT);
-  JoystickButton shootCargoButton, turnTurretToZeroButton, shootingSpeedUpButton, shootingSpeedDownButton, turretAimToggleButton, invertCollectorButton;
+  JoystickButton shootCargoButton, turnTurretToZeroButton, shootingSpeedUpButton, shootingSpeedDownButton, turretAimToggleButton, invertCollectorButton, runShooterToggleButton;
   POVButton turnTurretTo90Button, turnTurretToN90Button;
 
 
@@ -86,7 +85,7 @@ public class RobotContainer {
 
     m_turret.setDefaultCommand((new TrackTargetWithLimelight(m_turret)));
 
-    m_shooter.setDefaultCommand((new RunShooter(() -> m_shooter.getSliderValue(), m_shooter)));
+    m_shooter.setDefaultCommand((new RunShooter(() -> 0, m_shooter)));
 
     m_hanger.setDefaultCommand(new HangerControl(
       () -> operatorStick.getY(), 
@@ -107,7 +106,7 @@ public class RobotContainer {
     armToggleButton.whenPressed(new ToggleCollector(m_collector));
 
     invertCollectorButton = new JoystickButton(driverStick, Constants.Buttons.COLLECTOR_REVERSE);
-    invertCollectorButton.whenPressed(new InvertCollectorDirection(m_collector));
+    invertCollectorButton.whenPressed(m_collector::invertDirection);
       //armToggleButton.whenPressed(m_collector::toggleCollector);
       
     // ************  OPERATOR STICK  ***************
@@ -128,6 +127,9 @@ public class RobotContainer {
       
     turretAimToggleButton = new JoystickButton(operatorStick, Constants.Buttons.AIM_TOGGLE);
     turretAimToggleButton.toggleWhenPressed(new TurnTurretWithJoystick(() -> operatorStick.getZ(), m_turret));
+
+    runShooterToggleButton = new JoystickButton(operatorStick, Constants.Buttons.RUN_SHOOTER_TOGGLE);
+    runShooterToggleButton.toggleWhenPressed(new RunShooter(() -> m_shooter.getSliderValue(), m_shooter));
     
     // turnTurretTo90Button = new POVButton(operatorStick, Constants.Buttons.ELEVATOR_MAX_UP);
     // turnTurretTo90Button.whenPressed(new ElevatorToHeight(90, m_turret));

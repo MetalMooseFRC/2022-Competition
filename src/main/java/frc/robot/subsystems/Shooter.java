@@ -54,6 +54,10 @@ public class Shooter extends SubsystemBase {
     m_motorRight.set(speed);
   }
 
+  public void runShooter() {
+    setRightWheelSpeed(getSliderValue());
+    setLeftWheelSpeed(getSliderValue());
+  }
   public double getSliderValue() {
     return m_ShooterSpeed.getDouble(0);
   }
