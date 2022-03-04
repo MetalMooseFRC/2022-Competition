@@ -32,6 +32,7 @@ public class TrackTargetWithLimelight extends CommandBase {
   @Override
   public void initialize() {
     turretController.setSetpoint(0.0);
+    m_turret.setLimelightLights(3);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -112,7 +112,7 @@ public final class Constants {
 
     public final class Collector {
         public static final double ARM_SPEED = 0.4;
-        public static final double GATE_SPEED = 0.41;
+        public static final double GATE_SPEED = 0.5;
     }
 
     public final class Limelight {

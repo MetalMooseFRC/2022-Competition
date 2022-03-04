@@ -12,6 +12,14 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.Constants;
 
+// NavX
+import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.I2C.Port;
+
 public class Drivetrain extends SubsystemBase {
 
   private final CANSparkMax m_motorLeftFront = new CANSparkMax(Constants.CANIDs.DT_LEFT_FRONT, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -26,8 +34,14 @@ public class Drivetrain extends SubsystemBase {
   
   public final DifferentialDrive diffDrive = new DifferentialDrive(m_motorsLeft, m_motorsRight);
 
+  private AHRS m_navx = new AHRS(Port.kMXP);
+
+  DifferentialDriveOdometry m_odometry = new DifferentialDriveOdometry(
+    m_navx.getRotation2d(), new Pose2d(0.0, 0.0, new Rotation2d()));
+
   /** Creates a new Drivetrain. */
   public Drivetrain() {
+    
     // create deadband
     diffDrive.setDeadband(Constants.Preferences.DEADBAND);
     // invert right motors
@@ -38,6 +52,17 @@ public class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
+    
+    m_odometry.update(m_navx.getRotation2d(),
+    m_motorLeftMiddle.getEncoder().getPosition(),
+    m_motorRightMiddle.getEncoder().getPosition());
+    // m_field.setRobotPose(m_odometry.getPoseMeters());
+    
+    // System.out.println(m_odometry.getPoseMeters());
+    
+  }
 
+  public Pose2d getPosition(){
+    return m_odometry.getPoseMeters();
   }
 }

@@ -10,16 +10,15 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 
-public class DriveArcadeWithJoystick extends CommandBase {
+public class DriveArcade extends CommandBase {
 
   private final Drivetrain m_drivetrain;
   
   private DoubleSupplier m_speedSupplier;
   private DoubleSupplier m_turnSupplier;
 
-
-  /** Creates a new DriveArcadeWithJoystick. */
-  public DriveArcadeWithJoystick(DoubleSupplier speedSupplier, DoubleSupplier turnSupplier, Drivetrain drivetrain) {
+  /** Creates a new DriveArcade. */
+  public DriveArcade(DoubleSupplier speedSupplier, DoubleSupplier turnSupplier, Drivetrain drivetrain) {
     m_speedSupplier = speedSupplier;
     m_turnSupplier = turnSupplier;
     

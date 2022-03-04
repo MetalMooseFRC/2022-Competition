@@ -85,10 +85,12 @@ public class Collector extends SubsystemBase {
       setGate(Constants.Collector.GATE_SPEED);
     }
     else {
+      System.out.println("!!!!! ELSE");
       setArm(0);
       setGate(0);
     }
     m_armSolenoid.toggle();
+    System.out.println("Toggling The Collector. !!!!! !!!");
   }
 
 }

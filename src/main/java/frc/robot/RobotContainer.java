@@ -9,27 +9,14 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.Buttons;
-import frc.robot.commands.DriveArcadeWithJoystick;
-import frc.robot.commands.ElevatorToHeight;
-import frc.robot.commands.HangerControl;
-import frc.robot.commands.LifterControl;
-import frc.robot.commands.RunShooter;
-import frc.robot.commands.TurnTurretWithJoystick;
-import frc.robot.commands.RunCollectorVariable;
-import frc.robot.commands.RunCollectorDefault;
-import frc.robot.commands.TrackTargetWithLimelight;
-import frc.robot.commands.ToggleCollector;
-import frc.robot.commands.ShootDefault;
-import frc.robot.commands.TurnTurretToAngle;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Hanger;
-import frc.robot.subsystems.Lifter;
-import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Collector;
-import frc.robot.subsystems.Turret;
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
 
 
 /**
@@ -50,7 +37,6 @@ public class RobotContainer {
   POVButton turnTurretTo90Button, turnTurretToN90Button;
 
 
-
   // ************  Subsystems  **************
   private Drivetrain m_drivetrain = new Drivetrain();
   private Shooter m_shooter = new Shooter();
@@ -59,84 +45,115 @@ public class RobotContainer {
   private Hanger m_hanger = new Hanger();
   private Turret m_turret = new Turret();
 
+  //************ Autonomous Command **********/
+  // private final ParallelRaceGroup m_autoCommand = new DriveArcade(() -> 0.5, () -> 0, m_drivetrain).withTimeout(1);
+
+  // Sequentially: 
+  private final SequentialCommandGroup m_autoCommand = new SequentialCommandGroup(
+    // Spin up shooter wheels
+    new RunShooter(() -> 0.4, m_shooter).withTimeout(0.5),
+    // Shoot shooter
+    new ShootDefault(() -> 0.4, m_shooter, () -> Constants.Lifter.DEFAULT_SPEED, m_lifter).withTimeout(2),
+    // Drop Collector Arm, Turn on Gate
+    new ToggleCollector(m_collector),
+    // Drive Forward
+    new DriveArcade(() -> 0.5, () -> 0, m_drivetrain).withTimeout(3),
+    // Spin up shooter wheels
+    new RunShooter(() -> 0.6, m_shooter).withTimeout(0.5),
+    // Shoot shooter
+    new ShootDefault(() -> 0.6, m_shooter, () -> Constants.Lifter.DEFAULT_SPEED, m_lifter).withTimeout(3)
+  );
+
+
   //************ Pneumatics **********/
   Compressor phCompressor = new Compressor(Constants.CANIDs.PNEUMATICS_HUB, PneumaticsModuleType.REVPH);
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    
     // Configure the button bindings
     configureButtonBindings();
-
+    
     // ************  DEFAULT COMMANDS  ***************
-    m_drivetrain.setDefaultCommand(new DriveArcadeWithJoystick(
+    m_drivetrain.setDefaultCommand(new DriveArcade(
       () -> -driverStick.getY(),
       () -> driverStick.getZ(),
       m_drivetrain));
-
-    m_lifter.setDefaultCommand(new LifterControl(
-      () -> m_lifter.getSliderValue(), 
-      m_lifter));
-
-    //m_collector.setDefaultCommand(new RunCollectorVariable(
-     //() -> m_collector.getArmSliderValue(),
-     //() -> m_collector.getGateSliderValue(),  
+      
+      m_lifter.setDefaultCommand(new LifterControl(
+        () -> m_lifter.getSliderValue(), 
+        m_lifter));
+        
+        //m_collector.setDefaultCommand(new RunCollectorVariable(
+          //() -> m_collector.getArmSliderValue(),
+          //() -> m_collector.getGateSliderValue(),  
      //m_collector));
-
-
-    m_turret.setDefaultCommand((new TrackTargetWithLimelight(m_turret)));
-
+     
+     
+     m_turret.setDefaultCommand((new TrackTargetWithLimelight(m_turret)));
+     
     m_shooter.setDefaultCommand((new RunShooter(() -> 0, m_shooter)));
-
+    
     m_hanger.setDefaultCommand(new HangerControl(
       () -> operatorStick.getY(), 
       m_hanger));
-
-  }
-
-  /**
+      
+    }
+    
+    /**
    * Use this method to define your button->command mappings. Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-
+    
     // ************  DRIVER STICK  ***************
     armToggleButton = new JoystickButton(driverStick, Constants.Buttons.ARM_TOGGLE);
     armToggleButton.whenPressed(new ToggleCollector(m_collector));
-
+    
     invertCollectorButton = new JoystickButton(driverStick, Constants.Buttons.COLLECTOR_REVERSE);
     invertCollectorButton.whenPressed(m_collector::invertDirection);
-      //armToggleButton.whenPressed(m_collector::toggleCollector);
-      
+    //armToggleButton.whenPressed(m_collector::toggleCollector);
+    
     // ************  OPERATOR STICK  ***************
     hangerPneumaticsToggleButton = new JoystickButton(operatorStick, Constants.Buttons.HANGER_PNEUMATICS_TOGGLE);
     hangerPneumaticsToggleButton.whenPressed(m_hanger::toggleSolenoid);
-
+    
     shootCargoButton = new JoystickButton(operatorStick, Constants.Buttons.SHOOT_ALLIANCE_BALL);
     shootCargoButton.whileHeld(new ShootDefault(
-      () -> (m_shooter.getSliderValue()),
+      () -> m_shooter.getSliderValue(),
       m_shooter,
       () -> Constants.Lifter.DEFAULT_SPEED,
       m_lifter));
-
-    turnTurretToZeroButton = new JoystickButton(operatorStick, Constants.Buttons.TURRET_TO_ZERO);
-    turnTurretToZeroButton.whenPressed(new TurnTurretToAngle(
+      
+      turnTurretToZeroButton = new JoystickButton(operatorStick, Constants.Buttons.TURRET_TO_ZERO);
+      turnTurretToZeroButton.whenPressed(new TurnTurretToAngle(
        Constants.Turret.ZERO,
        m_turret));
       
-    turretAimToggleButton = new JoystickButton(operatorStick, Constants.Buttons.AIM_TOGGLE);
-    turretAimToggleButton.toggleWhenPressed(new TurnTurretWithJoystick(() -> operatorStick.getZ(), m_turret));
+       turretAimToggleButton = new JoystickButton(operatorStick, Constants.Buttons.AIM_TOGGLE);
+       turretAimToggleButton.toggleWhenPressed(new TurnTurretWithJoystick(() -> operatorStick.getZ(), m_turret));
 
-    runShooterToggleButton = new JoystickButton(operatorStick, Constants.Buttons.RUN_SHOOTER_TOGGLE);
-    runShooterToggleButton.toggleWhenPressed(new RunShooter(() -> m_shooter.getSliderValue(), m_shooter));
+       runShooterToggleButton = new JoystickButton(operatorStick, Constants.Buttons.RUN_SHOOTER_TOGGLE);
+       runShooterToggleButton.toggleWhenPressed(new RunShooter(() -> m_shooter.getSliderValue(), m_shooter));
     
-    // turnTurretTo90Button = new POVButton(operatorStick, Constants.Buttons.ELEVATOR_MAX_UP);
+       // turnTurretTo90Button = new POVButton(operatorStick, Constants.Buttons.ELEVATOR_MAX_UP);
     // turnTurretTo90Button.whenPressed(new ElevatorToHeight(90, m_turret));
-
+    
     // turnTurretToN90Button = new POVButton(operatorStick, Constants.Buttons.ELEVATOR_MAX_DOWN);
     // turnTurretToN90Button.whenPressed(new ElevatorToHeight(-90, m_turret));
     
-
   }
+  /**
+   * Use this to pass the autonomous command to the main {@link Robot} class.
+   *
+   * @return the command to run in autonomous
+   */
+  public Command getAutonomousCommand() {
+    System.out.println("Getting autonomous command!");
+    // An ExampleCommand will run in autonomous
+    return m_autoCommand;
+  }
+
 }

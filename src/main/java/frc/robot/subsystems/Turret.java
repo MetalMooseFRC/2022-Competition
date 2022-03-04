@@ -9,7 +9,6 @@ import com.revrobotics.CANSparkMaxLowLevel;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -95,4 +94,7 @@ public class Turret extends SubsystemBase {
   //   double shooterSpeed = getTurretDistance()*0.0005+0.4;
   //   return shooterSpeed;
   // }
+  public void setLimelightLights(int setting) {
+    m_limelightTable.getEntry("ledMode").setNumber(setting);
+  }
 }
