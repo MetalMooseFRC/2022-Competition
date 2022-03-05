@@ -33,7 +33,8 @@ public class RobotContainer {
   JoystickButton armToggleButton, armCollectButton, hangerPneumaticsToggleButton;
 
   public static final Joystick operatorStick = new Joystick(Constants.DSPorts.OPERATOR_STICK_PORT);
-  JoystickButton shootCargoButton, turnTurretToZeroButton, shootingSpeedUpButton, shootingSpeedDownButton, turretAimToggleButton, invertCollectorButton, runShooterToggleButton, shootSliderButton, runLifterReverseButton;
+  JoystickButton shootCargoButton, turnTurretToZeroButton, shootingSpeedUpButton, shootingSpeedDownButton, turretAimToggleButton,
+   invertCollectorButton, runShooterToggleButton, shootSliderButton, runLifterReverseButton, burpBallButton;
   POVButton turnTurretTo90Button, turnTurretToN90Button;
 
 
@@ -51,7 +52,7 @@ public class RobotContainer {
   // Sequentially: 
   private final SequentialCommandGroup m_autoCommand = new SequentialCommandGroup(
     // Spin up shooter wheels
-    new RunShooter(() -> 0.62, m_shooter, m_turret).withTimeout(1),
+    new RunShooterAtSpeed(() -> 0.62, m_shooter).withTimeout(1),
     // Drop Collector Arm, Turn on Gate
     new ToggleCollector(m_collector),
     // Drive Forward
@@ -59,7 +60,7 @@ public class RobotContainer {
     // Do nothing for one loop
     new DriveArcade(() -> 0.0, () -> 0, m_drivetrain).withTimeout(1),
     //spin up shooter
-    new RunShooter(() -> 0.62, m_shooter, m_turret).withTimeout(1),
+    new RunShooterAtSpeed(() -> 0.62, m_shooter).withTimeout(1),
     // Shoot shooter
     new ShootDefault(() -> 0.62, m_shooter, () -> Constants.Lifter.DEFAULT_SPEED, m_lifter, m_turret).withTimeout(5),
     // Toggle Collector
@@ -148,6 +149,9 @@ public class RobotContainer {
     
     runLifterReverseButton = new JoystickButton(operatorStick, Constants.Buttons.REVERSE_LIFTER);
     runLifterReverseButton.whileHeld(new RunLifter(m_lifter, () -> -0.2).withTimeout(1));
+
+    burpBallButton = new JoystickButton(operatorStick, 9);
+    burpBallButton.whileHeld(new ShootDefault(() -> 0.3, m_shooter,() -> 0.3, m_lifter, m_turret));
        // turnTurretTo90Button = new POVButton(operatorStick, Constants.Buttons.ELEVATOR_MAX_UP);
     // turnTurretTo90Button.whenPressed(new ElevatorToHeight(90, m_turret));
     
