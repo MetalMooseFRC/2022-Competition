@@ -123,23 +123,21 @@ public class RobotContainer {
     hangerPneumaticsToggleButton.whenPressed(m_hanger::toggleSolenoid);
     
     shootCargoButton = new JoystickButton(operatorStick, Constants.Buttons.SHOOT_ALLIANCE_BALL);
-    shootCargoButton.whileHeld(new ShootDefault(
-      () -> m_shooter.getSliderValue(),
-      m_shooter,
-      () -> Constants.Lifter.DEFAULT_SPEED,
+    shootCargoButton.whileHeld(new MoveLifterUp(
       m_lifter,
+      () -> Constants.Lifter.DEFAULT_SPEED
+      ));
+      
+    turnTurretToZeroButton = new JoystickButton(operatorStick, Constants.Buttons.TURRET_TO_ZERO);
+    turnTurretToZeroButton.whenPressed(new TurnTurretToAngle(
+      Constants.Turret.ZERO,
       m_turret));
       
-      turnTurretToZeroButton = new JoystickButton(operatorStick, Constants.Buttons.TURRET_TO_ZERO);
-      turnTurretToZeroButton.whenPressed(new TurnTurretToAngle(
-       Constants.Turret.ZERO,
-       m_turret));
-      
-       turretAimToggleButton = new JoystickButton(operatorStick, Constants.Buttons.AIM_TOGGLE);
-       turretAimToggleButton.toggleWhenPressed(new TurnTurretWithJoystick(() -> operatorStick.getZ(), m_turret));
-
-       runShooterToggleButton = new JoystickButton(operatorStick, Constants.Buttons.RUN_SHOOTER_TOGGLE);
-       runShooterToggleButton.toggleWhenPressed(new RunShooter(() -> m_shooter.getSliderValue(), m_shooter, m_turret));
+     turretAimToggleButton = new JoystickButton(operatorStick, Constants.Buttons.AIM_TOGGLE);
+     turretAimToggleButton.toggleWhenPressed(new TurnTurretWithJoystick(() -> operatorStick.getZ(), m_turret));
+     
+     runShooterToggleButton = new JoystickButton(operatorStick, Constants.Buttons.RUN_SHOOTER_TOGGLE);
+     runShooterToggleButton.toggleWhenPressed(new RunShooter(() -> m_shooter.getSliderValue(), m_shooter, m_turret));
     
        // turnTurretTo90Button = new POVButton(operatorStick, Constants.Buttons.ELEVATOR_MAX_UP);
     // turnTurretTo90Button.whenPressed(new ElevatorToHeight(90, m_turret));

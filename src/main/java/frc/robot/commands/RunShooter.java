@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Turret;
@@ -41,11 +42,15 @@ public class RunShooter extends CommandBase {
     // Set shooter wheels to calculated speeds
     m_shooter.m_motorLeft.set(power);
     m_shooter.m_motorRight.set(power);
+    SmartDashboard.putNumber("Shooter Power", power);
     }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_shooter.m_motorLeft.set(0.0);
+    m_shooter.m_motorRight.set(0.0);
+  }
 
   // Returns true when the command should end.
   @Override

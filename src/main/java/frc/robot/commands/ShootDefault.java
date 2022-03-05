@@ -38,12 +38,12 @@ public class ShootDefault extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double dis = m_turret.getTurretDistance();
+    // double dis = m_turret.getTurretDistance();
 
-    double power = 0.587 + (-0.000404 * dis) + (0.00000105 * (Math.pow(dis, 2)));
+    // double power = 0.587 + (-0.000404 * dis) + (0.00000105 * (Math.pow(dis, 2)));
     // Set shooter wheels to calculated speeds
-    m_shooter.m_motorLeft.set(power);
-    m_shooter.m_motorRight.set(power);
+    m_shooter.m_motorLeft.set(m_shooterSpeedSupplier.getAsDouble());
+    m_shooter.m_motorRight.set(m_shooterSpeedSupplier.getAsDouble());
     m_lifter.m_motor.set(m_lifterSpeedSupplier.getAsDouble());
   }
 
