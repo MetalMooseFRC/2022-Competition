@@ -60,6 +60,8 @@ public class RobotContainer {
     new DriveArcade(() -> 0.0, () -> 0, m_drivetrain).withTimeout(1),
     // Shoot shooter
     new ShootDefault(() -> 0.62, m_shooter, () -> Constants.Lifter.DEFAULT_SPEED, m_lifter).withTimeout(5),
+    // Toggle Collector
+    new ToggleCollector(m_collector),
     // Drive Forward
     new DriveArcade(() -> 0.3, () -> 0, m_drivetrain).withTimeout(15)
   );
