@@ -24,13 +24,14 @@ public final class Constants {
         public static final int AIM_TOGGLE = 3;
         public static final int SHOOT_ALLIANCE_BALL = 1;
         public static final int RUN_SHOOTER_TOGGLE = 2;
-        public static final int TURRET_RIGHT = 11;
+        public static final int SHOOT_WITH_SLIDER = 11;
         public static final int TURRET_LEFT = 9;
         public static final int SHOOTER_SPEED_DOWN = 12;
         public static final int SHOOTER_SPEED_UP = 10;
         public static final int TURRET_TO_ZERO = 7;
         public static final int ELEVATOR_MAX_UP = 0;
         public static final int ELEVATOR_MAX_DOWN = 180;
+        public static final int REVERSE_LIFTER = 5;
     }
 
     public final class CANIDs {

@@ -40,6 +40,9 @@ public class RunShooter extends CommandBase {
 
     double power = 0.587 + (-0.000404 * dis) + (0.00000105 * (Math.pow(dis, 2)));
     // Set shooter wheels to calculated speeds
+    if (m_speedSupplier.getAsDouble() == 0.0) {
+      power = 0.0;
+    }
     m_shooter.m_motorLeft.set(power);
     m_shooter.m_motorRight.set(power);
     SmartDashboard.putNumber("Shooter Power", power);
