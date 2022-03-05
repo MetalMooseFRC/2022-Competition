@@ -92,7 +92,7 @@ public final class Constants {
         public static final double CLAMP = 0.3;
         
         public final class PID {
-            public static final double kP = 0.01;
+            public static final double kP = 0.0086;
             public static final double kI = 0.0;
             public static final double kD = 0.0;
             public static final double FF = 0.1;

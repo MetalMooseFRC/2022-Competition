@@ -58,12 +58,16 @@ public class RobotContainer {
     new DriveArcade(() -> 0.5, () -> 0, m_drivetrain).withTimeout(3),
     // Do nothing for one loop
     new DriveArcade(() -> 0.0, () -> 0, m_drivetrain).withTimeout(1),
+    //spin up shooter
+    new RunShooter(() -> 0.62, m_shooter, m_turret).withTimeout(1),
     // Shoot shooter
     new ShootDefault(() -> 0.62, m_shooter, () -> Constants.Lifter.DEFAULT_SPEED, m_lifter, m_turret).withTimeout(5),
     // Toggle Collector
     new ToggleCollector(m_collector),
     // Drive Forward
-    new DriveArcade(() -> 0.3, () -> 0, m_drivetrain).withTimeout(15)
+    new DriveArcade(() -> 0.3, () -> 0, m_drivetrain).withTimeout(15),
+    //zero turret
+    new TurnTurretToAngle(0, m_turret)
   );
 
 
