@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Turret;
 import frc.robot.subsystems.Lifter;
 import java.util.function.DoubleSupplier;
 
@@ -15,16 +16,17 @@ public class ShootDefault extends CommandBase {
   private Lifter m_lifter;
   private final DoubleSupplier m_shooterSpeedSupplier;
   private final DoubleSupplier m_lifterSpeedSupplier;
+  private final Turret m_turret;
 
   /** Creates a new StaticShooting. */
-  public ShootDefault(DoubleSupplier speedSupplier, Shooter shooter, DoubleSupplier speedSupplier2, Lifter lifter) {
+  public ShootDefault(DoubleSupplier speedSupplier, Shooter shooter, DoubleSupplier speedSupplier2, Lifter lifter, Turret turret) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_shooterSpeedSupplier = speedSupplier;
     m_lifterSpeedSupplier = speedSupplier2;
 
     m_shooter = shooter;
     m_lifter = lifter;
-
+    m_turret = turret;
     addRequirements(m_shooter, m_lifter);
   }
 
@@ -36,8 +38,12 @@ public class ShootDefault extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_shooter.m_motorLeft.set(m_shooterSpeedSupplier.getAsDouble());
-    m_shooter.m_motorRight.set(m_shooterSpeedSupplier.getAsDouble());
+    double dis = m_turret.getTurretDistance();
+
+    double power = 0.587 + (-0.000404 * dis) + (0.00000105 * (Math.pow(dis, 2)));
+    // Set shooter wheels to calculated speeds
+    m_shooter.m_motorLeft.set(power);
+    m_shooter.m_motorRight.set(power);
     m_lifter.m_motor.set(m_lifterSpeedSupplier.getAsDouble());
   }
 
