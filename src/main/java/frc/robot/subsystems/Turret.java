@@ -29,7 +29,7 @@ public class Turret extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putBoolean("Limelight has target", limelightHasValidTarget());
-    SmartDashboard.putNumber("Distance", getTurretDistance());
+    // SmartDashboard.putNumber("Distance", Distance());
 
     // This method will be called once per scheduler run
   }

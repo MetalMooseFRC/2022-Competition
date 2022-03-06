@@ -36,9 +36,9 @@ public class RunShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double dis = m_turret.getTurretDistance();
+    double dis = m_turret.limelightGetDistance();
 
-    double power = 0.587 + (-0.000404 * dis) + (0.00000105 * (Math.pow(dis, 2)));
+    double power = 0.576 + (-0.000404 * dis) + (0.00000105 * (Math.pow(dis, 2)));
     // Set shooter wheels to calculated speeds
     if (m_speedSupplier.getAsDouble() == 0.0) {
       power = 0.0;
