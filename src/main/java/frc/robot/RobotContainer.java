@@ -52,7 +52,7 @@ public class RobotContainer {
   // Sequentially: 
   private final SequentialCommandGroup m_autoCommand = new SequentialCommandGroup(
     // Spin up shooter wheels
-    new RunShooterAtSpeed(() -> 0.61, m_shooter).withTimeout(1),
+    new RunShooterAtSpeed(() -> 0.6285, m_shooter).withTimeout(1),
     // Drop Collector Arm, Turn on Gate
     new ToggleCollector(m_collector),
     // Drive Forward
@@ -61,9 +61,9 @@ public class RobotContainer {
     new DriveArcade(() -> 0.0, () -> 0, m_drivetrain).withTimeout(1),
     //spin up shooter
     new TrackTargetWithLimelight(m_turret).withTimeout(2),
-    new RunShooterAtSpeed(() -> 0.61, m_shooter).withTimeout(1),
+    new RunShooterAtSpeed(() -> 0.6285, m_shooter).withTimeout(1),
     // Shoot shooter
-    new ShootDefault(() -> 0.61, m_shooter, () -> Constants.Lifter.DEFAULT_SPEED, m_lifter, m_turret).withTimeout(5),
+    new ShootDefault(() -> 0.6285, m_shooter, () -> Constants.Lifter.DEFAULT_SPEED, m_lifter, m_turret).withTimeout(5),
     // Toggle Collector
     new ToggleCollector(m_collector),
     // Drive Forward
