@@ -22,6 +22,7 @@ public class Shooter extends SubsystemBase {
     .withProperties(Map.of("min", -1, "max", 1))
     .getEntry();
 
+
   public final CANSparkMax m_motorLeft = new CANSparkMax(Constants.CANIDs.SH_LEFT, CANSparkMaxLowLevel.MotorType.kBrushless);
   public final CANSparkMax m_motorRight = new CANSparkMax(Constants.CANIDs.SH_RIGHT, CANSparkMaxLowLevel.MotorType.kBrushless);
 
@@ -41,6 +42,7 @@ public class Shooter extends SubsystemBase {
     return m_motorLeft.getEncoder().getVelocity();
   }
 
+  //sets left wheel speed
   public void setLeftWheelSpeed(double speed) {
     m_motorLeft.set(speed);
   }
@@ -50,14 +52,18 @@ public class Shooter extends SubsystemBase {
     return m_motorRight.getEncoder().getVelocity();
   }
 
+  //sets right wheel speed
   public void setRightWheelSpeed(double speed) {
     m_motorRight.set(speed);
   }
 
+  //sets both right and left wheel speeds to slider value
   public void runShooter() {
     setRightWheelSpeed(getSliderValue());
     setLeftWheelSpeed(getSliderValue());
   }
+
+  //gets slider value for shooter speed
   public double getSliderValue() {
     return m_ShooterSpeed.getDouble(0);
   }

@@ -29,7 +29,7 @@ public class Hanger extends SubsystemBase {
   @Override
   public void periodic() {
 
-    
+    //puts elevator encoders on smartdashboard
     SmartDashboard.putNumber("Right Elevator Encoder", m_motorClimberRight.getEncoder().getPosition());
     SmartDashboard.putNumber("Left Elevator Encoder", m_motorClimberLeft.getEncoder().getPosition());
     // This method will be called once per scheduler run
@@ -61,6 +61,7 @@ public class Hanger extends SubsystemBase {
     m_hangerSolenoid.toggle();
   }
 
+  //lets your control the hanger with Joystick input
   public void controlHanger(double speed) {
     double adjustedSpeed = applyDeadband(speed, Constants.Preferences.DEADBAND);
     m_motorClimberLeft.set(adjustedSpeed);

@@ -35,14 +35,18 @@ public class Lifter extends SubsystemBase {
     // This method will be called once per scheduler run
   } 
   // return velocity, in RPM, of left wheel
+  
+  //gets the wheel speed
   public double getWheelSpeed() {
     return m_motor.getEncoder().getVelocity();
   }
 
+  //sets the wheel speed
   public void setWheelSpeed(double speed) {
     m_motor.set(speed);
   }
 
+  //gets a slider value for lifter
   public double getSliderValue() {
     return m_LifterSpeed.getDouble(0);
   }

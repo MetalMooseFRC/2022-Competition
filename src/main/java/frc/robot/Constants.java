@@ -82,7 +82,7 @@ public final class Constants {
     public final class Preferences {
         public static final double DEADBAND = 0.15;
         public static final double JOYSTICK_SPEED_FACTOR = 1;
-        public static final double JOYSTICK_TURN_FACTOR = 0.6;
+        public static final double JOYSTICK_TURN_FACTOR = 0.6;//Change this to like 1
     }
 
     public final class Turret {

@@ -37,9 +37,11 @@ public class Turret extends SubsystemBase {
   public double getDeadbandSpeed(double speed) {
     double adjustedSpeed = MathUtil.applyDeadband(speed, Constants.Preferences.DEADBAND);
     return(adjustedSpeed);
+    //this returns a speed with a deadband applied from an inputted speed
   }
 
   public double getTurretAngle() {
+    //gets the angle of the turret from 180 to -180
     double pos = (turretMotor.getEncoder().getPosition() % Constants.Turret.GEAR_RATIO * 9);
     if(pos >= 180) {
       pos -= 360;
@@ -76,6 +78,7 @@ public class Turret extends SubsystemBase {
     return (Constants.Limelight.TARGET_HEIGHT - Constants.Limelight.LIMELIGHT_HEIGHT)/Math.tan((limelightGetTy() + Constants.Limelight.LIMELIGHT_ANGLE)*Math.PI/180);
   }
 
+  //gets the distance of the turret based on the limelight
   public double getTurretDistance() {
     // double turretDistance;
     // //LIMELIGHT CENTERED BEHIND AT 60* AND CENTERED IN FRONT AT -120*
@@ -94,6 +97,8 @@ public class Turret extends SubsystemBase {
   //   double shooterSpeed = getTurretDistance()*0.0005+0.4;
   //   return shooterSpeed;
   // }
+
+  //sets the lights on the limelight to a setting(on/off)
   public void setLimelightLights(int setting) {
     m_limelightTable.getEntry("ledMode").setNumber(setting);
   }
