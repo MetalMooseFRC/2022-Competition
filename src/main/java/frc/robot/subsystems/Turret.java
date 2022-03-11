@@ -29,7 +29,12 @@ public class Turret extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putBoolean("Limelight has target", limelightHasValidTarget());
-    // SmartDashboard.putNumber("Distance", Distance());
+    SmartDashboard.putNumber("Distance(Imperial)", limelightGetDistance()/2.54/12);
+    SmartDashboard.putNumber("Distance(Metric)", limelightGetDistance());
+    SmartDashboard.putNumber("Turret Angel", getTurretAngle());
+    SmartDashboard.putNumber("Ty", limelightGetTy());
+    SmartDashboard.putNumber("distance Without Correction", (Constants.Limelight.TARGET_HEIGHT - Constants.Limelight.LIMELIGHT_HEIGHT)/Math.tan((limelightGetTy() + Constants.Limelight.LIMELIGHT_ANGLE)*Math.PI/180));
+    SmartDashboard.putNumber("Added Distance", -15.8 + -0.289*getTurretAngle() + 1.53E-03*Math.pow(getTurretAngle(),2) + 9.05E-06*Math.pow(getTurretAngle(),3) + -2.46E-08*Math.pow(getTurretAngle(),4));
 
     // This method will be called once per scheduler run
   }
@@ -75,7 +80,11 @@ public class Turret extends SubsystemBase {
 
   //calculate the distance based on trig
   public double limelightGetDistance() {
-    return (Constants.Limelight.TARGET_HEIGHT - Constants.Limelight.LIMELIGHT_HEIGHT)/Math.tan((limelightGetTy() + Constants.Limelight.LIMELIGHT_ANGLE)*Math.PI/180);
+    return (((Constants.Limelight.TARGET_HEIGHT - Constants.Limelight.LIMELIGHT_HEIGHT)/Math.tan((limelightGetTy() + Constants.Limelight.LIMELIGHT_ANGLE)*Math.PI/180))
+    + (-15.8 + -0.289*getTurretAngle() + 1.53E-03*Math.pow(getTurretAngle(),2) + 9.05E-06*Math.pow(getTurretAngle(),3) + -2.46E-08*Math.pow(getTurretAngle(),4))
+    );
+
+
   }
 
   //gets the distance of the turret based on the limelight

@@ -34,7 +34,7 @@ public class RobotContainer {
 
   public static final Joystick operatorStick = new Joystick(Constants.DSPorts.OPERATOR_STICK_PORT);
   JoystickButton shootCargoButton, turnTurretToZeroButton, shootingSpeedUpButton, shootingSpeedDownButton, turretAimToggleButton,
-   invertCollectorButton, runShooterToggleButton, shootSliderButton, runLifterReverseButton, burpBallButton;
+   invertCollectorButton, runShooterToggleButton, shootSliderButton, runLifterReverseButton, burpBallButton, runShooterAtSlider;
   POVButton turnTurretTo90Button, turnTurretToN90Button;
 
 
@@ -152,6 +152,9 @@ public class RobotContainer {
 
     burpBallButton = new JoystickButton(operatorStick, 9);
     burpBallButton.whileHeld(new ShootDefault(() -> 0.3, m_shooter,() -> 0.3, m_lifter, m_turret));
+
+    runShooterAtSlider = new JoystickButton(operatorStick, 12);
+    runShooterAtSlider.whileHeld(new RunShooterAtSpeed(() -> m_shooter.getSliderValue(), m_shooter));
        // turnTurretTo90Button = new POVButton(operatorStick, Constants.Buttons.ELEVATOR_MAX_UP);
     // turnTurretTo90Button.whenPressed(new ElevatorToHeight(90, m_turret));
     

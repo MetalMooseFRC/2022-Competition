@@ -38,13 +38,16 @@ public class RunShooter extends CommandBase {
   public void execute() {
     double dis = m_turret.limelightGetDistance();
 
-    double power = 0.576 + (-0.000404 * dis) + (0.00000105 * (Math.pow(dis, 2)));
+    double power = 2.26 + -8.55E-03*dis + 1.11E-05*Math.pow(dis,2);
+    //double power = 0.0173 + 2.29E-03*dis + 2.31E-06*Math.pow(dis,2) + -1.44E-08*Math.pow(dis,3) + 1.3E-11*Math.pow(dis,4);
     // Set shooter wheels to calculated speeds
     if (m_speedSupplier.getAsDouble() == 0.0) {
       power = 0.0;
     }
     m_shooter.m_motorLeft.set(power);
     m_shooter.m_motorRight.set(power);
+    // m_shooter.m_motorLeft.set(m_shooter.getSliderValue());
+    // m_shooter.m_motorRight.set(m_shooter.getSliderValue());
     SmartDashboard.putNumber("Shooter Power", power);
     }
 

@@ -82,7 +82,7 @@ public final class Constants {
     public final class Preferences {
         public static final double DEADBAND = 0.15;
         public static final double JOYSTICK_SPEED_FACTOR = 1;
-        public static final double JOYSTICK_TURN_FACTOR = 0.6;//Change this to like 1
+        public static final double JOYSTICK_TURN_FACTOR = 0.8;//Change this to like 1
     }
 
     public final class Turret {
@@ -119,8 +119,8 @@ public final class Constants {
     public final class Limelight {
         //Units = CM
         
-        public static final double LIMELIGHT_HEIGHT = 40;
-        public static final double TARGET_HEIGHT = 264;
+        public static final double LIMELIGHT_HEIGHT = 102;
+        public static final double TARGET_HEIGHT = 259;
         public static final double LIMELIGHT_ANGLE = 29.962;
 
         public static final double SEARCH_SPEED = 0.3;
