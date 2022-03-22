@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
@@ -16,6 +17,14 @@ public class DriveArcade extends CommandBase {
   
   private DoubleSupplier m_speedSupplier;
   private DoubleSupplier m_turnSupplier;
+
+  double drive_fb, drive_lr;
+  // fb for forward/backward   lr for left/right
+ 
+
+  final SlewRateLimiter driveLimiter = new SlewRateLimiter(Constants.Drivetrain.DRIVE_LIMITER);
+  final SlewRateLimiter turnLimiter = new SlewRateLimiter(Constants.Drivetrain.TURN_LIMITER);
+
 
   /** Creates a new DriveArcade. */
   public DriveArcade(DoubleSupplier speedSupplier, DoubleSupplier turnSupplier, Drivetrain drivetrain) {
@@ -28,6 +37,7 @@ public class DriveArcade extends CommandBase {
 
   }
 
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
@@ -37,15 +47,14 @@ public class DriveArcade extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // fb for forward/backward
-    double drive_fb = Constants.Preferences.JOYSTICK_SPEED_FACTOR * m_speedSupplier.getAsDouble();
-    // lr for left/right
-    double drive_lr = Constants.Preferences.JOYSTICK_TURN_FACTOR * m_turnSupplier.getAsDouble();
     
+    drive_fb = Constants.Preferences.JOYSTICK_SPEED_FACTOR * m_speedSupplier.getAsDouble();
+    drive_lr = Constants.Preferences.JOYSTICK_TURN_FACTOR * m_turnSupplier.getAsDouble();
+    
+    drive_fb = driveLimiter.calculate(drive_fb);
+    drive_lr = turnLimiter.calculate(drive_lr);
 
-    
-    // true squares inputs
-    m_drivetrain.diffDrive.arcadeDrive(drive_fb, drive_lr, true);
+    m_drivetrain.drive(drive_fb, drive_lr);
   }
   
   // Called once the command ends or is interrupted.

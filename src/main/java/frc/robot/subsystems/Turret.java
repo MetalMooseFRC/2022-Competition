@@ -11,8 +11,6 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
@@ -20,15 +18,17 @@ public class Turret extends SubsystemBase {
   private final NetworkTable m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
   public final CANSparkMax turretMotor = new CANSparkMax(Constants.CANIDs.TURRET_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
   
-  private ShuffleboardTab TestingTab = Shuffleboard.getTab("Testing");
+  
   /** Creates a new Turret. */
   public Turret() {
     turretMotor.getEncoder().setPosition(0);
+    //turretMotor.setOpenLoopRampRate(Constants.Turret.RAMP_RATE);
+    turretMotor.setOpenLoopRampRate(0.0);
   }
 
   @Override
   public void periodic() {
-    SmartDashboard.putBoolean("Limelight has target", limelightHasValidTarget());
+    
     SmartDashboard.putNumber("Distance(Imperial)", limelightGetDistance()/2.54/12);
     SmartDashboard.putNumber("Distance(Metric)", limelightGetDistance());
     SmartDashboard.putNumber("Turret Angel", getTurretAngle());
@@ -81,6 +81,7 @@ public class Turret extends SubsystemBase {
   //calculate the distance based on trig
   public double limelightGetDistance() {
     return (((Constants.Limelight.TARGET_HEIGHT - Constants.Limelight.LIMELIGHT_HEIGHT)/Math.tan((limelightGetTy() + Constants.Limelight.LIMELIGHT_ANGLE)*Math.PI/180))
+    //+ (-16.1 -.65*getTurretAngle() + 6E-03*Math.pow(getTurretAngle(),2) + 2.38E-05*Math.pow(getTurretAngle(),3))
     + (-15.8 + -0.289*getTurretAngle() + 1.53E-03*Math.pow(getTurretAngle(),2) + 9.05E-06*Math.pow(getTurretAngle(),3) + -2.46E-08*Math.pow(getTurretAngle(),4))
     );
 

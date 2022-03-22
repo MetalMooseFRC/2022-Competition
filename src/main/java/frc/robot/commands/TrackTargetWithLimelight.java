@@ -5,10 +5,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.filter.MedianFilter;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Turret;
+
+import com.revrobotics.REVLibError;
+
 import edu.wpi.first.math.MathUtil;
 
 public class TrackTargetWithLimelight extends CommandBase {
@@ -17,6 +22,12 @@ public class TrackTargetWithLimelight extends CommandBase {
   // private final Shooter m_shooter;
   private final PIDController turretController = new PIDController(Constants.Turret.PID.kP, Constants.Turret.PID.kI, Constants.Turret.PID.kD);
 
+  //final MedianFilter turretFilter = new MedianFilter(5);
+  double offBy, power;
+
+  //final SlewRateLimiter turretLimiter = new SlewRateLimiter(Constants.Turret.TURRET_LIMITER);
+  
+  
   /** Creates a new TrackTargetWithLimelight. */
   public TrackTargetWithLimelight(Turret turret) {
 
@@ -33,6 +44,8 @@ public class TrackTargetWithLimelight extends CommandBase {
   public void initialize() {
     turretController.setSetpoint(0.0);
     m_turret.setLimelightLights(3);
+    //offBy = 1;  //arbitrary starting point, used to establish direction of search
+
     System.out.println("initializing TrackTargetWithLimelight");
   }
 
@@ -45,13 +58,17 @@ public class TrackTargetWithLimelight extends CommandBase {
     // m_shooter.m_motorRight.set(shooterSpeed);
     if(m_turret.limelightHasValidTarget()) {
       // System.out.println("Not at setpoint");
-      double offBy = m_turret.limelightGetTx();
-      double power = turretController.calculate(offBy);
+      offBy = m_turret.limelightGetTx();
+      //offBy = turretFilter.calculate(offBy); // take median of last 5 readings
+
+      power = turretController.calculate(offBy);
       power =  MathUtil.clamp(power, -Constants.Turret.CLAMP, Constants.Turret.CLAMP);
+      //power = turretLimiter.calculate(power);
       m_turret.turretMotor.set(-power);
     } else {
       // System.out.println("Searching");
-      m_turret.turretMotor.set(Constants.Limelight.SEARCH_SPEED);
+      //m_turret.turretMotor.set(Constants.Limelight.SEARCH_SPEED);
+      //m_turret.turretMotor.set(-Constants.Limelight.SEARCH_SPEED*Math.abs(offBy)/offBy); //move in direction of last known target
     }
   }
 

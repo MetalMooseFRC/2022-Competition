@@ -5,37 +5,42 @@
 package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Lifter;
+import frc.robot.subsystems.Hanger;
 
-public class LifterControl extends CommandBase {
+public class ControlHanger extends CommandBase {
 
-  private final Lifter m_lifter;
-  private final DoubleSupplier m_speedSupplier;
-  
-  /** Creates a new LifterControl. */
-  public LifterControl(DoubleSupplier speedSupplier, Lifter lifter) {
+  private final DoubleSupplier m_speedSupplier, m_sliderAxis3Supplier;
+  Boolean OKtoHang;
+  private final Hanger m_hanger;
+
+  /** Creates a new HangerControl. */
+  public ControlHanger(DoubleSupplier speedSupplier, DoubleSupplier sliderAxis3Supplier, Hanger hanger) {
+
     m_speedSupplier = speedSupplier;
-    
-    m_lifter = lifter;
+    m_sliderAxis3Supplier = sliderAxis3Supplier;    //indicates whether in 'hanging' mode
+    m_hanger = hanger;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(lifter);
-
+    addRequirements(m_hanger);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
-  
+  public void initialize() {
+  }
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    // double m_motorPID = m_pidController.calculate(m_lifter.getWheelSpeed());
-  
-    // Set lifter wheels to calculated speeds
-    m_lifter.setWheelSpeed(m_speedSupplier.getAsDouble());
+    OKtoHang = m_sliderAxis3Supplier.getAsDouble() < -0.8;  //slider up to hang
+    if(OKtoHang){
+    m_hanger.set(m_speedSupplier.getAsDouble());
     }
+    else{
+      m_hanger.set(0);
+    }
+  }
 
   // Called once the command ends or is interrupted.
   @Override

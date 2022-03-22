@@ -15,11 +15,12 @@ package frc.robot;
 public final class Constants {
     public final class Buttons {
         //Drive Stick
-        public static final int ARM_TOGGLE = 1;
+        public static final int HUNT_FOR_BALLS = 1;//ARM_TOGGLE = 1;
         public static final int COLLECTOR_REVERSE = 2;
         
         //Op Stick
-        public static final int HANGER_PNEUMATICS_TOGGLE = 4;
+        public static final int HANGER_PNEUMATICS_REVERSE = 4;
+        public static final int HANGER_PNEUMATICS_FORWARD = 6;
         public static final int SLIDER_AXIS = 3;
         public static final int AIM_TOGGLE = 3;
         public static final int SHOOT_ALLIANCE_BALL = 1;
@@ -29,8 +30,9 @@ public final class Constants {
         public static final int SHOOTER_SPEED_DOWN = 12;
         public static final int SHOOTER_SPEED_UP = 10;
         public static final int TURRET_TO_ZERO = 7;
-        public static final int ELEVATOR_MAX_UP = 0;
-        public static final int ELEVATOR_MAX_DOWN = 180;
+        public static final int ELEVATOR_UP = 180;
+        //public static final int ELEVATOR_CANCEL = 90;
+        public static final int ELEVATOR_DOWN = 0;
         public static final int REVERSE_LIFTER = 5;
     }
 
@@ -47,6 +49,7 @@ public final class Constants {
         public static final int SH_RIGHT = 8;
 
         public static final int TURRET_MOTOR = 11;
+        public static final int LOADER_MOTOR = 12;
 
         public static final int LF_MAIN = 10;
 
@@ -80,20 +83,39 @@ public final class Constants {
     }
 
     public final class Preferences {
-        public static final double DEADBAND = 0.15;
+        public static final double DEADBAND = 0.02;
         public static final double JOYSTICK_SPEED_FACTOR = 1;
-        public static final double JOYSTICK_TURN_FACTOR = 0.8;//Change this to like 1
+        public static final double JOYSTICK_TURN_FACTOR = 1;//Change this to like 1
+    }
+
+    public final class Auto {
+        public static final double DEFAULT_AUTO_TIME = 3.0;
+    }
+
+    public final class Drivetrain {
+        public static final double DRIVE_DEADBAND = 0.02;
+        public static final double DRIVE_LIMITER = 2;
+        public static final double TURN_LIMITER = 2;
+
+        public static final double P_TURN = 0.01;
+	    public static final double I_TURN = 0.001;
+	    public static final double D_TURN = 0;
+	    public static final double TOLERANCE_TURN = 2;			// degrees
+	    public static final double TOLERANCE_TURN_RATE = 4;   	// degrees per second
+	    public static final double FEED_TURN = 0.13;
     }
 
     public final class Turret {
         public static final int GEAR_RATIO = 10*4;
         public static final double DEFAULT_SPEED = 0.3;
         public static final double ZERO = 0;
-        public static final double CLAMP = 0.3;
-        
+        public static final double CLAMP = 0.8;//0.3;
+        public static final double TURRET_LIMITER = 1;
+        public static final double RAMP_RATE = 3;
+
         public final class PID {
-            public static final double kP = 0.0086;
-            public static final double kI = 0.0;
+            public static final double kP = 0.0055;//.0086;
+            public static final double kI = 0.002;//0.0;
             public static final double kD = 0.0;
             public static final double FF = 0.1;
             public static final double TOLERANCE = 1.0;
@@ -103,18 +125,42 @@ public final class Constants {
 
     public final class Shooter {
         // Percent of max speed
-        public static final double DEFAULT_SPEED = 0.58;
+        public static final double SHOOTER_DEFAULT_SPEED = 3000;//0.58;
         public static final double ADJUST_INCREMENT = 0.05;
     }
 
     public final class Lifter {
-        public static final double DEFAULT_SPEED = 0.5;
+        public static final double LIFTER_DEFAULT_SPEED = 0.5;
     }
 
     public final class Collector {
-        public static final double ARM_SPEED = 0.4;
-        public static final double GATE_SPEED = 0.5;
+        public static final double COLLECTOR_DEFAULT_SPEED = 0.8;
     }
+
+    public final class Gate {
+        public static final double GATE_DEFAULT_SPEED = 0.5;
+    }
+
+    public final class Hanger {
+        public static final double HANGER_DEFAULT_SPEED = 0.5;
+        public static final double MAX_HEIGHT = 98;  // number of rotaions to the top
+        public static final double HANGER_POSITION_TOLERANCE = 1;
+        
+        public static final double HANGER_kP = 0.06;
+        public static final double HANGER_kI = 0.00005;
+        public static final double HANGER_kD = 0.02;
+
+        public static final double STEP_1 = 60;
+        public static final double STEP_2 = 90;
+        public static final double STEP_3 = 95;
+
+        
+
+
+
+
+    }
+
 
     public final class Limelight {
         //Units = CM
@@ -123,7 +169,7 @@ public final class Constants {
         public static final double TARGET_HEIGHT = 259;
         public static final double LIMELIGHT_ANGLE = 29.962;
 
-        public static final double SEARCH_SPEED = 0.3;
+        public static final double SEARCH_SPEED = .1;//.3;
     }
 
     public final class Etcetera {}

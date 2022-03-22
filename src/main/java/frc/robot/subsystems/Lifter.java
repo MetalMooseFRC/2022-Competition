@@ -16,12 +16,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Lifter extends SubsystemBase {
-  private ShuffleboardTab TestingTab = Shuffleboard.getTab("Testing");
-  NetworkTableEntry m_LifterSpeed = TestingTab.add("Lifter Speed", 0)
-    .withWidget(BuiltInWidgets.kNumberSlider)
-    .withProperties(Map.of("min", -1, "max", 1))
-    .getEntry();
-
 
   public final CANSparkMax m_motor = new CANSparkMax(Constants.CANIDs.LF_MAIN, CANSparkMaxLowLevel.MotorType.kBrushless);
 
@@ -37,19 +31,19 @@ public class Lifter extends SubsystemBase {
   // return velocity, in RPM, of left wheel
   
   //gets the wheel speed
-  public double getWheelSpeed() {
+  public double getMotorSpeed() {
     return m_motor.getEncoder().getVelocity();
   }
 
   //sets the wheel speed
-  public void setWheelSpeed(double speed) {
+  public void setMotorPower(double speed) {
     m_motor.set(speed);
   }
 
   //gets a slider value for lifter
-  public double getSliderValue() {
-    return m_LifterSpeed.getDouble(0);
-  }
+  //public double getSliderValue() {
+    //return m_LifterSpeed.getDouble(0);
+  //}
 
 
 }

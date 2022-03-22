@@ -11,7 +11,7 @@ import frc.robot.subsystems.Turret;
 import frc.robot.subsystems.Lifter;
 import java.util.function.DoubleSupplier;
 
-public class ShootDefault extends CommandBase {
+public class xxShootDefault extends CommandBase {
   private Shooter m_shooter;
   private Lifter m_lifter;
   private final DoubleSupplier m_shooterSpeedSupplier;
@@ -19,7 +19,7 @@ public class ShootDefault extends CommandBase {
   private final Turret m_turret;
 
   /** Creates a new StaticShooting. */
-  public ShootDefault(DoubleSupplier speedSupplier, Shooter shooter, DoubleSupplier speedSupplier2, Lifter lifter, Turret turret) {
+  public xxShootDefault(DoubleSupplier speedSupplier, Shooter shooter, DoubleSupplier speedSupplier2, Lifter lifter, Turret turret) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_shooterSpeedSupplier = speedSupplier;
     m_lifterSpeedSupplier = speedSupplier2;

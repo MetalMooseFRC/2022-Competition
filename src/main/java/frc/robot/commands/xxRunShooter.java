@@ -11,14 +11,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Turret;
 
-public class RunShooter extends CommandBase {
+public class xxRunShooter extends CommandBase {
 
   private final Shooter m_shooter;
   private final DoubleSupplier m_speedSupplier;
   private final Turret m_turret;
   
   /** Creates a new ShooterControl. */
-  public RunShooter(DoubleSupplier speedSupplier, Shooter shooter, Turret turret) {
+  public xxRunShooter(DoubleSupplier speedSupplier, Shooter shooter, Turret turret) {
     m_speedSupplier = speedSupplier;
     
     m_shooter = shooter;

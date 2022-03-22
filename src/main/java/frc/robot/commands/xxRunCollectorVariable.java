@@ -4,21 +4,24 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Collector;
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Hanger;
 
-public class HangerControl extends CommandBase {
-  private final DoubleSupplier m_speedSupplier;
-  private final Hanger m_hanger;
-  /** Creates a new HangerControl. */
-  public HangerControl(DoubleSupplier speedSupplier, Hanger hanger) {
-    m_speedSupplier = speedSupplier;
+public class xxRunCollectorVariable extends CommandBase {
 
-    m_hanger = hanger;
+  private final Collector m_collector;
+  private final DoubleSupplier m_collectorArmSupplier,m_collectorGateSupplier ;
+
+  /** Creates a new RunCollectorVariable. */
+  public xxRunCollectorVariable(DoubleSupplier armSupplier,DoubleSupplier gateSupplier, Collector collector) {
+    m_collector = collector;
+    m_collectorArmSupplier = armSupplier;
+    m_collectorGateSupplier = gateSupplier;
+
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_hanger);
+    addRequirements(m_collector);
   }
 
   // Called when the command is initially scheduled.
@@ -28,7 +31,9 @@ public class HangerControl extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_hanger.controlHanger(m_speedSupplier.getAsDouble());
+    m_collector.setArm(m_collectorArmSupplier.getAsDouble());
+    //m_collector.setGate(m_collectorGateSupplier.getAsDouble());
+
   }
 
   // Called once the command ends or is interrupted.

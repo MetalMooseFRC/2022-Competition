@@ -9,14 +9,14 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Lifter;
 
-public class RunLifter extends CommandBase {
+public class xxRunLifter extends CommandBase {
   
   private Lifter m_lifter;
 
   private final DoubleSupplier m_lifterSpeedSupplier;
 
   /** Creates a new MoveLifterUp. */
-  public RunLifter(Lifter lifter, DoubleSupplier lifterSpeedSupplier) {
+  public xxRunLifter(Lifter lifter, DoubleSupplier lifterSpeedSupplier) {
 
     m_lifter = lifter;
     m_lifterSpeedSupplier = lifterSpeedSupplier;
