@@ -82,7 +82,6 @@ public class xxHanger extends SubsystemBase {
 
 
   public void toggleSolenoid() {
-    System.out.print(m_hangerSolenoid.get());
     m_hangerSolenoid.toggle();
   }
 
@@ -92,7 +91,7 @@ public class xxHanger extends SubsystemBase {
     double adjustedSpeed = applyDeadband(speed, .02);
     m_motorClimberLeft.set(adjustedSpeed);
     m_motorClimberRight.set(adjustedSpeed);
-    SmartDashboard.putNumber("control",rightEncoder.getPosition() );
+    SmartDashboard.putNumber("Hanger Encoder",rightEncoder.getPosition() );
 
   }
 

@@ -64,7 +64,9 @@ public class Turret extends SubsystemBase {
 
   //get the y error between the crosshair and target
   public double limelightGetTy() {
-    return m_limelightTable.getEntry("ty").getDouble(0.0); 
+    double ty = m_limelightTable.getEntry("ty").getDouble(0.0); 
+    double tyAdjusted = ty + ((m_limelightTable.getEntry("tshort").getDouble(0.0)*(50/320))/2);
+    return tyAdjusted;
   }
 
   //get the area of the target

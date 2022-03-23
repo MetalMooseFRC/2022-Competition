@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 
 import edu.wpi.first.math.controller.BangBangController;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -22,16 +23,16 @@ public class Shooter extends SubsystemBase {
   public final CANSparkMax m_motorLeft = new CANSparkMax(Constants.CANIDs.SH_LEFT, CANSparkMaxLowLevel.MotorType.kBrushless);
   public final CANSparkMax m_motorRight = new CANSparkMax(Constants.CANIDs.SH_RIGHT, CANSparkMaxLowLevel.MotorType.kBrushless);
 
-  //BangBangController leftController = new BangBangController();
-  //BangBangController rightController = new BangBangController();
+  // BangBangController leftController = new BangBangController();
+  // BangBangController rightController = new BangBangController();
+  PIDController leftController = new PIDController(0.5, 0.0, 0.0);
 
-  
-  
 
   /** Creates a new Shooter. */
   public Shooter() {
     m_motorLeft.setInverted(true);
   }
+
 
   @Override
   public void periodic() {
@@ -39,27 +40,24 @@ public class Shooter extends SubsystemBase {
     // This method will be called once per scheduler run
   } 
   
+  // public double getSliderValue() {
+  // }
 
   //sets shooter speed
-  public void setShooterSpeed(double speed) {  //speed in RPM
+  public void setShooterSpeed(double velocity) {  //speed in RPM
 
-    m_motorLeft.set(speed/5676);
-    m_motorRight.set(speed/5676);
-    //m_motorLeft.set(leftController.calculate(m_motorLeft.getEncoder().getVelocity(), speed));
-    //m_motorRight.set(rightController.calculate(m_motorLeft.getEncoder().getVelocity(), speed));
+    m_motorLeft.set(velocity/5676);
+    m_motorRight.set(velocity/5676);
+    // m_motorLeft.set(leftController.calculate(m_motorLeft.getEncoder().getVelocity(), velocity));
+    // m_motorRight.set(rightController.calculate(m_motorLeft.getEncoder().getVelocity(), velocity));
 
   }
 
-
-  //sets left wheel speed
-  //public void setLeftWheelSpeed(double speed) {
-    //m_motorLeft.set(speed);
-  //}
-  //sets right wheel speed
-  //public void setRightWheelSpeed(double speed) {
-    //m_motorRight.set(speed);
-  //}
-
+  public void setShooterPower(double power) {
+    m_motorLeft.set(power);
+    m_motorRight.set(power);
+  }
+  
   // return velocity, in RPM, of left wheel
   public double getLeftWheelSpeed() {
     return m_motorLeft.getEncoder().getVelocity();
@@ -68,14 +66,22 @@ public class Shooter extends SubsystemBase {
   public double getRightWheelSpeed() {
     return m_motorRight.getEncoder().getVelocity();
   }
-
   
-
-  //sets both right and left wheel speeds to slider value
-  //public void runShooter() {
-    //setRightWheelSpeed(getSliderValue());
-    //setLeftWheelSpeed(getSliderValue());
+  //sets left wheel speed
+  //public void setLeftWheelSpeed(double speed) {
+    //m_motorLeft.set(speed);
   //}
+  //sets right wheel speed
+  //public void setRightWheelSpeed(double speed) {
+    //m_motorRight.set(speed);
+  //}
+  
+  
+  // sets both right and left wheel speeds to slider value
+  // public void runShooter() {
+  //   setRightWheelSpeed(getSliderValue());
+  //   setLeftWheelSpeed(getSliderValue());
+  // }
 
   //gets slider value for shooter speed
   //public double getSliderValue() {

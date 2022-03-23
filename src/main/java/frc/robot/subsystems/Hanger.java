@@ -38,7 +38,8 @@ public class Hanger extends SubsystemBase {
   public Hanger() {
 
     m_hangerSolenoid.set(kReverse);  //start with elevator pulled back
-    m_motorClimberLeft.setInverted(true);
+    m_motorClimberLeft.setInverted(false);
+    m_motorClimberRight.setInverted(true);
 
     
     rightEncoder.setPosition(0.0); // starting position of motor, in revs.

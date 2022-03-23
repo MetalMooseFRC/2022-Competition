@@ -7,21 +7,37 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import java.util.Map; 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.util.Color;
+
+import com.revrobotics.ColorSensorV3;
+import com.revrobotics.ColorMatch;
+import com.revrobotics.ColorMatchResult;
 
 public class Lifter extends SubsystemBase {
 
   public final CANSparkMax m_motor = new CANSparkMax(Constants.CANIDs.LF_MAIN, CANSparkMaxLowLevel.MotorType.kBrushless);
+  private final I2C.Port roboRioI2CPort = I2C.Port.kOnboard;
+  private final I2C.Port navxI2CPort = I2C.Port.kMXP;
+  
+  private final ColorSensorV3 m_upperColorSensor = new ColorSensorV3(navxI2CPort);
+  private final ColorSensorV3 m_lowerColorSensor = new ColorSensorV3(roboRioI2CPort);
+  
+  private final ColorMatch m_colorMatcher = new ColorMatch();
+
+  private final Color kBlueTarget = new Color(0.143, 0.427, 0.429);
+  private final Color kRedTarget = new Color(0.561, 0.232, 0.114);
+
+
 
   /** Creates a new Lifter. */
   public Lifter() {  
     m_motor.setInverted(true);
+    m_colorMatcher.addColorMatch(kBlueTarget);
+    m_colorMatcher.addColorMatch(kRedTarget);
   }
 
   @Override
@@ -40,10 +56,51 @@ public class Lifter extends SubsystemBase {
     m_motor.set(speed);
   }
 
+  public String getColorUpper() {
+    m_colorMatcher.setConfidenceThreshold(Constants.Lifter.COLOR_CONFIDENCE);
+    Color detectedColor = m_upperColorSensor.getColor();
+    String upperCargoColor;
+    try {
+    ColorMatchResult match = m_colorMatcher.matchColor(detectedColor);
+    if (match.color == kBlueTarget) {
+      upperCargoColor = "Blue";
+    } else if (match.color == kRedTarget) {
+      upperCargoColor = "Red";
+    } else {
+      upperCargoColor = "Unknown";
+    }
+    return upperCargoColor;
+  } 
+  catch (Exception e) {
+    upperCargoColor = "None";
+    return upperCargoColor;
+  }
+  }
+
+  public String getColorLower() {
+    m_colorMatcher.setConfidenceThreshold(Constants.Lifter.COLOR_CONFIDENCE);
+    Color detectedColor = m_lowerColorSensor.getColor();
+    String lowerCargoColor;
+    
+    try{
+    ColorMatchResult match = m_colorMatcher.matchColor(detectedColor);
+    if (match.color == kBlueTarget) {
+      lowerCargoColor = "Blue";
+    } else if (match.color == kRedTarget) {
+      lowerCargoColor = "Red";
+    } else {
+      lowerCargoColor = "Unknown";
+    }
+    return lowerCargoColor;
+    }
+    catch (Exception e){
+      lowerCargoColor = "None";
+      return lowerCargoColor;
+    }
+  }
   //gets a slider value for lifter
   //public double getSliderValue() {
     //return m_LifterSpeed.getDouble(0);
   //}
-
 
 }
