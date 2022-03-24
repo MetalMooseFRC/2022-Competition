@@ -27,7 +27,7 @@ public class IncrementHangerUp extends PIDCommand {
         // This should return the measurement
         hanger::getHangerPosition,
         // This should return the setpoint (can also be a constant)
-        80 - HANGER_POSITION_TOLERANCE,
+        STEP_1 - HANGER_POSITION_TOLERANCE,
         // This uses the output
         output -> {
         
@@ -54,11 +54,12 @@ public class IncrementHangerUp extends PIDCommand {
     m_currentPosition = m_hanger.getHangerPosition();
     if (m_startPosition < STEP_1){
       SmartDashboard.putNumber("if", m_currentPosition);
-      getController().setSetpoint(STEP_1);
+      getController().setSetpoint(20);//STEP_1);
       SmartDashboard.putNumber("set", getController().getSetpoint());
       if(m_currentPosition > STEP_1){
-        //m_hanger.set(0);   //hold
-        //return true;
+        m_controller.close();
+        m_hanger.set(0);   //hold
+        return true;
       }
       //return m_currentPosition > STEP_1 ; 
     }

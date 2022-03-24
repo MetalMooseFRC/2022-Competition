@@ -95,7 +95,7 @@ public final class Constants {
     public final class Drivetrain {
         public static final double DRIVE_DEADBAND = 0.02;
         public static final double DRIVE_LIMITER = 2;
-        public static final double TURN_LIMITER = 2;
+        public static final double TURN_LIMITER = 1.5;
 
         public static final double P_TURN = 0.01;
 	    public static final double I_TURN = 0.001;
@@ -132,6 +132,11 @@ public final class Constants {
     public final class Lifter {
         public static final double LIFTER_DEFAULT_SPEED = 0.5;
     }
+
+    public final class Loader {
+        public static final double LOADER_IDLE_SPEED = -0.1;
+    }
+
 
     public final class Collector {
         public static final double COLLECTOR_DEFAULT_SPEED = 0.8;

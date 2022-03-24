@@ -57,11 +57,11 @@ public class Collector extends SubsystemBase {
   }
 */
 
-  public void setCollectorForward() {
+  public void pushCollectorOut() {
     m_armSolenoid.set(kForward);
   }
 
-  public void setCollectorReverse() {
+  public void pullCollectorIn() {
     m_motorArm.set(0);  //don't run if arm is up
     m_armSolenoid.set(kReverse);
   }

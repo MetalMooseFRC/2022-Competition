@@ -32,6 +32,10 @@ import static frc.robot.Constants.Lifter.*;
 import static frc.robot.Constants.Gate.*;
 import static frc.robot.Constants.Collector.*;
 import static frc.robot.Constants.Hanger.*;
+import static frc.robot.Constants.Lifter.*;
+import static frc.robot.Constants.Loader.*;
+
+
 
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
@@ -189,7 +193,10 @@ public class RobotContainer {
     lifterCommands.add("Lifter Slider", new FunctionalCommand(
       ()->{},
       () -> m_lifter.setMotorPower(lifterSpeedEntry.getDouble(0)), 
-      interrupted -> {m_lifter.setMotorPower(0); m_loader.setMotorSpeed(0);}, 
+      interrupted -> {
+        m_lifter.setMotorPower(0);
+        //m_loader.setMotorPower(0);
+      },
       () -> false ,
        m_lifter));
     lifterCommands.add("Lifter Default", new FunctionalCommand(
@@ -197,7 +204,7 @@ public class RobotContainer {
       () -> m_lifter.setMotorPower(LIFTER_DEFAULT_SPEED), 
       interrupted -> {
         m_lifter.setMotorPower(0); 
-        m_loader.setMotorSpeed(0);
+        //m_loader.setMotorPower(0);
       }, 
       () -> false , 
       m_lifter));
@@ -253,8 +260,8 @@ public class RobotContainer {
       () -> false , 
       m_collector));
     collectorCommands.addNumber("Default Arm Speed",() -> COLLECTOR_DEFAULT_SPEED);
-    collectorCommands.add("forward", new InstantCommand(m_collector::setCollectorForward));
-    collectorCommands.add("reverse", new InstantCommand(m_collector::setCollectorReverse));
+    collectorCommands.add("forward", new InstantCommand(m_collector::pushCollectorOut));
+    collectorCommands.add("reverse", new InstantCommand(m_collector::pullCollectorIn));
 
     devTab.add("Drive for 5", new DriveArcade(() ->.5, () -> 0.0, m_drivetrain).withTimeout(5));
     devTab.add("Drive for 2", new DriveArcade(()->.5, () -> 0.0, m_drivetrain).withTimeout(2));
@@ -298,7 +305,7 @@ public class RobotContainer {
     
     // ************  DRIVER STICK  ***************
     huntForBallsButton = new JoystickButton(driverStick, HUNT_FOR_BALLS);
-    huntForBallsButton.whenHeld(new HuntForBalls(m_collector, m_gate));
+    huntForBallsButton.whenHeld(new HuntForBalls(m_collector, m_gate, m_lifter, m_loader));
 
     
     invertCollectorButton = new JoystickButton(driverStick, COLLECTOR_REVERSE);
@@ -368,12 +375,13 @@ public class RobotContainer {
     runShooterAtSlider.whileHeld(new RunShooterAtSpeed(() -> m_shooter.getSliderValue(), m_shooter));
     */
     
+    //whenPressed(new IncrementHangerUp(m_hanger.getHangerPosition(), m_hanger));
+    
     //cancelHangerUpButton = new POVButton(operatorStick, ELEVATOR_CANCEL);
     //cancelHangerUpButton.whenPressed(new IncrementHangerUp(m_hanger.getHangerPosition(), m_hanger));
     
 
   
-    
     
   }
   /**

@@ -17,6 +17,7 @@ public class RaiseHangerToHeight extends PIDCommand {
 
   private Hanger m_hanger;
   private double m_setpoint;
+  private double m_currentPosition;
 
   /** Creates a new RaiseHangerToHeight. */
   public RaiseHangerToHeight(double setpoint, Hanger hanger) {
@@ -48,7 +49,13 @@ public class RaiseHangerToHeight extends PIDCommand {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_hanger.getHangerPosition() > m_setpoint ;    
+    m_currentPosition = m_hanger.getHangerPosition();
+    if (m_currentPosition > m_setpoint) {
+      m_controller.close();
+      m_hanger.set(0);
+      return true;
+    }
+    return false ;    
   }
 
   

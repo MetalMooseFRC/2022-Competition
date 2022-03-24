@@ -21,10 +21,12 @@ import static frc.robot.Constants.Drivetrain.*;
 import static frc.robot.Constants.CANIDs.*;
 
 import frc.robot.Robot;
+import frc.robot.commands.DriveArcade;
 
 // NavX
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -52,7 +54,7 @@ public class Drivetrain extends SubsystemBase {
   private final AHRS navx = new AHRS(SPI.Port.kMXP);
   private final RelativeEncoder leftEncoder = m_motorLeftMiddle.getEncoder();
   public final RelativeEncoder rightEncoder = m_motorRightMiddle.getEncoder();
-
+  private double m_pitch, m_pitchRate;
   
 
    
@@ -101,7 +103,9 @@ public class Drivetrain extends SubsystemBase {
 
     m_navxAngleEntry.setDouble(navx.getAngle());
     m_navxYawEntry.setDouble(navx.getYaw());
-    
+    m_pitch = navx.getPitch();
+
+    SmartDashboard.putNumber("pitch", m_pitch);
 
     boolean motionDetected = navx.isMoving();
     SmartDashboard.putBoolean("MotionDetected", motionDetected);

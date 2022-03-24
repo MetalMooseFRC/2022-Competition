@@ -20,6 +20,7 @@ public class Loader extends SubsystemBase {
   /** Creates a new Loader. */
   public Loader() {
     m_motor.setInverted(true);
+    //m_motor.set(-0.1);
   }
 
   @Override
@@ -27,7 +28,12 @@ public class Loader extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-   //sets the wheel speed
+  
+  public void setMotorPower(double power) {
+    m_motor.set(power);
+  }
+  
+  //sets the wheel speed
    public void setMotorSpeed(double rpm) {
     // m_motor.set(controller.calculate(m_motor.getEncoder().getVelocity(), rpm));
     m_motor.set(0.3);

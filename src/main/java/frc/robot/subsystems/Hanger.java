@@ -56,7 +56,7 @@ public class Hanger extends SubsystemBase {
     encoderAverage = (rightEncoder.getPosition() + leftEncoder.getPosition())/2;
     //puts elevator encoders on smartdashboard    
     SmartDashboard.putNumber("encoder average -1", encoderAverage);
-
+    
 
     // This method will be called once per scheduler run
   }
@@ -70,10 +70,10 @@ public class Hanger extends SubsystemBase {
   }
 
 
-  public void toggleSolenoid() {
-    System.out.print(m_hangerSolenoid.get());
-    m_hangerSolenoid.toggle();
-  }
+  //public void toggleSolenoid() {
+    //System.out.print(m_hangerSolenoid.get());
+    //m_hangerSolenoid.toggle();
+  //}
 
   public void pushHangerOut() {
     System.out.print(m_hangerSolenoid.get());
