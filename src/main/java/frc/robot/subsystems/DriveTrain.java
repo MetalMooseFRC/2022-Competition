@@ -78,11 +78,6 @@ public class Drivetrain extends SubsystemBase {
     //.withWidget(BuiltInWidgets.kGyro)
     .getEntry();
 
-    
-
-  
-
-
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {
@@ -101,8 +96,6 @@ public class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-
-  
 
     m_navxAngleEntry.setDouble(navx.getAngle());
     m_navxYawEntry.setDouble(navx.getYaw());

@@ -71,6 +71,10 @@ public class Collector extends SubsystemBase {
     m_motorArm.set(COLLECTOR_DEFAULT_SPEED);
   }
 
+  public void stopCollecting() {
+    m_armSolenoid.set(kReverse);
+    m_motorArm.set(0.0);
+  }
 
  // public double getArmSliderValue() {
     //return m_ArmSpeed.getDouble(0);
