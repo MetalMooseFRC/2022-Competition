@@ -31,6 +31,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Timer;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -54,8 +55,10 @@ public class Drivetrain extends SubsystemBase {
   private final AHRS navx = new AHRS(SPI.Port.kMXP);
   private final RelativeEncoder leftEncoder = m_motorLeftMiddle.getEncoder();
   public final RelativeEncoder rightEncoder = m_motorRightMiddle.getEncoder();
-  private double m_pitch, m_pitchRate;
+  private double m_pitch, m_pitchRate, m_oldPitch, m_newPitch, m_oldCount, m_newCount;
+
   
+
 
    
   //Set up shuffleboard
@@ -103,9 +106,30 @@ public class Drivetrain extends SubsystemBase {
 
     m_navxAngleEntry.setDouble(navx.getAngle());
     m_navxYawEntry.setDouble(navx.getYaw());
-    m_pitch = navx.getPitch();
+
+    m_oldPitch = m_newPitch;
+    m_newPitch = navx.getPitch();
+
+    m_oldCount = m_newCount;
+    m_newCount = navx.getUpdateCount();
+
+    m_pitchRate = (m_oldPitch - m_newPitch)/(m_oldCount - m_newCount) *  navx.getActualUpdateRate();
+
+
+
+    
 
     SmartDashboard.putNumber("pitch", m_pitch);
+    SmartDashboard.putNumber("Vel X", navx.getVelocityX());
+    SmartDashboard.putNumber("Vel Y", navx.getVelocityY());
+    SmartDashboard.putNumber("count", navx.getUpdateCount());
+    SmartDashboard.putNumber("last timestamp", navx.getLastSensorTimestamp());
+    SmartDashboard.putNumber("Req Rate", navx.getRequestedUpdateRate());
+    SmartDashboard.putNumber("Timestamp", Timer.getFPGATimestamp());
+    SmartDashboard.putNumber("pitchRate", m_pitchRate);
+
+
+    
 
     boolean motionDetected = navx.isMoving();
     SmartDashboard.putBoolean("MotionDetected", motionDetected);
@@ -154,6 +178,11 @@ public class Drivetrain extends SubsystemBase {
     navx.reset();
     
   } 
+
+  //get PitchRate
+  public double getPitchRate() {
+    return m_pitchRate;
+  }
 
   //public Pose2d getPosition(){
   //  return m_odometry.getPoseMeters();

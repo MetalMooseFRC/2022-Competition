@@ -58,7 +58,7 @@ public class RobotContainer {
   public static final Joystick operatorStick = new Joystick(Constants.DSPorts.OPERATOR_STICK_PORT);
   JoystickButton shootCargoButton, turnTurretToZeroButton, shootingSpeedUpButton, shootingSpeedDownButton, turretAimToggleButton,
    invertCollectorButton, runShooterToggleButton, shootSliderButton, runLifterReverseButton, burpBallButton, runShooterAtSlider;
-  POVButton incrementHangerUpButton, incrementHangerDownButton, hangerToMaxHeightButton, cancelHangerUpButton, turnTurretTo90Button, turnTurretToN90Button;
+  POVButton pullRobotUpWithPitchButton, incrementHangerUpButton, incrementHangerDownButton, hangerToMaxHeightButton, cancelHangerUpButton, turnTurretTo90Button, turnTurretToN90Button;
 
   // ************  Subsystems  **************
   private Drivetrain m_drivetrain = new Drivetrain();
@@ -339,8 +339,12 @@ public class RobotContainer {
     shootCargoButton.whenPressed(new ConditionalCommand(new InstantCommand(() -> {}, m_hanger),  //requires hanger so operator can resume control in 'Hang Mode'
     new xxRunShooter(() -> 1, m_shooter, m_turret), () -> operatorStick.getRawAxis(3) < -0.8));          //2nd command will shoot
     
-    incrementHangerUpButton = new POVButton(operatorStick, ELEVATOR_UP);
-    incrementHangerUpButton.whenPressed(new IncrementHangerUp(m_hanger.getHangerPosition(), m_hanger));
+    pullRobotUpWithPitchButton = new POVButton(operatorStick, ELEVATOR_UP);
+    pullRobotUpWithPitchButton.whenPressed(new PullRobotUpWithPitch(m_hanger, m_drivetrain));
+    
+
+    //incrementHangerUpButton = new POVButton(operatorStick, ELEVATOR_UP);
+    //incrementHangerUpButton.whenPressed(new IncrementHangerUp(m_hanger.getHangerPosition(), m_hanger));
     
     burpBallButton = new JoystickButton(operatorStick, 9);
     burpBallButton.whileHeld(new xxShootDefault(() -> 0.3, m_shooter,() -> 0.3, m_lifter, m_turret, m_loader));

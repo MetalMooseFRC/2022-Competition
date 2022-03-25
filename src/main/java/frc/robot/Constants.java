@@ -131,6 +131,7 @@ public final class Constants {
 
     public final class Lifter {
         public static final double LIFTER_DEFAULT_SPEED = 0.5;
+        public static final double COLOR_CONFIDENCE = 0.97 ;
     }
 
     public final class Loader {
@@ -150,10 +151,17 @@ public final class Constants {
         public static final double HANGER_DEFAULT_SPEED = 0.5;
         public static final double MAX_HEIGHT = 98;  // number of rotaions to the top
         public static final double HANGER_POSITION_TOLERANCE = 1;
+        public static final double BAR_POSITION = 9;  // just below the fixed hooks
+        public static final double MAX_PITCHRATE = 5; //OK to climb if below this
+
         
         public static final double HANGER_kP = 0.06;
         public static final double HANGER_kI = 0.00005;
         public static final double HANGER_kD = 0.02;
+
+        public static final double HANGER_PULL_kP = 0.001;
+        public static final double HANGER_PULL_kI = 0.00005;
+        public static final double HANGER_PULL_kD = 0.02;
 
         public static final double STEP_1 = 60;
         public static final double STEP_2 = 90;
