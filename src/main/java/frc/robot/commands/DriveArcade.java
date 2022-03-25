@@ -49,7 +49,12 @@ public class DriveArcade extends CommandBase {
   public void execute() {
     
     drive_fb = Constants.Preferences.JOYSTICK_SPEED_FACTOR * m_speedSupplier.getAsDouble();
-    drive_lr = Constants.Preferences.JOYSTICK_TURN_FACTOR * m_turnSupplier.getAsDouble();
+    if (Math.abs(m_turnSupplier.getAsDouble()) < Constants.Drivetrain.TURN_DEADBAND){
+      drive_lr = 0;
+    } else {
+      drive_lr = Constants.Preferences.JOYSTICK_TURN_FACTOR * m_turnSupplier.getAsDouble();
+    }
+
     
     drive_fb = driveLimiter.calculate(drive_fb);
     drive_lr = turnLimiter.calculate(drive_lr);

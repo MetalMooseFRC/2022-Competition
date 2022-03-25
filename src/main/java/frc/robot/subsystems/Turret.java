@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -16,6 +17,7 @@ import frc.robot.Constants;
 
 public class Turret extends SubsystemBase {
   private final NetworkTable m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+  private final MedianFilter m_filter = new MedianFilter(10);
   public final CANSparkMax turretMotor = new CANSparkMax(Constants.CANIDs.TURRET_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
   
   
@@ -66,7 +68,7 @@ public class Turret extends SubsystemBase {
   public double limelightGetTy() {
     double ty = m_limelightTable.getEntry("ty").getDouble(0.0); 
     double tyAdjusted = ty + ((m_limelightTable.getEntry("tshort").getDouble(0.0)*(50/320))/2);
-    return tyAdjusted;
+    return m_filter.calculate(tyAdjusted);
   }
 
   //get the area of the target
@@ -92,19 +94,16 @@ public class Turret extends SubsystemBase {
 
   //gets the distance of the turret based on the limelight
   public double getTurretDistance() {
-    // double turretDistance;
-    // //LIMELIGHT CENTERED BEHIND AT 60* AND CENTERED IN FRONT AT -120*
-    // if (105.0 >= getTurretAngle() && getTurretAngle() >= 15.0){
-    //   turretDistance = limelightGetDistance()-27;
-    // } else if (-150<= getTurretAngle() && -60 >= getTurretAngle()){
-    //   turretDistance = limelightGetDistance()+27;
-    // } else {
-    //   turretDistance = limelightGetDistance();
-    // };
-    // return (turretDistance);
     double offset = 27 * -Math.cos((getTurretAngle() + 31.989)*Math.PI/180);
     return limelightGetDistance() + offset;
   }
+
+  public double getRequiredVelocity() {
+    double dis = getTurretDistance();
+    double velocity = 4033 + -10*dis + 0.0214*Math.pow(dis,2);
+    return velocity;
+  }
+
   // public double getShooterSpeed() {
   //   double shooterSpeed = getTurretDistance()*0.0005+0.4;
   //   return shooterSpeed;

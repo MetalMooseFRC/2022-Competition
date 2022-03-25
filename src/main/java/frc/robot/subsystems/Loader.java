@@ -34,9 +34,9 @@ public class Loader extends SubsystemBase {
   }
   
   //sets the wheel speed
-   public void setMotorSpeed(double rpm) {
+   public void setMotorSpeed(double speed) {
     // m_motor.set(controller.calculate(m_motor.getEncoder().getVelocity(), rpm));
-    m_motor.set(0.3);
+    m_motor.set(speed);
   }
 
 

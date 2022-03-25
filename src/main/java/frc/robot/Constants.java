@@ -83,9 +83,9 @@ public final class Constants {
     }
 
     public final class Preferences {
-        public static final double DEADBAND = 0.02;
+        public static final double DEADBAND = 0.05;
         public static final double JOYSTICK_SPEED_FACTOR = 1;
-        public static final double JOYSTICK_TURN_FACTOR = 1;//Change this to like 1
+        public static final double JOYSTICK_TURN_FACTOR = 0.6;//Change this to like 1
     }
 
     public final class Auto {
@@ -94,8 +94,9 @@ public final class Constants {
 
     public final class Drivetrain {
         public static final double DRIVE_DEADBAND = 0.02;
-        public static final double DRIVE_LIMITER = 2;
-        public static final double TURN_LIMITER = 1.5;
+        public static final double TURN_DEADBAND = 0.02;
+        public static final double DRIVE_LIMITER = 50; //2
+        public static final double TURN_LIMITER = 1.8; //1.5
 
         public static final double P_TURN = 0.01;
 	    public static final double I_TURN = 0.001;
@@ -131,6 +132,7 @@ public final class Constants {
 
     public final class Lifter {
         public static final double LIFTER_DEFAULT_SPEED = 0.5;
+        public static final double COLOR_CONFIDENCE = 0.93;
     }
 
     public final class Loader {
@@ -139,11 +141,11 @@ public final class Constants {
 
 
     public final class Collector {
-        public static final double COLLECTOR_DEFAULT_SPEED = 0.8;
+        public static final double COLLECTOR_DEFAULT_SPEED = 0.6;
     }
 
     public final class Gate {
-        public static final double GATE_DEFAULT_SPEED = 0.5;
+        public static final double GATE_DEFAULT_SPEED = 0.3;
     }
 
     public final class Hanger {
