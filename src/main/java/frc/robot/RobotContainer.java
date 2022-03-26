@@ -398,7 +398,9 @@ public class RobotContainer {
         //requires hanger so operator can resume control in 'Hang Mode'
         new ConditionalCommand(
           
-          new ShootingSequence(m_shooter, m_turret, m_gate, m_lifter, m_loader),
+          new ParallelRaceGroup(
+            new DriveArcade(() -> 0.0,() -> 0.0, m_drivetrain),
+            new ShootingSequence(m_shooter, m_turret, m_gate, m_lifter, m_loader)),
 
           new InstantCommand(()-> {}, m_shooter),
 
