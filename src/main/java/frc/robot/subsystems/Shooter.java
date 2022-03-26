@@ -7,18 +7,10 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 
-import edu.wpi.first.math.controller.BangBangController;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.shuffleboard.SuppliedValueWidget;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import java.util.Map; 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import static frc.robot.Constants.Shooter.*;
-import frc.robot.subsystems.Turret;
 
 public class Shooter extends SubsystemBase {
 
@@ -48,16 +40,16 @@ public class Shooter extends SubsystemBase {
   //sets shooter speed
   public void setShooterSpeed(double velocity) {  //speed in RPM
 
-    m_motorLeft.set(Math.max(velocity/5676, MAX_SHOOTER_POWER));
-    m_motorRight.set(Math.max(velocity/5676, MAX_SHOOTER_POWER));
+    m_motorLeft.set(Math.min(velocity/5676, MAX_SHOOTER_POWER));
+    m_motorRight.set(Math.min(velocity/5676, MAX_SHOOTER_POWER));
     // m_motorLeft.set(leftController.calculate(m_motorLeft.getEncoder().getVelocity(), velocity));
     // m_motorRight.set(rightController.calculate(m_motorLeft.getEncoder().getVelocity(), velocity));
 
   }
 
   public void setShooterPower(double power) {
-    m_motorLeft.set(Math.max(power, MAX_SHOOTER_POWER));
-    m_motorRight.set(Math.max(power, MAX_SHOOTER_POWER));
+    m_motorLeft.set(Math.min(power, MAX_SHOOTER_POWER));
+    m_motorRight.set(Math.min(power, MAX_SHOOTER_POWER));
   }
   
   // return velocity, in RPM, of left wheel

@@ -6,9 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.subsystems.Gate;
 import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Drivetrain;
@@ -16,7 +14,6 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Turret;
 import frc.robot.subsystems.Lifter;
 import frc.robot.subsystems.Loader;
-import static frc.robot.Constants.Lifter.*;
 import static frc.robot.Constants.Gate.*;
 import static frc.robot.Constants.Auto.*;
 import frc.robot.Constants;
@@ -55,17 +52,9 @@ public class AutoTwoBall extends SequentialCommandGroup {
           new DriveStraight(m_drivetrain, TWO_BALL_AUTO_DRIVE_DISTANCE, TWO_BALL_AUTO_DRIVE_SPEED),
           new InstantCommand(() -> m_collector.stopCollecting(), m_collector),
           new InstantCommand(() -> m_gate.setGate(0), m_gate),
-          new ParallelRaceGroup(
-            new RunShooterWithTurret(m_shooter, m_turret),
-            new SequentialCommandGroup(
-              new WaitUntilCommand(
-                () -> ((m_shooter.getLeftWheelSpeed()) >= (m_turret.getRequiredVelocity()*Constants.Shooter.SHOOTING_SPEED_THRESHOLD))),
-              new InstantCommand(() -> m_gate.setGate(GATE_DEFAULT_SPEED), m_gate),
-              new RunLifterLoader(m_lifter, LIFTER_DEFAULT_SPEED, m_loader, LIFTER_DEFAULT_SPEED*10/9)
-                .withTimeout(LIFTLOAD_AUTO_TIMEOUT)
-                .andThen(new InstantCommand(() -> m_gate.setGate(0))))
+          new ShootingSequence(m_shooter, m_turret, m_gate, m_lifter, m_loader)
         )
       )
-    ));
+    );
   }
 }

@@ -38,8 +38,6 @@ import static frc.robot.Constants.Lifter.*;
 import static frc.robot.Constants.Gate.*;
 import static frc.robot.Constants.Collector.*;
 import static frc.robot.Constants.Hanger.*;
-import static frc.robot.Constants.Lifter.*;
-import static frc.robot.Constants.Loader.*;
 
 
 
@@ -79,7 +77,6 @@ public class RobotContainer {
   private Turret m_turret = new Turret();
   private Loader m_loader = new Loader();
   private Gate m_gate = new Gate();
-  private xxHanger m_xxHanger = new xxHanger();
   
   // Set up Chooser for autonomous command
   private final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -171,7 +168,7 @@ public class RobotContainer {
             .withTimeout(autoTimeEntry.getDouble(1.0)));
     autoChooser.addOption("Shooting Sequence",new ParallelRaceGroup(
       //Run Shooter Indefinitely while
-        new RunShooterWithTurret(m_shooter, m_turret).withTimeout(Constants.Auto.LIFTLOAD_AUTO_TIMEOUT+0.1),
+        new RunShooterWithTurret(m_shooter, m_turret, m_lifter).withTimeout(Constants.Auto.LIFTLOAD_AUTO_TIMEOUT+0.1),
       //Running a sequence
         new SequentialCommandGroup(
       //Wait until shooter is at speed
@@ -391,35 +388,31 @@ public class RobotContainer {
     hangerPneumaticsForwardButton.whenPressed(m_hanger::pushHangerOut);
     
     
-    // shootCargoButton = new JoystickButton(operatorStick, Constants.Buttons.SHOOT_ALLIANCE_BALL);
-    // shootCargoButton.whileHeld(
-    //   new ConditionalCommand(
-    //     new InstantCommand(() -> {}, m_hanger),  //requires hanger so operator can resume control in 'Hang Mode'
-    //     new RunShooterWithTurret(m_shooter, m_turret),
-    //    () -> operatorStick.getRawAxis(3) < -0.8));          //2nd command will shoot
+    shootCargoButton = new JoystickButton(operatorStick, Constants.Buttons.SHOOT_ALLIANCE_BALL);
+    shootCargoButton.whileHeld(
+      new ConditionalCommand(
+
+
+        new InstantCommand(() -> {}, m_hanger),
+        
+        //requires hanger so operator can resume control in 'Hang Mode'
+        new ConditionalCommand(
+          
+          new ShootingSequence(m_shooter, m_turret, m_gate, m_lifter, m_loader),
+
+          new InstantCommand(()-> {}, m_shooter),
+
+          () -> ((m_turret.limelightHasValidTarget() == true) && (m_lifter.getColorUpper() != "None"))),
+
+
+        () -> operatorStick.getRawAxis(3) < -0.8)); 
     
     
     //*******SHOOTING SEQUENCE*********/
-    shootCargoButton = new JoystickButton(operatorStick, Constants.Buttons.SHOOT_ALLIANCE_BALL);
-    shootCargoButton.whileHeld(
-      //while held repeatedly schedules the conditional command which runs the shooter, stops the drivetrain, and if the shooter is up to speed runs the lifter/loader
-      new ConditionalCommand( 
-        // new ShootingSequence(m_shooter, m_turret, m_drivetrain, m_lifter, m_loader, m_gate, m_collector),
-        new ParallelCommandGroup(
-          new DriveArcade(() -> 0.0, () -> 0.0, m_drivetrain),
-          new RunCommand(() -> m_gate.setGate(0.0)),
-          new RunCommand(() -> m_collector.stopCollecting()),
-          new RunShooterWithTurret(m_shooter, m_turret).withTimeout(1.1),
-          new SequentialCommandGroup(
-            new WaitUntilCommand(() -> (m_shooter.getLeftWheelSpeed() >= m_turret.getRequiredVelocity())),
-            new InstantCommand(() -> m_gate.setGate(GATE_DEFAULT_SPEED), m_gate),
-            new RunLifterLoader(m_lifter, LIFTER_DEFAULT_SPEED, m_loader, LIFTER_DEFAULT_SPEED*10/9)
-              .withTimeout(1)
-              .andThen(new InstantCommand(() -> m_gate.setGate(0), m_gate)))),
-        new InstantCommand(()-> {}, m_shooter),
-        () -> ((m_turret.limelightHasValidTarget() == true) && (m_lifter.getColorUpper() == DriverStation.getAlliance().toString()))
-      )
-    );
+    // shootCargoButton = new JoystickButton(operatorStick, Constants.Buttons.SHOOT_ALLIANCE_BALL);
+    // shootCargoButton.whileHeld(
+    //   //while held repeatedly schedules the conditional command which runs the shooter, stops the drivetrain, and if the shooter is up to speed runs the lifter/loader
+    // );
     
     pullRobotUpWithPitchButton = new POVButton(operatorStick, ELEVATOR_UP);
     pullRobotUpWithPitchButton.whenPressed(new PullRobotUpWithPitch(m_hanger, m_drivetrain));

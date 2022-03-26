@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import static frc.robot.Constants.Hanger.*;
 import static frc.robot.Constants.CANIDs.*;
 import static frc.robot.Constants.PneumaticsIDs.*;
 

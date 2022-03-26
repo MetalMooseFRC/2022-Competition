@@ -15,8 +15,6 @@ import static frc.robot.Constants.Hanger.*;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class IncrementHangerUp_2 extends SequentialCommandGroup {
 
-  private Hanger m_hanger;
-  private double m_currentposition;
   /** Creates a new IncrementHangerUp_2. */
   public IncrementHangerUp_2(double startingPosition, Hanger hanger) {
     // Add your commands in the addCommands() call, e.g.

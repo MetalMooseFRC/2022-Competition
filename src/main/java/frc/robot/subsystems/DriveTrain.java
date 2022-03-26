@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
@@ -20,17 +19,13 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import static frc.robot.Constants.Drivetrain.*;
 import static frc.robot.Constants.CANIDs.*;
 
-import frc.robot.Robot;
-import frc.robot.commands.DriveArcade;
 
 // NavX
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;

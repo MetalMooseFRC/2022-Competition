@@ -109,14 +109,14 @@ public final class Constants {
         public static final double DRIVE_DEADBAND = 0.02;
         public static final double TURN_DEADBAND = 0.02;
         public static final double DRIVE_LIMITER = 50; //2
-        public static final double TURN_LIMITER = 1.8; //1.5
+        public static final double TURN_LIMITER = 1.6; //1.5
 
         public static final double P_TURN = 0.02;
 	    public static final double I_TURN = 0.002;
 	    public static final double D_TURN = 0;
 	    public static final double TOLERANCE_TURN = 2;			// degrees
 	    public static final double TOLERANCE_TURN_RATE = 4;   	// degrees per second
-	    public static final double FEED_TURN = 0.05;
+	    public static final double FEED_TURN = 0.05;//5;
     }
 
     public final class Turret {
@@ -160,7 +160,7 @@ public final class Constants {
     }
 
     public final class Gate {
-        public static final double GATE_DEFAULT_SPEED = 0.6;
+        public static final double GATE_DEFAULT_SPEED = 0.7;
     }
 
     public final class Hanger {
