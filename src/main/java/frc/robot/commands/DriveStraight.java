@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
@@ -13,10 +14,14 @@ import frc.robot.subsystems.Drivetrain;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class DriveStraight extends PIDCommand {
-
+  
   private final Drivetrain m_drivetrain;
   private final double m_distance;
   /** Creates a new DriveStraight. */
+  @Override 
+  public void initialize() {
+    m_drivetrain.resetEncoders();
+  }
   public DriveStraight(Drivetrain drivetrain, double distance, double speed) {  //distance in feet
     super(
 
@@ -51,13 +56,13 @@ public class DriveStraight extends PIDCommand {
 
     m_distance = distance;
     m_drivetrain = drivetrain;
-    m_drivetrain.resetEncoders();
     
   }
-
+  
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    SmartDashboard.putNumber("Drivetrain Encoder Position", m_drivetrain.getEncoderPosition());
     return m_drivetrain.getEncoderPosition() > m_distance* 7.44 /(Math.PI*4.1875/12) ;
   }
 }

@@ -90,6 +90,19 @@ public final class Constants {
 
     public final class Auto {
         public static final double DEFAULT_AUTO_TIME = 3.0;
+
+        public static final double TWO_BALL_AUTO_DRIVE_DISTANCE = 4;//feet
+        public static final double TWO_BALL_AUTO_DRIVE_SPEED = 0.4;
+        public static final double TWO_BALL_AUTO_SHOOTER_SPEED = 2864;
+
+        public static final double THREE_BALL_AUTO_FIRST_DISTANCE = 21; //feet
+        public static final double THREE_BALL_AUTO_SECOND_DISTANCE = -17; //feet
+        public static final double THREE_BALL_AUTO_FIRST_TURN = 105; //degrees
+        public static final double THREE_BALL_AUTO_SECOND_TURN = 155; //degrees
+
+
+        public static final double LIFTLOAD_AUTO_TIMEOUT = 1.5;
+
     }
 
     public final class Drivetrain {
@@ -98,12 +111,12 @@ public final class Constants {
         public static final double DRIVE_LIMITER = 50; //2
         public static final double TURN_LIMITER = 1.8; //1.5
 
-        public static final double P_TURN = 0.01;
+        public static final double P_TURN = 0.005;
 	    public static final double I_TURN = 0.001;
 	    public static final double D_TURN = 0;
 	    public static final double TOLERANCE_TURN = 2;			// degrees
 	    public static final double TOLERANCE_TURN_RATE = 4;   	// degrees per second
-	    public static final double FEED_TURN = 0.13;
+	    public static final double FEED_TURN = 0.05;
     }
 
     public final class Turret {
@@ -128,6 +141,8 @@ public final class Constants {
         // Percent of max speed
         public static final double SHOOTER_DEFAULT_SPEED = 3000;//0.58;
         public static final double ADJUST_INCREMENT = 0.05;
+        public static final double MAX_SHOOTER_POWER = 0.75;
+        public static final double SHOOTING_SPEED_THRESHOLD = 0.8;
     }
 
     public final class Lifter {
@@ -152,17 +167,17 @@ public final class Constants {
         public static final double HANGER_DEFAULT_SPEED = 0.5;
         public static final double MAX_HEIGHT = 98;  // number of rotaions to the top
         public static final double HANGER_POSITION_TOLERANCE = 1;
-        public static final double BAR_POSITION = 9;  // just below the fixed hooks
-        public static final double MAX_PITCHRATE = 5; //OK to climb if below this
+        public static final double BAR_POSITION = 29;  // just below the fixed hooks
+        public static final double MAX_PITCHRATE = 60; //OK to climb if below this
 
         
         public static final double HANGER_kP = 0.06;
         public static final double HANGER_kI = 0.00005;
         public static final double HANGER_kD = 0.02;
 
-        public static final double HANGER_PULL_kP = 0.001;
-        public static final double HANGER_PULL_kI = 0.00005;
-        public static final double HANGER_PULL_kD = 0.02;
+        public static final double HANGER_PULL_kP = 0.03;
+        public static final double HANGER_PULL_kI = 0.005;
+        public static final double HANGER_PULL_kD = 0.0;
 
         public static final double STEP_1 = 60;
         public static final double STEP_2 = 90;

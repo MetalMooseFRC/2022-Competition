@@ -24,7 +24,7 @@ public class TurnToAngle extends PIDCommand {
   //private final Joystick m_joystick;
 
   /** Creates a new TurnToAngle. */
-  public TurnToAngle(double targetAngle, Drivetrain drivetrain, Joystick joystick) {
+  public TurnToAngle(double targetAngle, Drivetrain drivetrain) {
 
     super(
         // The controller that the command will use
@@ -38,11 +38,11 @@ public class TurnToAngle extends PIDCommand {
           System.out.println(output);
           // Use the output here
           if(output > 0) {
-            drivetrain.drive(-joystick.getY(), output + Constants.Drivetrain.FEED_TURN);
+            drivetrain.drive(0, output + Constants.Drivetrain.FEED_TURN);
           } else if(output < 0) {
-              drivetrain.drive(-joystick.getY(), output - Constants.Drivetrain.FEED_TURN);
+              drivetrain.drive(0, output - Constants.Drivetrain.FEED_TURN);
           } else {
-              drivetrain.drive(-joystick.getY(), 0);
+              drivetrain.drive(0, 0);
           }
         } , drivetrain);  //require the driveTrain
 

@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Hanger;
@@ -30,11 +31,13 @@ public class PullRobotUpWithPitch extends PIDCommand {
         () -> BAR_POSITION,
         // This uses the output
         output -> {
-          if(Math.abs(drivetrain.getPitchRate()) < MAX_PITCHRATE) {
-            hanger.set(output);
-          } else {
-            hanger.set(0.07);
-          }
+          SmartDashboard.putNumber("output", output);
+          // if(Math.abs(drivetrain.getPitchRate()) < MAX_PITCHRATE) {
+          //   hanger.set(output);
+          // } else {
+          //   hanger.set(-0.07);
+          // }
+          hanger.set(-0.07+(output*(1-(drivetrain.getPitchRate()/(2*MAX_PITCHRATE)))));
         });
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(hanger);

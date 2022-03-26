@@ -26,8 +26,10 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import static frc.robot.Constants.Buttons.*;
@@ -162,9 +164,22 @@ public class RobotContainer {
 
 
     autoChooser.setDefaultOption("Score 3", new InstantCommand());
+    autoChooser.addOption("Two Ball", new AutoTwoBall(m_drivetrain, m_shooter, m_lifter, m_loader, m_gate, m_collector, m_turret));
+    autoChooser.addOption("Three Ball Along Wall", new AutoThreeBallAlongSide(m_drivetrain, m_shooter, m_lifter, m_loader, m_gate, m_collector, m_turret));
     autoChooser.addOption("Auto Drive for Time", new DriveArcade(() -> 0.5, () -> 0.0, m_drivetrain)
             .withTimeout(autoTimeEntry.getDouble(1.0)));
-    autoChooser.addOption("Auto Drive for Distance", new DriveStraight(m_drivetrain, autoDistanceEntry.getDouble(1.0), autoSpeedEntry.getDouble(0.0)));
+    autoChooser.addOption("Shooting Sequence",new ParallelRaceGroup(
+      //Run Shooter Indefinitely while
+        new RunShooterWithTurret(m_shooter, m_turret).withTimeout(Constants.Auto.LIFTLOAD_AUTO_TIMEOUT+0.1),
+      //Running a sequence
+        new SequentialCommandGroup(
+      //Wait until shooter is at speed
+          new WaitUntilCommand(
+            () -> ((m_shooter.getLeftWheelSpeed()) >= (m_turret.getRequiredVelocity()*Constants.Shooter.SHOOTING_SPEED_THRESHOLD))),
+      //Once shooter is at speed shoot
+          new RunLifterLoader(m_lifter, LIFTER_DEFAULT_SPEED, m_loader, LIFTER_DEFAULT_SPEED*10/9)
+            .withTimeout(Constants.Auto.LIFTLOAD_AUTO_TIMEOUT))
+      ));
     autoChooser.addOption("Auto Drive 2 feet at 0.3", new DriveStraight(m_drivetrain, 2.0, 0.3));
           
 
@@ -283,7 +298,7 @@ public class RobotContainer {
 
     devTab.add("Drive for 5", new DriveArcade(() ->.5, () -> 0.0, m_drivetrain).withTimeout(5));
     devTab.add("Drive for 2", new DriveArcade(()->.5, () -> 0.0, m_drivetrain).withTimeout(2));
-    devTab.add("Turn to Angle", new TurnToAngle(targetAngleEntry.getDouble(0.0), m_drivetrain, driverStick ));
+    devTab.add("Turn to Angle", new TurnToAngle(targetAngleEntry.getDouble(0.0), m_drivetrain));
    
     // ************  DEFAULT COMMANDS  ***************
     m_drivetrain.setDefaultCommand(new DriveArcade(
@@ -291,16 +306,16 @@ public class RobotContainer {
       () -> driverStick.getZ(),
       m_drivetrain));
       
-    m_lifter.setDefaultCommand(new IdleLifterLoader(
-      m_lifter,
-     () -> LIFTER_DEFAULT_SPEED,
-     m_loader,
-     () -> -10/9*m_lifter.getMotorSpeed())
-     .andThen(new RunLifterLoader(
-       m_lifter, 
-       0.0, 
-       m_loader, 
-       0.0))); 
+    // m_lifter.setDefaultCommand(new IdleLifterLoader(
+    //   m_lifter,
+    //  () -> LIFTER_DEFAULT_SPEED,
+    //  m_loader,
+    //  () -> -10/9*m_lifter.getMotorSpeed())
+    //  .andThen(new RunLifterLoader(
+    //    m_lifter, 
+    //    0.0, 
+    //    m_loader, 
+    //    0.0))); 
       
   //   m_collector.setDefaultCommand(new RunCollectorVariable(
   //     () -> m_collector.getArmSliderValue(),
@@ -308,7 +323,7 @@ public class RobotContainer {
   //  m_collector));
      
      
-     m_turret.setDefaultCommand((new TrackTargetWithLimelight(m_turret)));
+    //  m_turret.setDefaultCommand((new TrackTargetWithLimelight(m_turret)));
      
    // m_shooter.setDefaultCommand((new RunShooter(() -> 0, m_shooter, m_turret)));
     
@@ -331,15 +346,15 @@ public class RobotContainer {
     // ************  DRIVER STICK  ***************
     huntForBallsButton = new JoystickButton(driverStick, HUNT_FOR_BALLS);
     huntForBallsButton.whenHeld(
-      // new ParallelCommandGroup(
-      //   new IdleLifterLoader(
-      //     m_lifter,
-      //     () -> LIFTER_DEFAULT_SPEED,
-      //     m_loader,
-      //     () -> -10/9*m_lifter.getMotorSpeed()
-      //   ),
+      new ParallelCommandGroup(
+        new IdleLifterLoader(
+          m_lifter,
+          () -> LIFTER_DEFAULT_SPEED,
+          m_loader,
+          () -> -10/9*m_lifter.getMotorSpeed()
+        ),
         new HuntForBalls(m_collector, m_gate, m_lifter)
-      // )
+      )
     );
 
     invertCollectorButton = new JoystickButton(driverStick, COLLECTOR_REVERSE);
@@ -384,15 +399,12 @@ public class RobotContainer {
       new ConditionalCommand( 
         // new ShootingSequence(m_shooter, m_turret, m_drivetrain, m_lifter, m_loader, m_gate, m_collector),
         new ParallelCommandGroup(
-          new RunShooterWithTurret(m_shooter, m_turret),
           new DriveArcade(() -> 0.0, () -> 0.0, m_drivetrain),
           new RunCommand(() -> m_gate.setGate(0.0)),
           new RunCommand(() -> m_collector.stopCollecting()),
-          new ConditionalCommand(
-            new RunLifterLoader(m_lifter, LIFTER_DEFAULT_SPEED, m_loader, LIFTER_DEFAULT_SPEED*10/9).withTimeout(1.4),
-            new InstantCommand(() -> {}, m_xxHanger),
-            () -> (m_shooter.getLeftWheelSpeed() >= m_turret.getRequiredVelocity()))
-        ),
+          new RunShooterWithTurret(m_shooter, m_turret),
+          new WaitUntilCommand(() -> (m_shooter.getLeftWheelSpeed() >= m_turret.getRequiredVelocity())),
+          new RunLifterLoader(m_lifter, LIFTER_DEFAULT_SPEED, m_loader, LIFTER_DEFAULT_SPEED*10/9).withTimeout(1.4)),
         new InstantCommand(()-> {}, m_shooter),
         () -> ((m_turret.limelightHasValidTarget() == true) && (m_lifter.getColorUpper() == DriverStation.getAlliance().toString()))
       )

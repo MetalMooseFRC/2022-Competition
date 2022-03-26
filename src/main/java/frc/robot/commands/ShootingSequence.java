@@ -44,10 +44,9 @@ public class ShootingSequence extends ParallelCommandGroup {
           new DriveArcade(() -> 0.0, () -> 0.0, m_drivetrain),
           new RunCommand(() -> m_gate.setGate(0.0)),
           new RunCommand(() -> m_collector.stopCollecting()),
-          new ConditionalCommand(
-            new RunLifterLoader(m_lifter, Constants.Lifter.LIFTER_DEFAULT_SPEED, m_loader, Constants.Lifter.LIFTER_DEFAULT_SPEED*10/9).withTimeout(1.4),
-            new InstantCommand(() -> {}, m_drivetrain),
-            () -> (m_shooter.getLeftWheelSpeed() >= m_turret.getRequiredVelocity())));
+          new WaitUntilCommand(() -> (m_shooter.getLeftWheelSpeed() >= m_turret.getRequiredVelocity())),
+          new RunLifterLoader(m_lifter, Constants.Lifter.LIFTER_DEFAULT_SPEED, m_loader, Constants.Lifter.LIFTER_DEFAULT_SPEED*10/9).withTimeout(0.7)
+          );
     
   }
 }

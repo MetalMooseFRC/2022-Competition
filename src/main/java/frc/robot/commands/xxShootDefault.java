@@ -19,7 +19,6 @@ public class xxShootDefault extends CommandBase {
   private Loader m_loader;
   private final DoubleSupplier m_shooterSpeedSupplier;
   private final DoubleSupplier m_lifterSpeedSupplier;
-  private final Turret m_turret;
 
   /** Creates a new StaticShooting. */
   public xxShootDefault(DoubleSupplier speedSupplier, Shooter shooter, DoubleSupplier speedSupplier2, Lifter lifter, Turret turret, Loader loader) {
@@ -29,7 +28,6 @@ public class xxShootDefault extends CommandBase {
 
     m_shooter = shooter;
     m_lifter = lifter;
-    m_turret = turret;
     m_loader = loader;
     addRequirements(m_shooter, m_lifter, m_loader);
   }

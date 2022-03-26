@@ -10,11 +10,6 @@ import static frc.robot.Constants.Gate.*;
 import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Gate;
 import frc.robot.subsystems.Lifter;
-import frc.robot.subsystems.Loader;
-import static frc.robot.Constants.Lifter.*;
-import static frc.robot.Constants.Loader.*;
-import static frc.robot.Constants.Gate.*;
-import static frc.robot.Constants.Collector.*;
 
 public class HuntForBalls extends CommandBase {
 

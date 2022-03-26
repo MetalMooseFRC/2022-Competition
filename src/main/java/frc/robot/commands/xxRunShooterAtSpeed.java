@@ -12,12 +12,12 @@ import frc.robot.subsystems.Shooter;
 public class xxRunShooterAtSpeed extends CommandBase {
 
   private final Shooter m_shooter;
-  private final DoubleSupplier m_speedSupplier;
+  private final Double m_power;
 
   
   /** Creates a new ShooterControl. */
-  public xxRunShooterAtSpeed(DoubleSupplier speedSupplier, Shooter shooter) {
-    m_speedSupplier = speedSupplier;
+  public xxRunShooterAtSpeed(double power, Shooter shooter) {
+    m_power = power;
     
     m_shooter = shooter;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -32,8 +32,8 @@ public class xxRunShooterAtSpeed extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {    
-    m_shooter.m_motorLeft.set(m_speedSupplier.getAsDouble());
-    m_shooter.m_motorRight.set(m_speedSupplier.getAsDouble());
+    m_shooter.m_motorLeft.set(m_power);
+    m_shooter.m_motorRight.set(m_power);
     }
 
   // Called once the command ends or is interrupted.
