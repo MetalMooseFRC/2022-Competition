@@ -100,7 +100,7 @@ public class Turret extends SubsystemBase {
 
   public double getRequiredVelocity() {
     double dis = getTurretDistance();
-    double velocity = 4033 + -10*dis + 0.0214*Math.pow(dis,2);
+    double velocity = 4033 + -10*dis + 0.0212*Math.pow(dis,2);
     return velocity;
   }
 

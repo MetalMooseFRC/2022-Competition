@@ -60,8 +60,10 @@ public class AutoTwoBall extends SequentialCommandGroup {
             new SequentialCommandGroup(
               new WaitUntilCommand(
                 () -> ((m_shooter.getLeftWheelSpeed()) >= (m_turret.getRequiredVelocity()*Constants.Shooter.SHOOTING_SPEED_THRESHOLD))),
+              new InstantCommand(() -> m_gate.setGate(GATE_DEFAULT_SPEED), m_gate),
               new RunLifterLoader(m_lifter, LIFTER_DEFAULT_SPEED, m_loader, LIFTER_DEFAULT_SPEED*10/9)
-                .withTimeout(LIFTLOAD_AUTO_TIMEOUT))
+                .withTimeout(LIFTLOAD_AUTO_TIMEOUT)
+                .andThen(new InstantCommand(() -> m_gate.setGate(0))))
         )
       )
     ));

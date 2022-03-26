@@ -66,7 +66,8 @@ public class RobotContainer {
   
   public static final Joystick operatorStick = new Joystick(Constants.DSPorts.OPERATOR_STICK_PORT);
   JoystickButton shootCargoButton, turnTurretToZeroButton, shootingSpeedUpButton, shootingSpeedDownButton, turretAimToggleButton,
-   invertCollectorButton, runShooterToggleButton, shootSliderButton, runLifterReverseButton, burpBallButton, runShooterAtSlider;
+   invertCollectorButton, runShooterToggleButton, shootSliderButton, runLifterReverseButton, burpBallButton, runShooterAtSlider,
+   huntBallAssistButton;
   POVButton pullRobotUpWithPitchButton, incrementHangerUpButton, incrementHangerDownButton, hangerToMaxHeightButton, cancelHangerUpButton, turnTurretTo90Button, turnTurretToN90Button;
 
   // ************  Subsystems  **************
@@ -323,7 +324,7 @@ public class RobotContainer {
   //  m_collector));
      
      
-    //  m_turret.setDefaultCommand((new TrackTargetWithLimelight(m_turret)));
+  m_turret.setDefaultCommand((new TrackTargetWithLimelight(m_turret)));
      
    // m_shooter.setDefaultCommand((new RunShooter(() -> 0, m_shooter, m_turret)));
     
@@ -357,15 +358,21 @@ public class RobotContainer {
       )
     );
 
-    invertCollectorButton = new JoystickButton(driverStick, COLLECTOR_REVERSE);
-    invertCollectorButton.whenPressed(new RaiseHangerToHeight(50, m_hanger));
-    
+    huntBallAssistButton = new JoystickButton(driverStick, 2);
+    huntBallAssistButton.whileHeld(new TurnToBall(
+      () -> -driverStick.getY(),
+      m_drivetrain));
+
     //Raises hanger to max height
     hangerToMaxHeightButton = new POVButton(driverStick, ELEVATOR_UP);
     hangerToMaxHeightButton.whenPressed(new ConditionalCommand(new RaiseHangerToHeight(MAX_HEIGHT, m_hanger), 
-      new InstantCommand(() -> {}), () -> driverStick.getRawAxis(3) < -0.8));       
+    new InstantCommand(() -> {}), () -> driverStick.getRawAxis(3) < -0.8));  
+
     /*
     armToggleButton = new JoystickButton(driverStick, Constants.Buttons.ARM_TOGGLE);
+    // invertCollectorButton = new JoystickButton(driverStick, COLLECTOR_REVERSE);
+    // invertCollectorButton.whenPressed(new RaiseHangerToHeight(50, m_hanger));
+    
     armToggleButton.whenPressed(new ToggleCollector(m_collector));
     
     invertCollectorButton = new JoystickButton(driverStick, Constants.Buttons.COLLECTOR_REVERSE);
@@ -402,9 +409,13 @@ public class RobotContainer {
           new DriveArcade(() -> 0.0, () -> 0.0, m_drivetrain),
           new RunCommand(() -> m_gate.setGate(0.0)),
           new RunCommand(() -> m_collector.stopCollecting()),
-          new RunShooterWithTurret(m_shooter, m_turret),
-          new WaitUntilCommand(() -> (m_shooter.getLeftWheelSpeed() >= m_turret.getRequiredVelocity())),
-          new RunLifterLoader(m_lifter, LIFTER_DEFAULT_SPEED, m_loader, LIFTER_DEFAULT_SPEED*10/9).withTimeout(1.4)),
+          new RunShooterWithTurret(m_shooter, m_turret).withTimeout(1.1),
+          new SequentialCommandGroup(
+            new WaitUntilCommand(() -> (m_shooter.getLeftWheelSpeed() >= m_turret.getRequiredVelocity())),
+            new InstantCommand(() -> m_gate.setGate(GATE_DEFAULT_SPEED), m_gate),
+            new RunLifterLoader(m_lifter, LIFTER_DEFAULT_SPEED, m_loader, LIFTER_DEFAULT_SPEED*10/9)
+              .withTimeout(1)
+              .andThen(new InstantCommand(() -> m_gate.setGate(0), m_gate)))),
         new InstantCommand(()-> {}, m_shooter),
         () -> ((m_turret.limelightHasValidTarget() == true) && (m_lifter.getColorUpper() == DriverStation.getAlliance().toString()))
       )

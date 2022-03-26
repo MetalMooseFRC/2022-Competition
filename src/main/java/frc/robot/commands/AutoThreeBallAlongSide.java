@@ -16,6 +16,7 @@ import frc.robot.subsystems.Turret;
 import frc.robot.subsystems.Lifter;
 import frc.robot.subsystems.Loader;
 import static frc.robot.Constants.Lifter.*;
+
 import static frc.robot.Constants.Gate.*;
 import static frc.robot.Constants.Auto.*;
 import frc.robot.Constants;
@@ -67,8 +68,10 @@ public class AutoThreeBallAlongSide extends SequentialCommandGroup {
               new WaitUntilCommand(
                 () -> ((m_shooter.getLeftWheelSpeed()) >= (m_turret.getRequiredVelocity()*Constants.Shooter.SHOOTING_SPEED_THRESHOLD))),
                     //Once shooter is at speed shoot
+              new InstantCommand(() -> m_gate.setGate(GATE_DEFAULT_SPEED), m_gate),
               new RunLifterLoader(m_lifter, LIFTER_DEFAULT_SPEED, m_loader, LIFTER_DEFAULT_SPEED*10/9)
-                .withTimeout(LIFTLOAD_AUTO_TIMEOUT))
+                .withTimeout(LIFTLOAD_AUTO_TIMEOUT)
+                .andThen(new InstantCommand(() -> m_gate.setGate(0), m_gate)))
           ),        //end shooting sequence and 2 ball
                     //Turn to face 3rd ball
           new TurnToAngle(THREE_BALL_AUTO_FIRST_TURN + m_drivetrain.getAngle(), m_drivetrain),
@@ -92,8 +95,10 @@ public class AutoThreeBallAlongSide extends SequentialCommandGroup {
               new WaitUntilCommand(
                 () -> ((m_shooter.getLeftWheelSpeed()) >= (m_turret.getRequiredVelocity()*Constants.Shooter.SHOOTING_SPEED_THRESHOLD))),
                     //shoot ball when shooter is at speed
+              new InstantCommand(() -> m_gate.setGate(GATE_DEFAULT_SPEED), m_gate),
               new RunLifterLoader(m_lifter, LIFTER_DEFAULT_SPEED, m_loader, LIFTER_DEFAULT_SPEED*10/9)
                 .withTimeout(LIFTLOAD_AUTO_TIMEOUT)
+                .andThen(new InstantCommand(() -> m_gate.setGate(0)))
             )
           )
         )//end SequentialCommandGroup

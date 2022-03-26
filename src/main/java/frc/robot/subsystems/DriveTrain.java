@@ -27,7 +27,9 @@ import frc.robot.commands.DriveArcade;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.filter.MedianFilter;
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
@@ -48,41 +50,49 @@ public class Drivetrain extends SubsystemBase {
   private final DifferentialDrive diffDrive = new DifferentialDrive(m_motorsLeft, m_motorsRight);
 
 
+  private final NetworkTable m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight-twelve");
+
+  // private final String allianceColor = DriverStation.getAlliance().toString();
+
   //DifferentialDriveOdometry m_odometry = new DifferentialDriveOdometry(
-   // m_navx.getRotation2d(), new Pose2d(0.0, 0.0, new Rotation2d()));
-
-  // navX gyro
-  private final AHRS navx = new AHRS(SPI.Port.kMXP);
-  private final RelativeEncoder leftEncoder = m_motorLeftMiddle.getEncoder();
-  public final RelativeEncoder rightEncoder = m_motorRightMiddle.getEncoder();
-  private double m_pitch, m_pitchRate, m_oldPitch, m_newPitch, m_oldCount, m_newCount;
-
-  
-
-
-   
-  //Set up shuffleboard
-  private ShuffleboardTab m_tab = Shuffleboard.getTab("Development");
-  private ComplexWidget z_tab = Shuffleboard.getTab("Development")
+    // m_navx.getRotation2d(), new Pose2d(0.0, 0.0, new Rotation2d()));
+    
+    // navX gyro
+    private final AHRS navx = new AHRS(SPI.Port.kMXP);
+    private final RelativeEncoder leftEncoder = m_motorLeftMiddle.getEncoder();
+    public final RelativeEncoder rightEncoder = m_motorRightMiddle.getEncoder();
+    private double m_pitch, m_pitchRate, m_oldPitch, m_newPitch, m_oldCount, m_newCount;
+    
+    
+    
+    
+    
+    //Set up shuffleboard
+    private ShuffleboardTab m_tab = Shuffleboard.getTab("Development");
+    private ComplexWidget z_tab = Shuffleboard.getTab("Development")
     .add("NavX", navx);
- 
- 
-
-  // put the navx on the shuffleboard
-  private NetworkTableEntry m_navxAngleEntry = m_tab
+    
+    
+    
+    // put the navx on the shuffleboard
+    private NetworkTableEntry m_navxAngleEntry = m_tab
     .add("NavX Angle", 0)
     //.withWidget(BuiltInWidgets.kGyro)
     .getEntry();
-  private NetworkTableEntry m_navxYawEntry = m_tab
+    private NetworkTableEntry m_navxYawEntry = m_tab
     .add("NavX Yaw", 0)
     //.withWidget(BuiltInWidgets.kGyro)
     .getEntry();
-
-
-  /** Creates a new Drivetrain. */
-  public Drivetrain() {
     
-    this.resetYaw();  //reset navx when m_driveTrain is constructed @ start
+    
+    /** Creates a new Drivetrain. */
+    public Drivetrain() {
+      if (DriverStation.getAlliance().toString() == "Blue"){
+      m_limelightTable.getEntry("pipeline").forceSetValue(1);
+    } else {
+      m_limelightTable.getEntry("pipeline").forceSetValue(0);
+    }
+      this.resetYaw();  //reset navx when m_driveTrain is constructed @ start
       
     // create deadband
     diffDrive.setDeadband(DRIVE_DEADBAND);
@@ -152,6 +162,10 @@ public class Drivetrain extends SubsystemBase {
   public double getEncoderPosition() {
     return rightEncoder.getPosition();
   }
+
+  public double limelightTwelveGetTx() {
+    return -m_limelightTable.getEntry("tx").getDouble(0.0);
+}
 
   // **********  Gyro Methods  ********** //
 
