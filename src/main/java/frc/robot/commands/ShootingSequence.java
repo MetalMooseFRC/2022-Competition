@@ -53,7 +53,7 @@ public class ShootingSequence extends SequentialCommandGroup {
           new InstantCommand(() -> m_shooter.setShooterSpeed(2500), m_shooter),
           new WaitUntilCommand(() -> ((m_shooter.getLeftWheelSpeed()) >= (2000)))),
 
-        () -> (DriverStation.getAlliance().toString() != m_lifter.getColorUpper())),
+        () -> (DriverStation.getAlliance().toString() == m_lifter.getColorUpper())),
 
 
 
