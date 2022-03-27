@@ -37,7 +37,7 @@ public class PullRobotUpWithPitch extends PIDCommand {
           // } else {
           //   hanger.set(-0.07);
           // }
-          hanger.set(-0.07+(output*(1-(drivetrain.getPitchRate()/(2*MAX_PITCHRATE)))));
+          hanger.set(-0.07+(output*(1-(Math.min(Math.abs(drivetrain.getPitchRate()), MAX_PITCHRATE)/(MAX_PITCHRATE)))));
         });
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(hanger);

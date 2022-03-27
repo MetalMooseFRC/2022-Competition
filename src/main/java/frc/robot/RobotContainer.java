@@ -162,6 +162,7 @@ public class RobotContainer {
 
 
     autoChooser.setDefaultOption("Score 3", new InstantCommand());
+    autoChooser.addOption("Center Four Ball", new AutoFourBallCenter(m_drivetrain, m_shooter, m_lifter, m_loader, m_gate, m_collector, m_turret));
     autoChooser.addOption("Two Ball", new AutoTwoBall(m_drivetrain, m_shooter, m_lifter, m_loader, m_gate, m_collector, m_turret));
     autoChooser.addOption("Three Ball Along Wall", new AutoThreeBallAlongSide(m_drivetrain, m_shooter, m_lifter, m_loader, m_gate, m_collector, m_turret));
     autoChooser.addOption("Auto Drive for Time", new DriveArcade(() -> 0.5, () -> 0.0, m_drivetrain)
@@ -320,6 +321,7 @@ public class RobotContainer {
   //     () -> m_collector.getGateSliderValue(),  
   //  m_collector));
      
+  m_gate.setDefaultCommand(new AutoRunGate(m_lifter, m_gate, m_collector));
      
   m_turret.setDefaultCommand((new TrackTargetWithLimelight(m_turret)));
      

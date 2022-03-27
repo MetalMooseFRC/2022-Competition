@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
 public class Turret extends SubsystemBase {
-  private final NetworkTable m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+  private final NetworkTable m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight-twelve");
   private final MedianFilter m_filter = new MedianFilter(10);
   public final CANSparkMax turretMotor = new CANSparkMax(Constants.CANIDs.TURRET_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
   

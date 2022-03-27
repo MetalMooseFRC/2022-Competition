@@ -45,7 +45,7 @@ public class Drivetrain extends SubsystemBase {
   private final DifferentialDrive diffDrive = new DifferentialDrive(m_motorsLeft, m_motorsRight);
 
 
-  private final NetworkTable m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight-twelve");
+  private final NetworkTable m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
 
   // private final String allianceColor = DriverStation.getAlliance().toString();
 

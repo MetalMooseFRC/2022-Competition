@@ -63,6 +63,10 @@ public class DriveStraight extends PIDCommand {
   @Override
   public boolean isFinished() {
     SmartDashboard.putNumber("Drivetrain Encoder Position", m_drivetrain.getEncoderPosition());
-    return m_drivetrain.getEncoderPosition() > m_distance* 7.44 /(Math.PI*4.1875/12) ;
+    if (m_distance <= 0) {
+      return m_drivetrain.getEncoderPosition() < m_distance* 7.44/(Math.PI*4.1875/12);
+    } else {
+    return m_drivetrain.getEncoderPosition() > m_distance* 7.44 /(Math.PI*4.1875/12);
+    }
   }
 }

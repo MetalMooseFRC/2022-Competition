@@ -22,7 +22,7 @@ public class Collector extends SubsystemBase {
   
   private final CANSparkMax m_motorArm = new CANSparkMax(CL_ARM, CANSparkMaxLowLevel.MotorType.kBrushless);
   //private static double direction = 1;
-  DoubleSolenoid m_armSolenoid = new DoubleSolenoid(PNEUMATICS_HUB, PneumaticsModuleType.REVPH, COLLECTOR_B, COLLECTOR_A);
+  public DoubleSolenoid m_armSolenoid = new DoubleSolenoid(PNEUMATICS_HUB, PneumaticsModuleType.REVPH, COLLECTOR_B, COLLECTOR_A);
   
   /** Creates a new Collector. */
   public Collector() {
