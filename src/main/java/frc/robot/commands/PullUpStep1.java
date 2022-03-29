@@ -5,7 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.subsystems.Hanger;
 import static frc.robot.Constants.Hanger.*;
@@ -53,9 +53,9 @@ public class IncrementHangerUp extends PIDCommand {
   public boolean isFinished() {
     m_currentPosition = m_hanger.getHangerPosition();
     if (m_startPosition < STEP_1){
-      SmartDashboard.putNumber("if", m_currentPosition);
+      // SmartDashboard.putNumber("if", m_currentPosition);
       getController().setSetpoint(20);//STEP_1);
-      SmartDashboard.putNumber("set", getController().getSetpoint());
+      // SmartDashboard.putNumber("set", getController().getSetpoint());
       if(m_currentPosition > STEP_1){
         m_controller.close();
         m_hanger.set(0);   //hold

@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 import edu.wpi.first.wpilibj.I2C;
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 
 import com.revrobotics.ColorSensorV3;
@@ -28,9 +29,12 @@ public class Lifter extends SubsystemBase {
   
   private final ColorMatch m_colorMatcher = new ColorMatch();
 
-  private final Color kBlueTarget = new Color(0.143, 0.427, 0.429);
-  private final Color kRedTarget = new Color(0.561, 0.232, 0.114);
+  //Default Blue and Red
+  // private final Color kBlueTarget = new Color(0.143, 0.427, 0.429);
+  // private final Color kRedTarget = new Color(0.561, 0.232, 0.114);
 
+  private final Color kRedTarget = new Color(0.612, 0.196, 0.187);
+  private final Color kBlueTarget = new Color(0.141, 0.188, 0.427);
 
 
   /** Creates a new Lifter. */
@@ -60,11 +64,11 @@ public class Lifter extends SubsystemBase {
     m_colorMatcher.setConfidenceThreshold(Constants.Lifter.COLOR_CONFIDENCE);
     Color detectedColor = m_upperColorSensor.getColor();
     String upperCargoColor;
+    // System.out.println("Detected Upper Color = "+ m_upperColorSensor.getColor().toString());
     try {
-    ColorMatchResult match = m_colorMatcher.matchColor(detectedColor);
-    if (match.color == kBlueTarget) {
+    if (m_colorMatcher.matchColor(detectedColor).color == kBlueTarget) {
       upperCargoColor = "Blue";
-    } else if (match.color == kRedTarget) {
+    } else if (m_colorMatcher.matchColor(detectedColor).color == kRedTarget) {
       upperCargoColor = "Red";
     } else {
       upperCargoColor = "Unknown";
@@ -81,7 +85,7 @@ public class Lifter extends SubsystemBase {
     m_colorMatcher.setConfidenceThreshold(Constants.Lifter.COLOR_CONFIDENCE);
     Color detectedColor = m_lowerColorSensor.getColor();
     String lowerCargoColor;
-    
+    // System.out.println("Detected Lower Color = "+ m_lowerColorSensor.getColor().toString());
     try{
     ColorMatchResult match = m_colorMatcher.matchColor(detectedColor);
     if (match.color == kBlueTarget) {

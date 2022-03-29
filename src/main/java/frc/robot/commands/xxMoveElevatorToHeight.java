@@ -43,7 +43,7 @@ public class xxMoveElevatorToHeight extends CommandBase {
     
       m_currentPosition = m_hanger.getHangerPosition();
 
-      SmartDashboard.putNumber("current",m_currentPosition );
+      // SmartDashboard.putNumber("current",m_currentPosition );
       // Where do we want to go (if positive, go up; if negative, go down)
       // Signum returns either +1 or -1 (that is what we want the speed to be
       double speed = Math.signum(m_endPosition - m_currentPosition);
@@ -59,8 +59,8 @@ public class xxMoveElevatorToHeight extends CommandBase {
     m_hanger.set(0);
     
 
-    SmartDashboard.putNumber("lastCurrent", m_currentPosition);
-    SmartDashboard.putNumber("endPos", m_endPosition);
+    // SmartDashboard.putNumber("lastCurrent", m_currentPosition);
+    // SmartDashboard.putNumber("endPos", m_endPosition);
 
   }
 

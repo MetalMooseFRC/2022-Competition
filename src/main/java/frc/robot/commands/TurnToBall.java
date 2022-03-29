@@ -7,7 +7,7 @@ package frc.robot.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
@@ -29,7 +29,7 @@ public class TurnToBall extends PIDCommand {
         output -> {
           // Use the output here
           if(output > 0) {
-            SmartDashboard.putNumber("TurnToBall Output", output);
+            // SmartDashboard.putNumber("TurnToBall Output", output);
             drivetrain.drive(driveSpeed.getAsDouble(), output + Constants.Drivetrain.FEED_TURN);
           } else if(output < 0) {
               drivetrain.drive(driveSpeed.getAsDouble(), output - Constants.Drivetrain.FEED_TURN);

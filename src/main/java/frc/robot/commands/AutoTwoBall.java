@@ -49,10 +49,10 @@ public class AutoTwoBall extends SequentialCommandGroup {
         new SequentialCommandGroup(
           new InstantCommand(() -> m_collector.collect(), m_collector),
           new InstantCommand(() -> m_gate.setGate(GATE_DEFAULT_SPEED), m_gate),
-          new DriveStraight(m_drivetrain, TWO_BALL_AUTO_DRIVE_DISTANCE, TWO_BALL_AUTO_DRIVE_SPEED),
+          new DriveStraight(m_drivetrain, TWO_BALL_AUTO_DRIVE_DISTANCE, AUTO_DRIVE_SPEED),
           new InstantCommand(() -> m_collector.stopCollecting(), m_collector),
           new InstantCommand(() -> m_gate.setGate(0), m_gate),
-          new ShootingSequence(m_shooter, m_turret, m_gate, m_lifter, m_loader)
+          new AutonomousShootingSequence(m_shooter, m_turret, m_gate, m_lifter, m_loader)
         )
       )
     );

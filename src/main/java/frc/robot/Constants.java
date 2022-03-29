@@ -90,9 +90,9 @@ public final class Constants {
 
     public final class Auto {
         public static final double DEFAULT_AUTO_TIME = 3.0;
+        public static final double AUTO_DRIVE_SPEED = 0.7;
 
-        public static final double TWO_BALL_AUTO_DRIVE_DISTANCE = 4;//feet
-        public static final double TWO_BALL_AUTO_DRIVE_SPEED = 0.4;
+        public static final double TWO_BALL_AUTO_DRIVE_DISTANCE = 5;//feet
         public static final double TWO_BALL_AUTO_SHOOTER_SPEED = 2864;
 
         public static final double THREE_BALL_AUTO_FIRST_DISTANCE = 21; //feet
@@ -101,7 +101,7 @@ public final class Constants {
         public static final double THREE_BALL_AUTO_SECOND_TURN = 155; //degrees
 
 
-        public static final double LIFTLOAD_AUTO_TIMEOUT = 1.5;
+        public static final double LIFTLOAD_AUTO_TIMEOUT = 0.85;
 
     }
 
@@ -112,9 +112,9 @@ public final class Constants {
         public static final double TURN_LIMITER = 1.6; //1.5
 
         public static final double P_TURN = 0.02;
-	    public static final double I_TURN = 0.002;
+	    public static final double I_TURN = 0.005;
 	    public static final double D_TURN = 0;
-	    public static final double TOLERANCE_TURN = 2;			// degrees
+	    public static final double TOLERANCE_TURN = 3.51;			// degrees
 	    public static final double TOLERANCE_TURN_RATE = 4;   	// degrees per second
 	    public static final double FEED_TURN = 0.05;//5;
     }
@@ -128,10 +128,11 @@ public final class Constants {
         public static final double RAMP_RATE = 3;
 
         public final class PID {
-            public static final double kP = 0.0055;//.0086;
+            public static final double kP = 0.007;//.0086;
             public static final double kI = 0.002;//0.0;
             public static final double kD = 0.0;
-            public static final double FF = 0.1;
+            public static final double FF = 0.05
+            ;
             public static final double TOLERANCE = 1.0;
             public static final int TOLERANCE_BUFFER = 5;
         }
@@ -147,7 +148,7 @@ public final class Constants {
 
     public final class Lifter {
         public static final double LIFTER_DEFAULT_SPEED = 0.5;
-        public static final double COLOR_CONFIDENCE = 0.93;
+        public static final double COLOR_CONFIDENCE = 0.83;
     }
 
     public final class Loader {
@@ -156,24 +157,24 @@ public final class Constants {
 
 
     public final class Collector {
-        public static final double COLLECTOR_DEFAULT_SPEED = 0.6;
+        public static final double COLLECTOR_DEFAULT_SPEED = 0.55;
     }
 
     public final class Gate {
-        public static final double GATE_DEFAULT_SPEED = 0.7;
+        public static final double GATE_DEFAULT_SPEED = 0.8;
     }
 
     public final class Hanger {
         public static final double HANGER_DEFAULT_SPEED = 0.5;
-        public static final double MAX_HEIGHT = 98;  // number of rotaions to the top
+        public static final double MAX_HEIGHT = 88;  // number of rotaions to the top
         public static final double HANGER_POSITION_TOLERANCE = 1;
-        public static final double BAR_POSITION = 29;  // just below the fixed hooks
+        public static final double BAR_POSITION = 1;  // just below the fixed hooks
         public static final double MAX_PITCHRATE = 60; //OK to climb if below this
 
         
         public static final double HANGER_kP = 0.06;
-        public static final double HANGER_kI = 0.00005;
-        public static final double HANGER_kD = 0.02;
+        public static final double HANGER_kI = 0.0005;
+        public static final double HANGER_kD = 0.0;
 
         public static final double HANGER_PULL_kP = 0.03;
         public static final double HANGER_PULL_kI = 0.005;
