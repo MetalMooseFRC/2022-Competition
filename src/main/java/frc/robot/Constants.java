@@ -180,9 +180,9 @@ public final class Constants {
         public static final double HANGER_PULL_kI = 0.005;
         public static final double HANGER_PULL_kD = 0.0;
 
-        public static final double STEP_1 = 60;
-        public static final double STEP_2 = 90;
-        public static final double STEP_3 = 95;
+        public static final double STEP_1 = 44;
+        public static final double STEP_2 = 4;
+        //public static final double STEP_3 = 95;
 
         
 

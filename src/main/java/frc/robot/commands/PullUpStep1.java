@@ -30,7 +30,7 @@ public class PullUpStep1 extends PIDCommand {
         // This uses the output
         output -> {
       
-          hanger.set(output + 0.04);
+          hanger.set(output - 0.04);
         
         });
 
@@ -48,9 +48,9 @@ public class PullUpStep1 extends PIDCommand {
   public boolean isFinished() {
     m_currentPosition = m_hanger.getHangerPosition();
     
-    if(m_currentPosition > STEP_1){
+    if(m_currentPosition < STEP_1){
       m_controller.close();
-      m_hanger.set(0.06);   //hold
+      m_hanger.set(-0.09);   //hold
       return true;
     }
       

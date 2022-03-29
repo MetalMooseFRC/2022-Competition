@@ -65,7 +65,7 @@ public class RobotContainer {
   JoystickButton shootCargoButton, turnTurretToZeroButton, shootingSpeedUpButton, shootingSpeedDownButton, turretAimToggleButton,
    invertCollectorButton, runShooterToggleButton, shootSliderButton, runLifterReverseButton, turnTestButton, runShooterAtSlider,
    huntBallAssistButton;
-  POVButton pullRobotUpWithPitchButton, incrementHangerUpButton, incrementHangerDownButton, hangerToMaxHeightButton, cancelHangerUpButton, turnTurretTo90Button, turnTurretToN90Button;
+  POVButton pullRobotUpButton, pullRobotUpWithPitchButton, incrementHangerUpButton, incrementHangerDownButton, hangerToMaxHeightButton, cancelHangerUpButton, turnTurretTo90Button, turnTurretToN90Button;
 
   // ************  Subsystems  **************
   private Drivetrain m_drivetrain = new Drivetrain();
@@ -358,7 +358,7 @@ public class RobotContainer {
 
     //Raises hanger to max height
     hangerToMaxHeightButton = new POVButton(driverStick, ELEVATOR_UP);
-    hangerToMaxHeightButton.whenPressed(new ConditionalCommand(new RaiseHangerToHeight(MAX_HEIGHT, m_hanger), 
+    hangerToMaxHeightButton.whenPressed(new ConditionalCommand(new RaiseHangerToHeight(MAX_HEIGHT-2, m_hanger), 
     new InstantCommand(() -> {}), () -> driverStick.getRawAxis(3) < -0.8));  
 
     /*
@@ -409,9 +409,13 @@ public class RobotContainer {
         turretAimToggleButton = new JoystickButton(operatorStick, Constants.Buttons.AIM_TOGGLE);
         turretAimToggleButton.toggleWhenPressed(new TurnTurretWithJoystick(() -> operatorStick.getZ(), m_turret));
         
-        pullRobotUpWithPitchButton = new POVButton(operatorStick, ELEVATOR_UP);
-        pullRobotUpWithPitchButton.whenPressed(new PullRobotUpWithPitch(m_hanger, m_drivetrain));
+        //pullRobotUpWithPitchButton = new POVButton(operatorStick, ELEVATOR_UP);
+        //pullRobotUpWithPitchButton.whenPressed(new PullRobotUpWithPitch(m_hanger, m_drivetrain));
         
+        pullRobotUpButton = new POVButton(operatorStick, ELEVATOR_DOWN);
+        pullRobotUpButton.whenPressed(new ConditionalCommand(new PullUpStep2(m_hanger), new PullUpStep1(m_hanger), ()-> m_hanger.getHangerPosition() < STEP_1+10));
+
+
         // turnTestButton = new JoystickButton(operatorStick, 9);
         // turnTestButton.whenPressed(new TurnToAngle(112, m_drivetrain));
 
