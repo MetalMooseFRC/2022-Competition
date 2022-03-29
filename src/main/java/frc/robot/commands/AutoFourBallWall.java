@@ -20,6 +20,7 @@ import static frc.robot.Constants.Gate.*;
 import static frc.robot.Constants.Auto.*;
 import frc.robot.Constants;
 
+// Runs a four ball autonomous. Robot must be positioned in specific place on tarmac wall
 public class AutoFourBallWall extends SequentialCommandGroup {
   /** Creates a new AutoThreeBallAlongSide. */
   private Shooter m_shooter;

@@ -16,6 +16,8 @@ import static frc.robot.Constants.Hanger.*;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+
+
 public class PullRobotUpWithPitch extends PIDCommand {
 
   private Hanger m_hanger;
@@ -37,6 +39,8 @@ public class PullRobotUpWithPitch extends PIDCommand {
           // } else {
           //   hanger.set(-0.07);
           // }
+
+          // Pull the robot up based on the robot's pitch (pull at right time during hanging sequence's pitch)
           hanger.set(-0.07+(output*(1-(Math.min(Math.abs(drivetrain.getPitchRate()), MAX_PITCHRATE)/(MAX_PITCHRATE)))));
         });
     // Use addRequirements() here to declare subsystem dependencies.

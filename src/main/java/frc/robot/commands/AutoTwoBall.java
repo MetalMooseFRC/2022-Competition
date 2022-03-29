@@ -21,6 +21,8 @@ import frc.robot.Constants;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+
+// Runs a two ball auto as long as robot is pointed at an alliance-colored ball
 public class AutoTwoBall extends SequentialCommandGroup {
   /** Creates a new TwoBallAutonomous. */
   private Shooter m_shooter;

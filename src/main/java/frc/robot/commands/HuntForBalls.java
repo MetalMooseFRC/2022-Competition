@@ -11,6 +11,7 @@ import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Gate;
 import frc.robot.subsystems.Lifter;
 
+// Put down collector and turn on gate. If wrong color ball is detected in system, reverse collector
 public class HuntForBalls extends CommandBase {
 
   private Collector m_collector;

@@ -11,6 +11,7 @@ import frc.robot.subsystems.Lifter;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Turret;
 
+// Run shooter & turret
 public class RunShooterWithTurret extends CommandBase {
 
   private final Shooter m_shooter;

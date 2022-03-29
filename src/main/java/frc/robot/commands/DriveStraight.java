@@ -13,6 +13,8 @@ import frc.robot.subsystems.Drivetrain;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+
+// Drive the robot straight for a specified distance (in feet)
 public class DriveStraight extends PIDCommand {
   
   private final Drivetrain m_drivetrain;

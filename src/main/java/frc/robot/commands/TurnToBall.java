@@ -15,6 +15,8 @@ import frc.robot.subsystems.Drivetrain;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+
+// Turn to closest ball of our color and turns to it
 public class TurnToBall extends PIDCommand {
   /** Creates a new TurnToBall. */
   public TurnToBall(DoubleSupplier driveSpeed, Drivetrain drivetrain) {

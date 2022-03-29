@@ -13,6 +13,8 @@ import static frc.robot.Constants.Hanger.*;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+
+// Raise hanger to specific height (RPM)
 public class RaiseHangerToHeight extends PIDCommand {
 
   private Hanger m_hanger;

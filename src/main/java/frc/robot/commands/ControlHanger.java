@@ -9,6 +9,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Hanger;
 
+// Allows for control of hanger
 public class ControlHanger extends CommandBase {
 
   private final DoubleSupplier m_speedSupplier, m_sliderAxis3Supplier;

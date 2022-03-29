@@ -38,11 +38,8 @@ import static frc.robot.Constants.Gate.*;
 import static frc.robot.Constants.Collector.*;
 import static frc.robot.Constants.Hanger.*;
 
-
-
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
-
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -68,24 +65,31 @@ public class RobotContainer {
   POVButton pullRobotUpButton, pullRobotUpWithPitchButton, incrementHangerUpButton, incrementHangerDownButton, hangerToMaxHeightButton, cancelHangerUpButton, turnTurretTo90Button, turnTurretToN90Button;
 
   // ************  Subsystems  **************
-  private Drivetrain m_drivetrain = new Drivetrain();
-  private Shooter m_shooter = new Shooter();
-  private Lifter m_lifter = new Lifter();
-  private Collector m_collector = new Collector();
-  private Hanger m_hanger = new Hanger();
-  private Turret m_turret = new Turret();
-  private Loader m_loader = new Loader();
-  private Gate m_gate = new Gate();
+  private Drivetrain m_drivetrain = new Drivetrain(); //Drivetrain. Contains ball tracking limelight
+
+  // Shooting subsystems: 
+  private Collector m_collector = new Collector(); // Arm w/ wheels
+  private Gate m_gate = new Gate(); // Vertical shaft
+  private Lifter m_lifter = new Lifter(); // Top two black wheels
+  private Loader m_loader = new Loader(); // Isolated section (originally part of the lifter) that helps gives more control over when to shoot
+  private Shooter m_shooter = new Shooter(); // Flywheels
+  private Turret m_turret = new Turret(); // Aims turntable. Contains top limelight
   
+  // Endgame:
+  private Hanger m_hanger = new Hanger(); // Elevator on the back
+
   // Set up Chooser for autonomous command
   private final SendableChooser<Command> autoChooser = new SendableChooser<>();
   
-  //********** Network Table Entries **********//
-  
+  //********** Shuffleboard Tabs **********//
   private final ShuffleboardTab matchTab = Shuffleboard.getTab("Matches");    //for during matches
   // private final ShuffleboardTab commandTab = Shuffleboard.getTab("Commands"); //for testing commands
   private final ShuffleboardTab devTab = Shuffleboard.getTab("Development");  //for all else
   
+  //********** Shuffleboard Widgets **********//
+  
+  // Manually view shooter speed and turret's distance to target
+  // Useful for recalculating power function for shooting
   // SuppliedValueWidget<Double> turretDistance = 
   // commandTab.addNumber("Turret Distance", () -> m_turret.getTurretDistance())
   // .withPosition(0, 3)
@@ -94,64 +98,79 @@ public class RobotContainer {
   // commandTab.addNumber("Shooter Speed", () -> m_shooter.getLeftWheelSpeed())
   // .withPosition(1,3)
   // .withSize(1,1);
-  
+
+// Lets driver/operator know if limelight has target
   SuppliedValueWidget<Boolean> hasTargetEntry = 
   matchTab.addBoolean("Target Acquired", () -> m_turret.limelightHasValidTarget())
   .withPosition(4,0)
   .withSize(4,4);
   
+// Tells driver/operator what ball is in the upper "slot"
   SuppliedValueWidget<String> upperCargoColor = 
   matchTab.addString("Upper Cargo Color", () -> m_lifter.getColorUpper())
   .withPosition(2, 0)
   .withSize(2,1);
   
+// Tells driver/operator what ball is in the lower "slot" 
   SuppliedValueWidget<String> lowerCargoColor =
   matchTab.addString("Lower Cargo Color", () -> m_lifter.getColorLower())
   .withPosition(2,1)
   .withSize(2,1);
   
+  // Hanger Joystick input for testing
+  // Useful for knowing operatorStick input when configuring hanger changes
   // SuppliedValueWidget<Double> hangerJoystickInput =
   // commandTab.addNumber("Hanger Joystick", () -> operatorStick.getY())
   // .withPosition(4,4)
   // .withSize(1,1);
 
+  //Operator stick z, for testing turret feed forward
   SuppliedValueWidget<Double> operatorStickInput = 
   matchTab.addNumber("Operator Stick", () -> operatorStick.getZ());
   
+  // Team Alliance Color Widget
   // SuppliedValueWidget<String> driverStationAlliance = 
   // commandTab.addString("Alliance String", () -> DriverStation.getAlliance().toString())
   // .withSize(1,1);
+  
+  // If you want to test autonomous for a non-standard amount of time
   // NetworkTableEntry autoTimeEntry = 
   // devTab.add("Auto Time", Constants.Auto.DEFAULT_AUTO_TIME)
   // .withWidget(BuiltInWidgets.kNumberSlider)
   // .withProperties(Map.of("min", 0, "max", 20))
   // .getEntry();
+
+  // For driving a total distance in auto
   // NetworkTableEntry autoDistanceEntry =
   // devTab.add("Auto Distance", 1.0)
   // .withWidget(BuiltInWidgets.kNumberSlider)
   // .withProperties(Map.of("min", 0, "max", 20))
   // .getEntry();
+
+  // Speed of autonomous
   // NetworkTableEntry autoSpeedEntry =
   // devTab.add("Auto Speed", 0.2)
   // .withWidget(BuiltInWidgets.kNumberSlider)
   // .withProperties(Map.of("min", 0, "max", 1))
   // .getEntry();
+
+  // Angle of target for testing
   // NetworkTableEntry targetAngleEntry = 
   // devTab.add("Target Angle", 0.0)
   // .withWidget(BuiltInWidgets.kNumberSlider)
   // .withProperties(Map.of("min", -180, "max", 180))
   // .getEntry();
   
-  
-  
+
   //************ Pneumatics **********/
+  // RevRobotics Pneumatics Hub Compressor from CANID
   Compressor phCompressor = new Compressor(Constants.CANIDs.PNEUMATICS_HUB, PneumaticsModuleType.REVPH);
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     
-    m_drivetrain.resetYaw();  //set the navx to 0
-    
+    //set the navx to 0 (at start of match)
+    m_drivetrain.resetYaw();  
     
     // Configure the button bindings
     configureButtonBindings();
@@ -161,7 +180,7 @@ public class RobotContainer {
     .withPosition(0,0)
     .withSize(2,2);
 
-
+    // Add individual options for autonomous to the chooser
     autoChooser.setDefaultOption("Wall Five Ball", new AutoFiveBallWall(m_drivetrain, m_shooter, m_lifter, m_loader, m_gate, m_collector, m_turret));
     autoChooser.addOption("Center Three/Four Ball", new AutoFourBallCenter(m_drivetrain, m_shooter, m_lifter, m_loader, m_gate, m_collector, m_turret));
     autoChooser.addOption("Wall Three/Four Ball", new AutoFourBallWall(m_drivetrain, m_shooter, m_lifter, m_loader, m_gate, m_collector, m_turret));
@@ -176,9 +195,8 @@ public class RobotContainer {
             .withTimeout(3));
           
 
-    //************* Shuffleboard Commands for Testing ***************//
-    //Shuffleboard Shooter Commands
-
+    //************* Shuffleboard Commands for Testing manually  ***************//
+    //Shuffleboard Shooter Commands to manually run specific commands (for testing)
     ShuffleboardLayout shooterCommands = Shuffleboard.getTab("Commands")
       .getLayout("Shooter", BuiltInLayouts.kList)
       .withSize(2,2)
@@ -294,11 +312,25 @@ public class RobotContainer {
     // devTab.add("Turn to Angle", new TurnToAngle(targetAngleEntry.getDouble(0.0), m_drivetrain));
    
     // ************  DEFAULT COMMANDS  ***************
+    // Standard driving command. Be very sure you know what you're doing before you change this
     m_drivetrain.setDefaultCommand(new DriveArcade(
       () -> -driverStick.getY(),
       () -> driverStick.getZ(),
       m_drivetrain));
       
+    // Run gate by default
+    m_gate.setDefaultCommand(new AutoRunGate(m_lifter, m_gate, m_collector));
+      
+    // Track hub w/ limelight by default
+    m_turret.setDefaultCommand((new TrackTargetWithLimelight(m_turret)));
+   
+    // By default allow opstick to raise/lower hanger
+    m_hanger.setDefaultCommand(new ControlHanger(
+      () -> operatorStick.getY(),
+      () -> operatorStick.getRawAxis(SLIDER_AXIS),  //slider up means it's OK to Hang
+      m_hanger));
+      
+    // Run lifter upwards until a ball is in the upper slot
     // m_lifter.setDefaultCommand(new IdleLifterLoader(
     //   m_lifter,
     //  () -> LIFTER_DEFAULT_SPEED,
@@ -310,23 +342,12 @@ public class RobotContainer {
     //    m_loader, 
     //    0.0))); 
       
-  //   m_collector.setDefaultCommand(new RunCollectorVariable(
-  //     () -> m_collector.getArmSliderValue(),
-  //     () -> m_collector.getGateSliderValue(),  
-  //  m_collector));
+    // Gate and collector testing (at specific values)
+    //   m_collector.setDefaultCommand(new RunCollectorVariable(
+    //     () -> m_collector.getArmSliderValue(),
+    //     () -> m_collector.getGateSliderValue(),  
+    //  m_collector));
      
-  m_gate.setDefaultCommand(new AutoRunGate(m_lifter, m_gate, m_collector));
-     
-  m_turret.setDefaultCommand((new TrackTargetWithLimelight(m_turret)));
-     
-   // m_shooter.setDefaultCommand((new RunShooter(() -> 0, m_shooter, m_turret)));
-    
-   
-    m_hanger.setDefaultCommand(new ControlHanger(
-      () -> operatorStick.getY(),
-      () -> operatorStick.getRawAxis(SLIDER_AXIS),  //slider up means it's OK to Hang
-      m_hanger));
-      
     }
     
     /**
@@ -338,6 +359,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     
     // ************  DRIVER STICK  ***************
+    // Toggle the collector
     huntForBallsButton = new JoystickButton(driverStick, HUNT_FOR_BALLS);
     huntForBallsButton.whenHeld(
       new ParallelCommandGroup(
@@ -345,12 +367,14 @@ public class RobotContainer {
           m_lifter,
           () -> LIFTER_DEFAULT_SPEED,
           m_loader,
+          // 10/9 is gear ratio
           () -> -10/9*m_lifter.getMotorSpeed()
         ),
         new HuntForBalls(m_collector, m_gate, m_lifter)
       )
     );
 
+    // Help driver by locking onto the closer ball (center robot w/ ball)
     huntBallAssistButton = new JoystickButton(driverStick, 2);
     huntBallAssistButton.whileHeld(new TurnToBall(
       () -> -driverStick.getY(),
@@ -361,20 +385,19 @@ public class RobotContainer {
     hangerToMaxHeightButton.whenPressed(new ConditionalCommand(new RaiseHangerToHeight(MAX_HEIGHT-2, m_hanger), 
     new InstantCommand(() -> {}), () -> driverStick.getRawAxis(3) < -0.8));  
 
-    /*
-    armToggleButton = new JoystickButton(driverStick, Constants.Buttons.ARM_TOGGLE);
+    // Used for manually testing certain things
+
+    // armToggleButton = new JoystickButton(driverStick, Constants.Buttons.ARM_TOGGLE);
+    // armToggleButton.whenPressed(new ToggleCollector(m_collector));
+
     // invertCollectorButton = new JoystickButton(driverStick, COLLECTOR_REVERSE);
     // invertCollectorButton.whenPressed(new RaiseHangerToHeight(50, m_hanger));
     
-    armToggleButton.whenPressed(new ToggleCollector(m_collector));
+    // invertCollectorButton = new JoystickButton(driverStick, Constants.Buttons.COLLECTOR_REVERSE);
+    // invertCollectorButton.whenPressed(m_collector::invertDirection);
+    // armToggleButton.whenPressed(m_collector::toggleCollector);
     
-    invertCollectorButton = new JoystickButton(driverStick, Constants.Buttons.COLLECTOR_REVERSE);
-    invertCollectorButton.whenPressed(m_collector::invertDirection);
-    //armToggleButton.whenPressed(m_collector::toggleCollector);
-    
-    */
-    /* */
-    
+
     // ************  OPERATOR STICK  ***************
     //Hanger pneumatics buttons 
     hangerPneumaticsReverseButton = new JoystickButton(operatorStick, Constants.Buttons.HANGER_PNEUMATICS_REVERSE);
@@ -387,11 +410,9 @@ public class RobotContainer {
     shootCargoButton = new JoystickButton(operatorStick, Constants.Buttons.SHOOT_ALLIANCE_BALL);
     shootCargoButton.whileHeld(
       new ConditionalCommand(
-
-
-        new InstantCommand(() -> {}, m_hanger),
-        
         //requires hanger so operator can resume control in 'Hang Mode'
+        new InstantCommand(() -> {}, m_hanger),
+
         new ConditionalCommand(
           
           new ParallelRaceGroup(
@@ -400,12 +421,10 @@ public class RobotContainer {
 
           new InstantCommand(()-> {}, m_shooter),
 
-          () -> ((m_turret.limelightHasValidTarget() == true) && (m_lifter.getColorUpper() != "None"))),
-
+          () -> (m_turret.limelightHasValidTarget() && (m_lifter.getColorUpper() != "None"))),
 
         () -> operatorStick.getRawAxis(3) < -0.8)); 
     
-        
         turretAimToggleButton = new JoystickButton(operatorStick, Constants.Buttons.AIM_TOGGLE);
         turretAimToggleButton.toggleWhenPressed(new TurnTurretWithJoystick(() -> operatorStick.getZ(), m_turret));
         
@@ -415,50 +434,31 @@ public class RobotContainer {
         pullRobotUpButton = new POVButton(operatorStick, ELEVATOR_DOWN);
         pullRobotUpButton.whenPressed(new ConditionalCommand(new PullUpStep2(m_hanger), new PullUpStep1(m_hanger), ()-> m_hanger.getHangerPosition() < STEP_1+10));
 
+      // turnTestButton = new JoystickButton(operatorStick, 9);
+      // turnTestButton.whenPressed(new TurnToAngle(112, m_drivetrain));
 
-        // turnTestButton = new JoystickButton(operatorStick, 9);
-        // turnTestButton.whenPressed(new TurnToAngle(112, m_drivetrain));
+    // operatorStick.getRawAxis(3) < -0.8
+    // new InstantCommand(() -> {}, m_hanger)
 
-    //incrementHangerUpButton = new POVButton(operatorStick, ELEVATOR_UP);
-    //incrementHangerUpButton.whenPressed(new IncrementHangerUp(m_hanger.getHangerPosition(), m_hanger));
-    
-
-    //operatorStick.getRawAxis(3) < -0.8
-    //new InstantCommand(() -> {}, m_hanger)
-
-    //shootCargoButton.whileHeld(new RunLifter(
-      //m_lifter,
-      //() -> Constants.Lifter.DEFAULT_SPEED
-      //));
-      /*
-    turnTurretToZeroButton = new JoystickButton(operatorStick, Constants.Buttons.TURRET_TO_ZERO);
-    turnTurretToZeroButton.whenPressed(new TurnTurretToAngle(
-      Constants.Turret.ZERO,
-      m_turret));
-      
+    // shootCargoButton.whileHeld(new RunLifter(
+    //   m_lifter,
+    //   () -> Constants.Lifter.DEFAULT_SPEED
+    //   ));
      
-     runShooterToggleButton = new JoystickButton(operatorStick, Constants.Buttons.RUN_SHOOTER_TOGGLE);
-     runShooterToggleButton.toggleWhenPressed(new RunShooter(() -> m_shooter.getSliderValue(), m_shooter, m_turret));
+    // turnTurretToZeroButton = new JoystickButton(operatorStick, Constants.Buttons.TURRET_TO_ZERO);
+    // turnTurretToZeroButton.whenPressed(new TurnTurretToAngle(
+    //   Constants.Turret.ZERO,
+    //   m_turret));
+      
+    // shootSliderButton = new JoystickButton(operatorStick, Constants.Buttons.SHOOT_WITH_SLIDER);
+    // shootSliderButton.whileHeld(new ShootDefault(() -> m_shooter.getSliderValue(), m_shooter, () -> Constants.Lifter.DEFAULT_SPEED, m_lifter, m_turret));
+    
+    // runLifterReverseButton = new JoystickButton(operatorStick, Constants.Buttons.REVERSE_LIFTER);
+    // runLifterReverseButton.whileHeld(new RunLifter(m_lifter, () -> -0.2).withTimeout(1));
 
-     shootSliderButton = new JoystickButton(operatorStick, Constants.Buttons.SHOOT_WITH_SLIDER);
-     shootSliderButton.whileHeld(new ShootDefault(() -> m_shooter.getSliderValue(), m_shooter, () -> Constants.Lifter.DEFAULT_SPEED, m_lifter, m_turret));
-    
-    runLifterReverseButton = new JoystickButton(operatorStick, Constants.Buttons.REVERSE_LIFTER);
-    runLifterReverseButton.whileHeld(new RunLifter(m_lifter, () -> -0.2).withTimeout(1));
-
-
-    runShooterAtSlider = new JoystickButton(operatorStick, 12);
-    runShooterAtSlider.whileHeld(new RunShooterAtSpeed(() -> m_shooter.getSliderValue(), m_shooter));
-    */
-    
-    //whenPressed(new IncrementHangerUp(m_hanger.getHangerPosition(), m_hanger));
-    
-    //cancelHangerUpButton = new POVButton(operatorStick, ELEVATOR_CANCEL);
-    //cancelHangerUpButton.whenPressed(new IncrementHangerUp(m_hanger.getHangerPosition(), m_hanger));
-    
-
-  
-    
+    // runShooterAtSlider = new JoystickButton(operatorStick, 12);
+    // runShooterAtSlider.whileHeld(new RunShooterAtSpeed(() -> m_shooter.getSliderValue(), m_shooter));
+          
   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -466,12 +466,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    
-
     //m_drivetrain.resetYaw();          // zero the yaw on the navx at start of Autonomous period
     return autoChooser.getSelected();
-
-    
   }
-
 }

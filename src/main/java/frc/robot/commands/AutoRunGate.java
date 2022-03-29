@@ -9,6 +9,7 @@ import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Gate;
 import frc.robot.subsystems.Lifter;
 
+// Run gate for autonomous
 public class AutoRunGate extends CommandBase {
   /** Creates a new AutoRunGate. */
   private final Lifter m_lifter;

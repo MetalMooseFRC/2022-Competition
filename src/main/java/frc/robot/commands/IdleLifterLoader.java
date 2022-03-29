@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Lifter;
 import frc.robot.subsystems.Loader;
 
+// Load lifter until upper ball is detected by color sensor
 public class IdleLifterLoader extends CommandBase {
   
   private Lifter m_lifter;

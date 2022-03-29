@@ -15,7 +15,7 @@ package frc.robot;
 public final class Constants {
     public final class Buttons {
         //Drive Stick
-        public static final int HUNT_FOR_BALLS = 1;//ARM_TOGGLE = 1;
+        public static final int HUNT_FOR_BALLS = 1; //ARM_TOGGLE = 1;
         public static final int COLLECTOR_REVERSE = 2;
         
         //Op Stick
@@ -85,24 +85,22 @@ public final class Constants {
     public final class Preferences {
         public static final double DEADBAND = 0.05;
         public static final double JOYSTICK_SPEED_FACTOR = 1;
-        public static final double JOYSTICK_TURN_FACTOR = 0.6;//Change this to like 1
+        public static final double JOYSTICK_TURN_FACTOR = 0.6; //Change this to like 1
     }
 
     public final class Auto {
         public static final double DEFAULT_AUTO_TIME = 3.0;
         public static final double AUTO_DRIVE_SPEED = 0.7;
 
-        public static final double TWO_BALL_AUTO_DRIVE_DISTANCE = 5;//feet
-        public static final double TWO_BALL_AUTO_SHOOTER_SPEED = 2864;
+        public static final double TWO_BALL_AUTO_DRIVE_DISTANCE = 5; //feet
+        public static final double TWO_BALL_AUTO_SHOOTER_SPEED = 2864; //RPM
 
         public static final double THREE_BALL_AUTO_FIRST_DISTANCE = 21; //feet
         public static final double THREE_BALL_AUTO_SECOND_DISTANCE = -17; //feet
         public static final double THREE_BALL_AUTO_FIRST_TURN = 105; //degrees
         public static final double THREE_BALL_AUTO_SECOND_TURN = 155; //degrees
 
-
         public static final double LIFTLOAD_AUTO_TIMEOUT = 0.85;
-
     }
 
     public final class Drivetrain {
@@ -114,25 +112,24 @@ public final class Constants {
         public static final double P_TURN = 0.02;
 	    public static final double I_TURN = 0.005;
 	    public static final double D_TURN = 0;
-	    public static final double TOLERANCE_TURN = 3.51;			// degrees
-	    public static final double TOLERANCE_TURN_RATE = 4;   	// degrees per second
-	    public static final double FEED_TURN = 0.05;//5;
+	    public static final double TOLERANCE_TURN = 3.51; // degrees
+	    public static final double TOLERANCE_TURN_RATE = 4; // degrees per second
+	    public static final double FEED_TURN = 0.05; //5;
     }
 
     public final class Turret {
         public static final int GEAR_RATIO = 10*4;
         public static final double DEFAULT_SPEED = 0.3;
         public static final double ZERO = 0;
-        public static final double CLAMP = 0.8;//0.3;
+        public static final double CLAMP = 0.8; //0.3;
         public static final double TURRET_LIMITER = 1;
         public static final double RAMP_RATE = 3;
 
         public final class PID {
-            public static final double kP = 0.007;//.0086;
-            public static final double kI = 0.002;//0.0;
+            public static final double kP = 0.007; //.0086;
+            public static final double kI = 0.002; //0.0;
             public static final double kD = 0.0;
-            public static final double FF = 0.05
-            ;
+            public static final double FF = 0.05;
             public static final double TOLERANCE = 1.0;
             public static final int TOLERANCE_BUFFER = 5;
         }
@@ -140,7 +137,7 @@ public final class Constants {
 
     public final class Shooter {
         // Percent of max speed
-        public static final double SHOOTER_DEFAULT_SPEED = 3000;//0.58;
+        public static final double SHOOTER_DEFAULT_SPEED = 3000; //0.58;
         public static final double ADJUST_INCREMENT = 0.05;
         public static final double MAX_SHOOTER_POWER = 0.75;
         public static final double SHOOTING_SPEED_THRESHOLD = 0.8;
@@ -183,27 +180,17 @@ public final class Constants {
         public static final double STEP_1 = 44;
         public static final double STEP_2 = 4;
         //public static final double STEP_3 = 95;
-
-        
-
-
-
-
     }
 
 
     public final class Limelight {
         //Units = CM
-        
         public static final double LIMELIGHT_HEIGHT = 102;
         public static final double TARGET_HEIGHT = 259;
         public static final double LIMELIGHT_ANGLE = 29.962;
 
-        public static final double SEARCH_SPEED = .1;//.3;
+        public static final double SEARCH_SPEED = .1; //.3;
     }
 
-    public final class Etcetera {}
-
     public static final boolean WONKY = false;
-
 }

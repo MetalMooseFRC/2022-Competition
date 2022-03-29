@@ -20,6 +20,8 @@ import frc.robot.subsystems.Turret;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+
+// The process to shoot 1-2 loaded balls properly (handles all timings and speeds)
 public class ShootingSequence extends SequentialCommandGroup {
   private Shooter m_shooter;
   private Lifter m_lifter;

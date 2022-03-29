@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 
+// Allows for driving of robot
 public class DriveArcade extends CommandBase {
 
   private final Drivetrain m_drivetrain;

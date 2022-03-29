@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Loader;
 import frc.robot.subsystems.Lifter;
 
+// Run lifter & loader
 public class RunLifterLoader extends CommandBase {
   /** Creates a new StopLifterLoader. */
   private final Lifter m_lifter;
