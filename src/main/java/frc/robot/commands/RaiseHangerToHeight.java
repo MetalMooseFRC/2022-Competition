@@ -5,7 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.subsystems.Hanger;
 import static frc.robot.Constants.Hanger.*;
@@ -32,7 +32,7 @@ public class RaiseHangerToHeight extends PIDCommand {
         output -> {
           //if (output > 0) {
             hanger.set(output + 0.02);
-            SmartDashboard.putNumber("out", output);
+            // SmartDashboard.putNumber("out", output);
           //}
 
 

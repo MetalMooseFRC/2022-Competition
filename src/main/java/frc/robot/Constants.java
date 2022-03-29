@@ -90,7 +90,7 @@ public final class Constants {
 
     public final class Auto {
         public static final double DEFAULT_AUTO_TIME = 3.0;
-        public static final double AUTO_DRIVE_SPEED = 0.65;
+        public static final double AUTO_DRIVE_SPEED = 0.7;
 
         public static final double TWO_BALL_AUTO_DRIVE_DISTANCE = 5;//feet
         public static final double TWO_BALL_AUTO_SHOOTER_SPEED = 2864;
@@ -101,7 +101,7 @@ public final class Constants {
         public static final double THREE_BALL_AUTO_SECOND_TURN = 155; //degrees
 
 
-        public static final double LIFTLOAD_AUTO_TIMEOUT = 1.1;
+        public static final double LIFTLOAD_AUTO_TIMEOUT = 0.85;
 
     }
 
@@ -111,10 +111,10 @@ public final class Constants {
         public static final double DRIVE_LIMITER = 50; //2
         public static final double TURN_LIMITER = 1.6; //1.5
 
-        public static final double P_TURN = 0.03;
-	    public static final double I_TURN = 0.003;
+        public static final double P_TURN = 0.02;
+	    public static final double I_TURN = 0.005;
 	    public static final double D_TURN = 0;
-	    public static final double TOLERANCE_TURN = 2;			// degrees
+	    public static final double TOLERANCE_TURN = 3.51;			// degrees
 	    public static final double TOLERANCE_TURN_RATE = 4;   	// degrees per second
 	    public static final double FEED_TURN = 0.05;//5;
     }
@@ -128,10 +128,11 @@ public final class Constants {
         public static final double RAMP_RATE = 3;
 
         public final class PID {
-            public static final double kP = 0.0055;//.0086;
+            public static final double kP = 0.007;//.0086;
             public static final double kI = 0.002;//0.0;
             public static final double kD = 0.0;
-            public static final double FF = 0.1;
+            public static final double FF = 0.05
+            ;
             public static final double TOLERANCE = 1.0;
             public static final int TOLERANCE_BUFFER = 5;
         }
@@ -147,7 +148,7 @@ public final class Constants {
 
     public final class Lifter {
         public static final double LIFTER_DEFAULT_SPEED = 0.5;
-        public static final double COLOR_CONFIDENCE = 0.9;
+        public static final double COLOR_CONFIDENCE = 0.83;
     }
 
     public final class Loader {

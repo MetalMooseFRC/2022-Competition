@@ -18,7 +18,7 @@ import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class Hanger extends SubsystemBase {
@@ -54,7 +54,7 @@ public class Hanger extends SubsystemBase {
 
     encoderAverage = (rightEncoder.getPosition() + leftEncoder.getPosition())/2;
     //puts elevator encoders on smartdashboard    
-    SmartDashboard.putNumber("encoder average -1", encoderAverage);
+    // SmartDashboard.putNumber("encoder average -1", encoderAverage);
     
 
     // This method will be called once per scheduler run
@@ -63,7 +63,7 @@ public class Hanger extends SubsystemBase {
 
   public double getHangerPosition(){
     
-    SmartDashboard.putNumber("encoder average", encoderAverage);
+    // SmartDashboard.putNumber("encoder average", encoderAverage);
 
     return encoderAverage;
   }

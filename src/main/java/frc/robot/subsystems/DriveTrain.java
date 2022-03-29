@@ -11,10 +11,10 @@ import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
+// import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import static frc.robot.Constants.Drivetrain.*;
 import static frc.robot.Constants.CANIDs.*;
@@ -28,7 +28,6 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.Timer;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -56,7 +55,7 @@ public class Drivetrain extends SubsystemBase {
     private final AHRS navx = new AHRS(SPI.Port.kMXP);
     private final RelativeEncoder leftEncoder = m_motorLeftMiddle.getEncoder();
     public final RelativeEncoder rightEncoder = m_motorRightMiddle.getEncoder();
-    private double m_pitch, m_pitchRate, m_oldPitch, m_newPitch, m_oldCount, m_newCount;
+    private double m_pitchRate, m_oldPitch, m_newPitch, m_oldCount, m_newCount;
     
     
     
@@ -64,8 +63,8 @@ public class Drivetrain extends SubsystemBase {
     
     //Set up shuffleboard
     private ShuffleboardTab m_tab = Shuffleboard.getTab("Development");
-    private ComplexWidget z_tab = Shuffleboard.getTab("Development")
-    .add("NavX", navx);
+    // private ComplexWidget z_tab = Shuffleboard.getTab("Development")
+    // .add("NavX", navx);
     
     
     
@@ -114,26 +113,21 @@ public class Drivetrain extends SubsystemBase {
     m_pitchRate = (m_oldPitch - m_newPitch)/(m_oldCount - m_newCount) *  navx.getActualUpdateRate();
 
 
+    // SmartDashboard.putNumber("Vel X", navx.getVelocityX());
+    // SmartDashboard.putNumber("Vel Y", navx.getVelocityY());
+    // SmartDashboard.putNumber("count", navx.getUpdateCount());
+    // SmartDashboard.putNumber("last timestamp", navx.getLastSensorTimestamp());
+    // SmartDashboard.putNumber("Req Rate", navx.getRequestedUpdateRate());
+    // SmartDashboard.putNumber("Timestamp", Timer.getFPGATimestamp());
+    // SmartDashboard.putNumber("pitchRate", m_pitchRate);
 
     
 
-    SmartDashboard.putNumber("pitch", m_pitch);
-    SmartDashboard.putNumber("Vel X", navx.getVelocityX());
-    SmartDashboard.putNumber("Vel Y", navx.getVelocityY());
-    SmartDashboard.putNumber("count", navx.getUpdateCount());
-    SmartDashboard.putNumber("last timestamp", navx.getLastSensorTimestamp());
-    SmartDashboard.putNumber("Req Rate", navx.getRequestedUpdateRate());
-    SmartDashboard.putNumber("Timestamp", Timer.getFPGATimestamp());
-    SmartDashboard.putNumber("pitchRate", m_pitchRate);
-
-
-    
-
-    boolean motionDetected = navx.isMoving();
-    SmartDashboard.putBoolean("MotionDetected", motionDetected);
-    boolean isConnected = navx.isConnected();
-    SmartDashboard.putBoolean("Is Connected", isConnected);
-    SmartDashboard.putNumber("rotations",rightEncoder.getPosition() );
+    // boolean motionDetected = navx.isMoving();
+    // SmartDashboard.putBoolean("MotionDetected", motionDetected);
+    // boolean isConnected = navx.isConnected();
+    // SmartDashboard.putBoolean("Is Connected", isConnected);
+    // SmartDashboard.putNumber("rotations",rightEncoder.getPosition() );
     
 
     //m_odometry.update(m_navx.getRotation2d(),
