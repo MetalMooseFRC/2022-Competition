@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
-// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.subsystems.Hanger;
 import static frc.robot.Constants.Hanger.*;
@@ -13,28 +12,26 @@ import static frc.robot.Constants.Hanger.*;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class IncrementHangerUp extends PIDCommand {
+public class PullUpStep1 extends PIDCommand {
 
   private Hanger m_hanger;
-  private double m_startPosition, m_currentPosition;
+  private double  m_currentPosition;
   
 
   /** Creates a new RaiseHangerToHeight. */
-  public IncrementHangerUp(double startPosition, Hanger hanger) {
+  public PullUpStep1(Hanger hanger) {
     super(
         // The controller that the command will use
-        new PIDController(HANGER_kP, HANGER_kI, HANGER_kD),
+        new PIDController(HANGER_PULL_kP, HANGER_PULL_kI, HANGER_PULL_kD),
         // This should return the measurement
         hanger::getHangerPosition,
         // This should return the setpoint (can also be a constant)
-        STEP_1 - HANGER_POSITION_TOLERANCE,
+        STEP_1 ,
         // This uses the output
         output -> {
-        
-          
+      
           hanger.set(output + 0.04);
         
-
         });
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -42,9 +39,7 @@ public class IncrementHangerUp extends PIDCommand {
 
     // Configure additional PID options by calling `getController` here.
     m_hanger = hanger;
-    m_startPosition = startPosition;
     
-   
 
   }
 
@@ -52,17 +47,13 @@ public class IncrementHangerUp extends PIDCommand {
   @Override
   public boolean isFinished() {
     m_currentPosition = m_hanger.getHangerPosition();
-    if (m_startPosition < STEP_1){
-      // SmartDashboard.putNumber("if", m_currentPosition);
-      getController().setSetpoint(20);//STEP_1);
-      // SmartDashboard.putNumber("set", getController().getSetpoint());
-      if(m_currentPosition > STEP_1){
-        m_controller.close();
-        m_hanger.set(0);   //hold
-        return true;
-      }
-      //return m_currentPosition > STEP_1 ; 
+    
+    if(m_currentPosition > STEP_1){
+      m_controller.close();
+      m_hanger.set(0.06);   //hold
+      return true;
     }
+      
           
     return false;//m_currentPosition > MAX_HEIGHT - HANGER_POSITION_TOLERANCE;
   }
