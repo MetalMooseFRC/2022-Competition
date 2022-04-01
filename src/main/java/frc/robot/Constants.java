@@ -5,20 +5,24 @@
 package frc.robot;
 
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants. This class should not be used for any other purpose. All constants should be declared
+ * The Constants class provides a convenient place for teams to hold robot-wide
+ * numerical or boolean
+ * constants. This class should not be used for any other purpose. All constants
+ * should be declared
  * globally (i.e. public static). Do not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
+ * <p>
+ * It is advised to statically import this class (or one of its inner classes)
+ * wherever the
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
     public final class Buttons {
-        //Drive Stick
-        public static final int HUNT_FOR_BALLS = 1; //ARM_TOGGLE = 1;
+        // Drive Stick
+        public static final int HUNT_FOR_BALLS = 1; // ARM_TOGGLE = 1;
         public static final int COLLECTOR_REVERSE = 2;
-        
-        //Op Stick
+
+        // Op Stick
         public static final int HANGER_PNEUMATICS_REVERSE = 4;
         public static final int HANGER_PNEUMATICS_FORWARD = 6;
         public static final int SLIDER_AXIS = 3;
@@ -31,7 +35,7 @@ public final class Constants {
         public static final int SHOOTER_SPEED_UP = 10;
         public static final int TURRET_TO_ZERO = 7;
         public static final int ELEVATOR_UP = 180;
-        //public static final int ELEVATOR_CANCEL = 90;
+        // public static final int ELEVATOR_CANCEL = 90;
         public static final int ELEVATOR_DOWN = 0;
         public static final int REVERSE_LIFTER = 5;
     }
@@ -40,11 +44,11 @@ public final class Constants {
         public static final int DT_LEFT_BACK = 5;
         public static final int DT_LEFT_MIDDLE = 3;
         public static final int DT_LEFT_FRONT = 1;
-        
+
         public static final int DT_RIGHT_FRONT = 2;
         public static final int DT_RIGHT_MIDDLE = 4;
-        public static final int DT_RIGHT_BACK = 6; 
-        
+        public static final int DT_RIGHT_BACK = 6;
+
         public static final int SH_LEFT = 7;
         public static final int SH_RIGHT = 8;
 
@@ -65,13 +69,13 @@ public final class Constants {
     }
 
     public final class PneumaticsIDs {
-        //COLLECTOR_A is A on solenoid(currently the extending one)
-        //COLLECTOR_B is B on solenoid(currently the retracting one)
+        // COLLECTOR_A is A on solenoid(currently the extending one)
+        // COLLECTOR_B is B on solenoid(currently the retracting one)
         public static final int COLLECTOR_A = 0;
         public static final int COLLECTOR_B = 1;
 
-        //HANGER_A is A on solenoid(currently the extending one)
-        //HANGER_B is B on solenoid(currently the retracting one)
+        // HANGER_A is A on solenoid(currently the extending one)
+        // HANGER_B is B on solenoid(currently the retracting one)
         public static final int HANGER_A = 2;
         public static final int HANGER_B = 3;
 
@@ -85,20 +89,20 @@ public final class Constants {
     public final class Preferences {
         public static final double DEADBAND = 0.05;
         public static final double JOYSTICK_SPEED_FACTOR = 1;
-        public static final double JOYSTICK_TURN_FACTOR = 0.6; //Change this to like 1
+        public static final double JOYSTICK_TURN_FACTOR = 0.6; // Change this to like 1
     }
 
     public final class Auto {
         public static final double DEFAULT_AUTO_TIME = 3.0;
         public static final double AUTO_DRIVE_SPEED = 0.7;
 
-        public static final double TWO_BALL_AUTO_DRIVE_DISTANCE = 5; //feet
-        public static final double TWO_BALL_AUTO_SHOOTER_SPEED = 2864; //RPM
+        public static final double TWO_BALL_AUTO_DRIVE_DISTANCE = 5; // feet
+        public static final double TWO_BALL_AUTO_SHOOTER_SPEED = 2864; // RPM
 
-        public static final double THREE_BALL_AUTO_FIRST_DISTANCE = 21; //feet
-        public static final double THREE_BALL_AUTO_SECOND_DISTANCE = -17; //feet
-        public static final double THREE_BALL_AUTO_FIRST_TURN = 105; //degrees
-        public static final double THREE_BALL_AUTO_SECOND_TURN = 155; //degrees
+        public static final double THREE_BALL_AUTO_FIRST_DISTANCE = 21; // feet
+        public static final double THREE_BALL_AUTO_SECOND_DISTANCE = -17; // feet
+        public static final double THREE_BALL_AUTO_FIRST_TURN = 105; // degrees
+        public static final double THREE_BALL_AUTO_SECOND_TURN = 155; // degrees
 
         public static final double LIFTLOAD_AUTO_TIMEOUT = 0.85;
     }
@@ -106,28 +110,28 @@ public final class Constants {
     public final class Drivetrain {
         public static final double DRIVE_DEADBAND = 0.02;
         public static final double TURN_DEADBAND = 0.02;
-        public static final double DRIVE_LIMITER = 50; //2
-        public static final double TURN_LIMITER = 1.6; //1.5
+        public static final double DRIVE_LIMITER = 50; // 2
+        public static final double TURN_LIMITER = 1.6; // 1.5
 
         public static final double P_TURN = 0.02;
-	    public static final double I_TURN = 0.005;
-	    public static final double D_TURN = 0;
-	    public static final double TOLERANCE_TURN = 3.51; // degrees
-	    public static final double TOLERANCE_TURN_RATE = 4; // degrees per second
-	    public static final double FEED_TURN = 0.05; //5;
+        public static final double I_TURN = 0.005;
+        public static final double D_TURN = 0;
+        public static final double TOLERANCE_TURN = 3.51; // degrees
+        public static final double TOLERANCE_TURN_RATE = 4; // degrees per second
+        public static final double FEED_TURN = 0.05; // 5;
     }
 
     public final class Turret {
-        public static final int GEAR_RATIO = 10*4;
+        public static final int GEAR_RATIO = 10 * 4;
         public static final double DEFAULT_SPEED = 0.3;
         public static final double ZERO = 0;
-        public static final double CLAMP = 0.8; //0.3;
+        public static final double CLAMP = 0.8; // 0.3;
         public static final double TURRET_LIMITER = 1;
         public static final double RAMP_RATE = 3;
 
         public final class PID {
-            public static final double kP = 0.007; //.0086;
-            public static final double kI = 0.002; //0.0;
+            public static final double kP = 0.007; // .0086;
+            public static final double kI = 0.002; // 0.0;
             public static final double kD = 0.0;
             public static final double FF = 0.05;
             public static final double TOLERANCE = 1.0;
@@ -137,7 +141,7 @@ public final class Constants {
 
     public final class Shooter {
         // Percent of max speed
-        public static final double SHOOTER_DEFAULT_SPEED = 3000; //0.58;
+        public static final double SHOOTER_DEFAULT_SPEED = 3000; // 0.58;
         public static final double ADJUST_INCREMENT = 0.05;
         public static final double MAX_SHOOTER_POWER = 0.75;
         public static final double SHOOTING_SPEED_THRESHOLD = 0.8;
@@ -152,7 +156,6 @@ public final class Constants {
         public static final double LOADER_IDLE_SPEED = -0.1;
     }
 
-
     public final class Collector {
         public static final double COLLECTOR_DEFAULT_SPEED = 0.55;
     }
@@ -163,14 +166,13 @@ public final class Constants {
 
     public final class Hanger {
         public static final double HANGER_DEFAULT_SPEED = 0.5;
-        public static final double MAX_HEIGHT = 88;  // number of rotaions to the top
-        public static final double HANGER_POSITION_TOLERANCE = 1;
-        public static final double BAR_POSITION = 1;  // just below the fixed hooks
-        public static final double MAX_PITCHRATE = 60; //OK to climb if below this
+        public static final double MAX_HEIGHT = 89; // number of rotaions to the top
+        public static final double HANGER_POSITION_TOLERANCE = 0.5;
+        public static final double BAR_POSITION = 1; // just below the fixed hooks
+        public static final double MAX_PITCHRATE = 60; // OK to climb if below this
 
-        
         public static final double HANGER_kP = 0.06;
-        public static final double HANGER_kI = 0.0005;
+        public static final double HANGER_kI = 0.005;
         public static final double HANGER_kD = 0.0;
 
         public static final double HANGER_PULL_kP = 0.03;
@@ -179,17 +181,16 @@ public final class Constants {
 
         public static final double STEP_1 = 44;
         public static final double STEP_2 = 4;
-        //public static final double STEP_3 = 95;
+        // public static final double STEP_3 = 95;
     }
 
-
     public final class Limelight {
-        //Units = CM
+        // Units = CM
         public static final double LIMELIGHT_HEIGHT = 102;
         public static final double TARGET_HEIGHT = 259;
         public static final double LIMELIGHT_ANGLE = 29.962;
 
-        public static final double SEARCH_SPEED = .1; //.3;
+        public static final double SEARCH_SPEED = .1; // .3;
     }
 
     public static final boolean WONKY = false;

@@ -4,7 +4,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -53,28 +52,29 @@ public class AutoFourBallCenter extends ParallelCommandGroup {
         new InstantCommand(() -> m_collector.collect(), m_collector),
         new InstantCommand(() -> m_gate.setGate(GATE_DEFAULT_SPEED), m_gate),
         new DriveStraight(m_drivetrain, TWO_BALL_AUTO_DRIVE_DISTANCE-1, AUTO_DRIVE_SPEED),
-        new DriveStraight(m_drivetrain, 4, AUTO_DRIVE_SPEED-0.15).until(() -> (m_lifter.getColorLower() == DriverStation.getAlliance().toString())),
+        new DriveStraight(m_drivetrain, 4, AUTO_DRIVE_SPEED-0.15).until(() -> (m_lifter.getColorLower() != "None")),
         new WaitCommand(0.2),
         new AutonomousShootingSequence(m_shooter, m_turret, m_gate, m_lifter, m_loader),
         //Shoot 2 balls
 
         new InstantCommand(() -> m_drivetrain.resetYaw()),
-        new TurnToAngle(20, m_drivetrain),
+        new TurnToAngle(30, m_drivetrain),
         new InstantCommand(() -> m_drivetrain.resetYaw()),
-        new DriveStraight(m_drivetrain, 9, AUTO_DRIVE_SPEED),
+        new DriveStraight(m_drivetrain, 8, AUTO_DRIVE_SPEED),
         new InstantCommand(() -> m_gate.setGate(GATE_DEFAULT_SPEED), m_gate),
         new InstantCommand(() -> m_lifter.setMotorPower(Constants.Lifter.LIFTER_DEFAULT_SPEED), m_lifter),
         new InstantCommand(() -> m_loader.setMotorPower(Constants.Lifter.LIFTER_DEFAULT_SPEED*-10/9), m_loader),
         new TurnToBall(() -> 0, m_drivetrain),
         new InstantCommand(() -> m_drivetrain.resetYaw()),
-        new DriveArcade(() -> AUTO_DRIVE_SPEED-0.15, () -> 0, m_drivetrain).until(() -> (m_lifter.getColorLower() == DriverStation.getAlliance().toString())),
+        new DriveArcade(() -> AUTO_DRIVE_SPEED-0.15, () -> 0, m_drivetrain).until(() -> (m_lifter.getColorLower() != "None")),
         new WaitCommand(0.5),
         new InstantCommand(() -> m_lifter.setMotorPower(0), m_lifter),
         new InstantCommand(() -> m_loader.setMotorPower(0), m_loader),
         new InstantCommand(() -> m_drivetrain.resetYaw(), m_drivetrain),
-        new DriveStraight(m_drivetrain, -2, -AUTO_DRIVE_SPEED).withTimeout(1),
+        new TurnToAngle(-5, m_drivetrain),
+        new DriveStraight(m_drivetrain, -3, -AUTO_DRIVE_SPEED).withTimeout(1),
         new InstantCommand(() -> m_gate.setGate(0), m_gate),
-        new DriveStraight(m_drivetrain, -6, -AUTO_DRIVE_SPEED).withTimeout(2),
+        new DriveStraight(m_drivetrain, -7, -AUTO_DRIVE_SPEED).withTimeout(2),
         new WaitCommand(0.3),
         new AutonomousShootingSequence(m_shooter, m_turret, m_gate, m_lifter, m_loader),
         //Shoot 2 more balls

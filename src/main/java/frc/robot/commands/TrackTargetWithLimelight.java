@@ -42,7 +42,7 @@ public class TrackTargetWithLimelight extends CommandBase {
     m_turret.setLimelightLights(3);
     //offBy = 1;  //arbitrary starting point, used to establish direction of search
 
-    System.out.println("initializing TrackTargetWithLimelight");
+    // System.out.println("initializing TrackTargetWithLimelight");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -71,7 +71,7 @@ public class TrackTargetWithLimelight extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    System.out.println("endingTrackTargetWithLimelight");
+    // System.out.println("endingTrackTargetWithLimelight");
   }
 
   // Returns true when the command should end.

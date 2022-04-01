@@ -37,7 +37,7 @@ public class Hanger extends SubsystemBase {
   /** Creates a new Hanger. */
   public Hanger() {
 
-    m_hangerSolenoid.set(kForward);  //start with elevator pulled back
+    m_hangerSolenoid.set(kReverse);  //start with elevator pulled back
     m_motorClimberLeft.setInverted(false);
     m_motorClimberRight.setInverted(true);
 
@@ -77,12 +77,12 @@ public class Hanger extends SubsystemBase {
   //}
 
   public void pushHangerOut() {
-    System.out.print(m_hangerSolenoid.get());
+    // System.out.print(m_hangerSolenoid.get());
     m_hangerSolenoid.set(kForward);;
   }
 
   public void pullHangerIn() {
-    System.out.print(m_hangerSolenoid.get());
+    // System.out.print(m_hangerSolenoid.get());
     m_hangerSolenoid.set(kReverse);
   }
   

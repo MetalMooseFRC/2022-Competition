@@ -4,8 +4,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -41,13 +39,13 @@ public class AutonomousShootingSequence extends SequentialCommandGroup {
     addCommands(
       //FIXME: BEFORE COMPETITION MAKE SURE TO SWAP THE COMMENTING ON THIS SO THAT OUR BALLS ACTUALLY MAKE IT IN INSTEAD OF BEING BURPED
 
-      // new SequentialCommandGroup(
-      //   new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity()), m_shooter),
-      //   new WaitUntilCommand(() -> ((m_shooter.getLeftWheelSpeed()) >= (m_turret.getRequiredVelocity()*Constants.Shooter.SHOOTING_SPEED_THRESHOLD)))),
-
       new SequentialCommandGroup(
-        new InstantCommand(() -> m_shooter.setShooterSpeed(2500), m_shooter),
-        new WaitUntilCommand(() -> ((m_shooter.getLeftWheelSpeed()) >= (2000)))),
+        new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity()), m_shooter),
+        new WaitUntilCommand(() -> ((m_shooter.getLeftWheelSpeed()) >= (m_turret.getRequiredVelocity()*Constants.Shooter.SHOOTING_SPEED_THRESHOLD)))),
+
+      // new SequentialCommandGroup(
+      //   new InstantCommand(() -> m_shooter.setShooterSpeed(2500), m_shooter),
+      //   new WaitUntilCommand(() -> ((m_shooter.getLeftWheelSpeed()) >= (2000)))),
 
       new InstantCommand(() -> m_gate.setGate(Constants.Gate.GATE_DEFAULT_SPEED), m_gate),
       new InstantCommand(() -> m_lifter.setMotorPower(Constants.Lifter.LIFTER_DEFAULT_SPEED)),

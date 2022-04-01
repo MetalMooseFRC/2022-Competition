@@ -38,8 +38,14 @@ public class IdleLifterLoader extends CommandBase {
   @Override
   public void execute() {
     upperColor = m_lifter.getColorUpper();
+    if (upperColor != "None"){
+      m_lifter.m_motor.set(0.0);
+      m_loader.m_motor.set(0.0);
+    }
+    else {
     m_lifter.m_motor.set(m_lifterSpeedSupplier.getAsDouble());
     m_loader.setMotorSpeed(m_loaderSpeedSupplier.getAsDouble());
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -52,11 +58,7 @@ public class IdleLifterLoader extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(upperColor != "None"){
-      return true;
-    }
-    else {
-      return false;
-    }
+    return false;
+    
   }
 }

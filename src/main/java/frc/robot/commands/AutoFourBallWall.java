@@ -3,7 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -49,21 +48,21 @@ public class AutoFourBallWall extends SequentialCommandGroup {
         new InstantCommand(() -> m_collector.collect(), m_collector),
         new InstantCommand(() -> m_gate.setGate(GATE_DEFAULT_SPEED), m_gate),
         new DriveStraight(m_drivetrain, 1.3, AUTO_DRIVE_SPEED+0.1),
-        new DriveStraight(m_drivetrain, 1, AUTO_DRIVE_SPEED-0.1).until(() -> (m_lifter.getColorLower() == DriverStation.getAlliance().toString())),
+        new DriveStraight(m_drivetrain, 1, AUTO_DRIVE_SPEED-0.1).until(() -> (m_lifter.getColorLower() != "None")),
         new WaitCommand(0.2),
         new AutonomousShootingSequence(m_shooter, m_turret, m_gate, m_lifter, m_loader),
         //Shoot 2 balls
 
         new InstantCommand(() -> m_drivetrain.resetYaw()),
         new TurnToAngle(100, m_drivetrain),
-        new DriveStraight(m_drivetrain, 11, AUTO_DRIVE_SPEED),
+        new DriveStraight(m_drivetrain, 16, AUTO_DRIVE_SPEED),
         new InstantCommand(() -> m_gate.setGate(GATE_DEFAULT_SPEED), m_gate),
         new InstantCommand(() -> m_lifter.setMotorPower(Constants.Lifter.LIFTER_DEFAULT_SPEED), m_lifter),
         new InstantCommand(() -> m_loader.setMotorPower(Constants.Lifter.LIFTER_DEFAULT_SPEED*-10/9), m_loader),
         new TurnToBall(() -> 0, m_drivetrain),
-        new DriveArcade(() -> AUTO_DRIVE_SPEED-0.15, () -> 0, m_drivetrain).until(() -> (m_lifter.getColorLower() == DriverStation.getAlliance().toString())).withTimeout(1.2),
+        new DriveArcade(() -> AUTO_DRIVE_SPEED-0.15, () -> 0, m_drivetrain).until(() -> (m_lifter.getColorLower() != "None")).withTimeout(1.2),
         new InstantCommand(() -> m_drivetrain.resetYaw()),
-        new TurnToAngle(-90, m_drivetrain),
+        new TurnToAngle(-20, m_drivetrain),
         new WaitCommand(0.6),
         new InstantCommand(() -> m_lifter.setMotorPower(0), m_lifter),
         new InstantCommand(() -> m_loader.setMotorPower(0), m_loader),

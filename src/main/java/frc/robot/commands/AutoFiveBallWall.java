@@ -50,14 +50,14 @@ public class AutoFiveBallWall extends ParallelCommandGroup {
       new SequentialCommandGroup(
         new InstantCommand(() -> m_collector.collect(), m_collector),
         new InstantCommand(() -> m_gate.setGate(GATE_DEFAULT_SPEED), m_gate),
-        new DriveStraight(m_drivetrain, 1.3, AUTO_DRIVE_SPEED+0.1),
-        new DriveStraight(m_drivetrain, 1, AUTO_DRIVE_SPEED-0.1).until(() -> (m_lifter.getColorLower() == DriverStation.getAlliance().toString())),
+        new DriveStraight(m_drivetrain, 1.1, AUTO_DRIVE_SPEED+0.1),
+        new DriveStraight(m_drivetrain, 1, AUTO_DRIVE_SPEED-0.15).until(() -> (m_lifter.getColorLower() == DriverStation.getAlliance().toString())),
         new WaitCommand(0.2),
         new AutonomousShootingSequence(m_shooter, m_turret, m_gate, m_lifter, m_loader),
         //Shoot 2 balls
 
         new InstantCommand(() -> m_drivetrain.resetYaw(), m_drivetrain),
-        new TurnToAngle(1, m_drivetrain),
+        new TurnToAngle(120, m_drivetrain),
         new DriveStraight(m_drivetrain, 5.75, AUTO_DRIVE_SPEED+0.1),
 
         new InstantCommand(() -> m_gate.setGate(GATE_DEFAULT_SPEED), m_gate),
@@ -73,23 +73,25 @@ public class AutoFiveBallWall extends ParallelCommandGroup {
         //Shoot 1 Ball
         
         new InstantCommand(() -> m_drivetrain.resetYaw(), m_drivetrain),
-        new TurnToAngle(-29, m_drivetrain),
+        new TurnToAngle(-30, m_drivetrain),
         new TurnToBall(() -> 0, m_drivetrain),
-        new DriveStraight(m_drivetrain, 8.8, AUTO_DRIVE_SPEED+0.65),
+        new DriveStraight(m_drivetrain, 2, AUTO_DRIVE_SPEED),
+        new DriveStraight(m_drivetrain, 4, AUTO_DRIVE_SPEED+0.65),
+        new DriveStraight(m_drivetrain, 2, AUTO_DRIVE_SPEED),
         new InstantCommand(() -> m_gate.setGate(GATE_DEFAULT_SPEED), m_gate),
         new InstantCommand(() -> m_lifter.setMotorPower(Constants.Lifter.LIFTER_DEFAULT_SPEED), m_lifter),
         new InstantCommand(() -> m_loader.setMotorPower(Constants.Lifter.LIFTER_DEFAULT_SPEED*-10/9), m_loader),
 
         new TurnToBall(() -> 0, m_drivetrain),
         new DriveArcade(() -> AUTO_DRIVE_SPEED-0.15, () -> 0, m_drivetrain).until(() -> (m_lifter.getColorLower() != "None")).withTimeout(1),
-        new WaitCommand(0.6),
+        new WaitCommand(0.5),
 
         new InstantCommand(() -> m_lifter.setMotorPower(0), m_lifter),
         new InstantCommand(() -> m_loader.setMotorPower(0), m_loader),
         //Picks up 2 balls
 
         new InstantCommand(() -> m_drivetrain.resetYaw(), m_drivetrain),
-        new DriveStraight(m_drivetrain, -6, -AUTO_DRIVE_SPEED-0.6).withTimeout(2),
+        new DriveStraight(m_drivetrain, -7, -AUTO_DRIVE_SPEED-0.6).withTimeout(2),
         new InstantCommand(() -> m_gate.setGate(0), m_gate),
         new DriveStraight(m_drivetrain, -2, -AUTO_DRIVE_SPEED-0.2).withTimeout(3),
         new DriveStraight(m_drivetrain, -1.5, -AUTO_DRIVE_SPEED+0.2),

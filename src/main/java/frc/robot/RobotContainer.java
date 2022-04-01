@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import java.time.Instant;
 import java.util.Map;
 
 import edu.wpi.first.cscore.VideoCamera;
@@ -62,8 +63,11 @@ public class RobotContainer {
   public static final Joystick operatorStick = new Joystick(Constants.DSPorts.OPERATOR_STICK_PORT);
   JoystickButton shootCargoButton, turnTurretToZeroButton, shootingSpeedUpButton, shootingSpeedDownButton, turretAimToggleButton,
    invertCollectorButton, runShooterToggleButton, shootSliderButton, runLifterReverseButton, turnTestButton, runShooterAtSlider,
-   huntBallAssistButton;
-  POVButton pullRobotUpButton, pullRobotUpWithPitchButton, incrementHangerUpButton, incrementHangerDownButton, hangerToMaxHeightButton, cancelHangerUpButton, turnTurretTo90Button, turnTurretToN90Button;
+   huntBallAssistButton, holdHangerButton, restartLifterLoaderButton  
+   
+   ;
+  POVButton pullRobotUpButton, pullRobotUpWithPitchButton, incrementHangerUpButton, incrementHangerDownButton, hangerToMaxHeightButton,
+   cancelHangerUpButton, turnTurretTo90Button, turnTurretToN90Button, stopLifterLoaderButton;
 
   // ************  Subsystems  **************
   private Drivetrain m_drivetrain = new Drivetrain(); //Drivetrain. Contains ball tracking limelight
@@ -126,8 +130,8 @@ public class RobotContainer {
   // .withSize(1,1);
 
   //Operator stick z, for testing turret feed forward
-  SuppliedValueWidget<Double> operatorStickInput = 
-  matchTab.addNumber("Operator Stick", () -> operatorStick.getZ());
+  // SuppliedValueWidget<Double> operatorStickInput = 
+  // matchTab.addNumber("Operator Stick", () -> operatorStick.getZ());
   
   // Team Alliance Color Widget
   // SuppliedValueWidget<String> driverStationAlliance = 
@@ -215,35 +219,35 @@ public class RobotContainer {
       interrupted -> m_shooter.setShooterSpeed(0), 
       () -> false , 
       m_shooter));
-    shooterCommands.add("Shooter Default", new FunctionalCommand(
-      ()->{},
-      () -> m_shooter.setShooterSpeed(SHOOTER_DEFAULT_SPEED), 
-      interrupted -> m_shooter.setShooterSpeed(0), 
-      () -> false , 
-      m_shooter));
-    shooterCommands.addNumber("Default Shooter Speed",() -> SHOOTER_DEFAULT_SPEED);
+    // shooterCommands.add("Shooter Default", new FunctionalCommand(
+    //   ()->{},
+    //   () -> m_shooter.setShooterSpeed(SHOOTER_DEFAULT_SPEED), 
+    //   interrupted -> m_shooter.setShooterSpeed(0), 
+    //   () -> false , 
+    //   m_shooter));
+    // shooterCommands.addNumber("Default Shooter Speed",() -> SHOOTER_DEFAULT_SPEED);
     
     
-    //Shuffleboard Lifter Commands
+    // //Shuffleboard Lifter Commands
     ShuffleboardLayout lifterCommands = Shuffleboard.getTab("Commands")
       .getLayout("Lifter-Loader", BuiltInLayouts.kList)
       .withSize(2,3)
       .withPosition(2,0)
       .withProperties(Map.of("Label Position", "LEFT"));
-    NetworkTableEntry lifterSpeedEntry = 
-      lifterCommands.add("Lifter Speed", 0)
-        .withWidget(BuiltInWidgets.kNumberSlider)
-        .withProperties(Map.of("min", -1, "max", 1))
-        .getEntry();
-    lifterCommands.add("Lifter Slider", new FunctionalCommand(
-      ()->{},
-      () -> m_lifter.setMotorPower(lifterSpeedEntry.getDouble(0)), 
-      interrupted -> {
-        m_lifter.setMotorPower(0);
-        //m_loader.setMotorPower(0);
-      },
-      () -> false ,
-       m_lifter));
+    // NetworkTableEntry lifterSpeedEntry = 
+    //   lifterCommands.add("Lifter Speed", 0)
+    //     .withWidget(BuiltInWidgets.kNumberSlider)
+    //     .withProperties(Map.of("min", -1, "max", 1))
+    //     .getEntry();
+    // lifterCommands.add("Lifter Slider", new FunctionalCommand(
+    //   ()->{},
+    //   () -> m_lifter.setMotorPower(lifterSpeedEntry.getDouble(0)), 
+    //   interrupted -> {
+    //     m_lifter.setMotorPower(0);
+    //     //m_loader.setMotorPower(0);
+    //   },
+    //   () -> false ,
+      //  m_lifter));
     lifterCommands.add("Lifter Default", new FunctionalCommand(
       ()->{},
       () -> m_lifter.setMotorPower(LIFTER_DEFAULT_SPEED), 
@@ -253,64 +257,64 @@ public class RobotContainer {
       }, 
       () -> false , 
       m_lifter));
-    lifterCommands.addNumber("Default Lifter Speed",() -> LIFTER_DEFAULT_SPEED);
-    lifterCommands.add("Spin Loader Wheels", new RunCommand(() -> m_loader.setMotorSpeed(m_lifter.getMotorSpeed()*10/9), m_loader)); // always follows lifter speed
-    lifterCommands.add("Idle Loader Wheels", new RunCommand(() -> m_loader.setMotorPower(-0.1)));
+    // lifterCommands.addNumber("Default Lifter Speed",() -> LIFTER_DEFAULT_SPEED);
+    // lifterCommands.add("Spin Loader Wheels", new RunCommand(() -> m_loader.setMotorSpeed(m_lifter.getMotorSpeed()*10/9), m_loader)); // always follows lifter speed
+    // lifterCommands.add("Idle Loader Wheels", new RunCommand(() -> m_loader.setMotorPower(-0.1)));
 
-    //Shuffleboard Gate Commands
-    ShuffleboardLayout gateCommands = Shuffleboard.getTab("Commands")
-      .getLayout("Gate", BuiltInLayouts.kList)
-      .withSize(2,2)
-      .withPosition(6,0)
-      .withProperties(Map.of("Label Position", "LEFT"));
-    NetworkTableEntry gateSpeedEntry = 
-      gateCommands.add("Gate Speed", 0)
-        .withWidget(BuiltInWidgets.kNumberSlider)
-        .withProperties(Map.of("min", -1, "max", 1))
-        .getEntry();
-    gateCommands.add("Gate Slider", new FunctionalCommand(
-      ()->{},
-      () -> m_gate.setGate(gateSpeedEntry.getDouble(0)), 
-      interrupted -> m_gate.setGate(0), 
-      () -> false , 
-      m_gate));
-    gateCommands.add("Gate Default", new FunctionalCommand(
-      ()->{},
-      () -> m_gate.setGate(GATE_DEFAULT_SPEED), 
-      interrupted -> m_gate.setGate(0), 
-      () -> false , 
-      m_gate));
-    gateCommands.addNumber("Default Gate Speed",() -> GATE_DEFAULT_SPEED);
+    // //Shuffleboard Gate Commands
+    // ShuffleboardLayout gateCommands = Shuffleboard.getTab("Commands")
+    //   .getLayout("Gate", BuiltInLayouts.kList)
+    //   .withSize(2,2)
+    //   .withPosition(6,0)
+    //   .withProperties(Map.of("Label Position", "LEFT"));
+    // NetworkTableEntry gateSpeedEntry = 
+    //   gateCommands.add("Gate Speed", 0)
+    //     .withWidget(BuiltInWidgets.kNumberSlider)
+    //     .withProperties(Map.of("min", -1, "max", 1))
+    //     .getEntry();
+    // gateCommands.add("Gate Slider", new FunctionalCommand(
+    //   ()->{},
+    //   () -> m_gate.setGate(gateSpeedEntry.getDouble(0)), 
+    //   interrupted -> m_gate.setGate(0), 
+    //   () -> false , 
+    //   m_gate));
+    // gateCommands.add("Gate Default", new FunctionalCommand(
+    //   ()->{},
+    //   () -> m_gate.setGate(GATE_DEFAULT_SPEED), 
+    //   interrupted -> m_gate.setGate(0), 
+    //   () -> false , 
+    //   m_gate));
+    // gateCommands.addNumber("Default Gate Speed",() -> GATE_DEFAULT_SPEED);
 
-    //Shuffleboard Collector Commands to ShuffleBoard
-    ShuffleboardLayout collectorCommands = Shuffleboard.getTab("Commands")
-      .getLayout("Collector", BuiltInLayouts.kList)
-      .withSize(2,3)
-      .withPosition(4,0)
-      .withProperties(Map.of("Label Position", "LEFT"));
-    NetworkTableEntry armSpeedEntry = 
-      collectorCommands.add("Arm Speed", 0)
-        .withWidget(BuiltInWidgets.kNumberSlider)
-        .withProperties(Map.of("min", -1, "max", 1))
-        .getEntry();
-    collectorCommands.add("Collector Slider", new FunctionalCommand(
-      ()->{},
-      () -> m_collector.setArm(armSpeedEntry.getDouble(0)), 
-      interrupted -> m_collector.setArm(0), 
-      () -> false , 
-      m_collector));
-    collectorCommands.add("Collector Default", new FunctionalCommand(
-      ()->{},
-      () -> m_collector.setArm(COLLECTOR_DEFAULT_SPEED), 
-      interrupted -> m_collector.setArm(0), 
-      () -> false , 
-      m_collector));
-    collectorCommands.addNumber("Default Arm Speed",() -> COLLECTOR_DEFAULT_SPEED);
-    collectorCommands.add("forward", new InstantCommand(m_collector::pushCollectorOut));
-    collectorCommands.add("reverse", new InstantCommand(m_collector::pullCollectorIn));
+    // //Shuffleboard Collector Commands to ShuffleBoard
+    // ShuffleboardLayout collectorCommands = Shuffleboard.getTab("Commands")
+    //   .getLayout("Collector", BuiltInLayouts.kList)
+    //   .withSize(2,3)
+    //   .withPosition(4,0)
+    //   .withProperties(Map.of("Label Position", "LEFT"));
+    // NetworkTableEntry armSpeedEntry = 
+    //   collectorCommands.add("Arm Speed", 0)
+    //     .withWidget(BuiltInWidgets.kNumberSlider)
+    //     .withProperties(Map.of("min", -1, "max", 1))
+    //     .getEntry();
+    // collectorCommands.add("Collector Slider", new FunctionalCommand(
+    //   ()->{},
+    //   () -> m_collector.setArm(armSpeedEntry.getDouble(0)), 
+    //   interrupted -> m_collector.setArm(0), 
+    //   () -> false , 
+    //   m_collector));
+    // collectorCommands.add("Collector Default", new FunctionalCommand(
+    //   ()->{},
+    //   () -> m_collector.setArm(COLLECTOR_DEFAULT_SPEED), 
+    //   interrupted -> m_collector.setArm(0), 
+    //   () -> false , 
+    //   m_collector));
+    // collectorCommands.addNumber("Default Arm Speed",() -> COLLECTOR_DEFAULT_SPEED);
+    // collectorCommands.add("forward", new InstantCommand(m_collector::pushCollectorOut));
+    // collectorCommands.add("reverse", new InstantCommand(m_collector::pullCollectorIn));
 
-    devTab.add("Drive for 5", new DriveArcade(() ->.5, () -> 0.0, m_drivetrain).withTimeout(5));
-    devTab.add("Drive for 2", new DriveArcade(()->.5, () -> 0.0, m_drivetrain).withTimeout(2));
+    // devTab.add("Drive for 5", new DriveArcade(() ->.5, () -> 0.0, m_drivetrain).withTimeout(5));
+    // devTab.add("Drive for 2", new DriveArcade(()->.5, () -> 0.0, m_drivetrain).withTimeout(2));
     // devTab.add("Turn to Angle", new TurnToAngle(targetAngleEntry.getDouble(0.0), m_drivetrain));
    
     // ************  DEFAULT COMMANDS  ***************
@@ -333,16 +337,11 @@ public class RobotContainer {
       m_hanger));
       
     // Run lifter upwards until a ball is in the upper slot
-    // m_lifter.setDefaultCommand(new IdleLifterLoader(
-    //   m_lifter,
-    //  () -> LIFTER_DEFAULT_SPEED,
-    //  m_loader,
-    //  () -> -10/9*m_lifter.getMotorSpeed())
-    //  .andThen(new RunLifterLoader(
-    //    m_lifter, 
-    //    0.0, 
-    //    m_loader, 
-    //    0.0))); 
+    m_lifter.setDefaultCommand(new IdleLifterLoader(
+      m_lifter,
+     () -> LIFTER_DEFAULT_SPEED,
+     m_loader,
+     () -> -10/9*m_lifter.getMotorSpeed())); 
       
     // Gate and collector testing (at specific values)
     //   m_collector.setDefaultCommand(new RunCollectorVariable(
@@ -359,7 +358,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    
+     
     // ************  DRIVER STICK  ***************
     // Toggle the collector
     huntForBallsButton = new JoystickButton(driverStick, HUNT_FOR_BALLS);
@@ -371,27 +370,44 @@ public class RobotContainer {
           m_loader,
           // 10/9 is gear ratio
           () -> -10/9*m_lifter.getMotorSpeed()
-        ),
-        new HuntForBalls(m_collector, m_gate, m_lifter)
-      )
-    );
-
-    // Help driver by locking onto the closer ball (center robot w/ ball)
-    huntBallAssistButton = new JoystickButton(driverStick, 2);
-    huntBallAssistButton.whileHeld(new TurnToBall(
-      () -> -driverStick.getY(),
-      m_drivetrain));
-
+          ),
+          new HuntForBalls(m_collector, m_gate, m_lifter)
+          )
+          );
+          
+          // Help driver by locking onto the closer ball (center robot w/ ball)
+          huntBallAssistButton = new JoystickButton(driverStick, 2);
+          huntBallAssistButton.whileHeld(new TurnToBall(
+            () -> -driverStick.getY(),
+            m_drivetrain));
+            
     //Raises hanger to max height
     hangerToMaxHeightButton = new POVButton(driverStick, ELEVATOR_UP);
-    hangerToMaxHeightButton.whenPressed(new ConditionalCommand(new RaiseHangerToHeight(MAX_HEIGHT-2, m_hanger), 
-    new InstantCommand(() -> {}), () -> driverStick.getRawAxis(3) < -0.8));  
+    hangerToMaxHeightButton.whileHeld(new ConditionalCommand(
+      new RaiseHangerToHeight(MAX_HEIGHT, m_hanger), 
+      new InstantCommand(() -> {}),
+      () -> driverStick.getRawAxis(3) < -0.8)); 
 
+    stopLifterLoaderButton = new POVButton(driverStick, ELEVATOR_UP);
+    stopLifterLoaderButton.whenPressed(new InstantCommand(() -> m_lifter.setMotorPower(0), m_lifter)
+      .andThen(new RunCommand(() -> m_loader.setMotorPower(0),m_loader)));
+    
+    restartLifterLoaderButton = new JoystickButton(driverStick, 7);
+    restartLifterLoaderButton.whenPressed(
+        //requires hanger so operator can resume control in 'Hang Mode'
+        new InstantCommand(() -> {}, m_lifter, m_loader));
+        
+    //     new InstantCommand(() -> {}, m_lifter, m_loader),
+            
+    //     () -> driverStick.getRawAxis(3) < -0.8)); 
+    
+    //Pulls hanger on to mid bar
+    
     // Used for manually testing certain things
-
+    
     // armToggleButton = new JoystickButton(driverStick, Constants.Buttons.ARM_TOGGLE);
     // armToggleButton.whenPressed(new ToggleCollector(m_collector));
-
+    
     // invertCollectorButton = new JoystickButton(driverStick, COLLECTOR_REVERSE);
     // invertCollectorButton.whenPressed(new RaiseHangerToHeight(50, m_hanger));
     
@@ -399,7 +415,7 @@ public class RobotContainer {
     // invertCollectorButton.whenPressed(m_collector::invertDirection);
     // armToggleButton.whenPressed(m_collector::toggleCollector);
     
-
+    
     // ************  OPERATOR STICK  ***************
     //Hanger pneumatics buttons 
     hangerPneumaticsReverseButton = new JoystickButton(operatorStick, Constants.Buttons.HANGER_PNEUMATICS_REVERSE);
@@ -408,33 +424,39 @@ public class RobotContainer {
     hangerPneumaticsForwardButton = new JoystickButton(operatorStick, Constants.Buttons.HANGER_PNEUMATICS_FORWARD);
     hangerPneumaticsForwardButton.whenPressed(m_hanger::pushHangerOut);
     
+    pullRobotUpButton = new POVButton(operatorStick, ELEVATOR_DOWN);
+    pullRobotUpButton.whenPressed(new PullUpToMidBar(m_hanger));
     
     shootCargoButton = new JoystickButton(operatorStick, Constants.Buttons.SHOOT_ALLIANCE_BALL);
     shootCargoButton.whileHeld(
       new ConditionalCommand(
         //requires hanger so operator can resume control in 'Hang Mode'
         new InstantCommand(() -> {}, m_hanger),
-
+        
         new ConditionalCommand(
           
           new ParallelRaceGroup(
             new DriveArcade(() -> 0.0,() -> 0.0, m_drivetrain),
             new ShootingSequence(m_shooter, m_turret, m_gate, m_lifter, m_loader)),
-
-          new InstantCommand(()-> {}, m_shooter),
-
-          () -> (m_turret.limelightHasValidTarget() && (m_lifter.getColorUpper() != "None"))),
-
-        () -> operatorStick.getRawAxis(3) < -0.8)); 
-    
+            
+            new InstantCommand(()-> {}, m_shooter),
+            
+            () -> (m_turret.limelightHasValidTarget() && (m_lifter.getColorUpper() != "None"))),
+            
+            () -> operatorStick.getRawAxis(3) < -0.8)); 
+            
         turretAimToggleButton = new JoystickButton(operatorStick, Constants.Buttons.AIM_TOGGLE);
         turretAimToggleButton.toggleWhenPressed(new TurnTurretWithJoystick(() -> operatorStick.getZ(), m_turret));
         
+        
+        // pullRobotUpButton = new POVButton(operatorStick, ELEVATOR_DOWN);
+        // pullRobotUpButton.whenPressed(new ConditionalCommand(new PullUpStep2(m_hanger), new PullUpStep1(m_hanger), ()-> m_hanger.getHangerPosition() < STEP_1+10));
+
+        // holdHangerButton = new JoystickButton(operatorStick, 2);
+        // holdHangerButton.whenPressed(new ControlHanger(() -> 0.07, () -> operatorStick.getRawAxis(3), m_hanger));
+        
         //pullRobotUpWithPitchButton = new POVButton(operatorStick, ELEVATOR_UP);
         //pullRobotUpWithPitchButton.whenPressed(new PullRobotUpWithPitch(m_hanger, m_drivetrain));
-        
-        pullRobotUpButton = new POVButton(operatorStick, ELEVATOR_DOWN);
-        pullRobotUpButton.whenPressed(new ConditionalCommand(new PullUpStep2(m_hanger), new PullUpStep1(m_hanger), ()-> m_hanger.getHangerPosition() < STEP_1+10));
 
       // turnTestButton = new JoystickButton(operatorStick, 9);
       // turnTestButton.whenPressed(new TurnToAngle(112, m_drivetrain));
