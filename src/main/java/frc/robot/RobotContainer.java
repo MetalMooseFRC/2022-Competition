@@ -435,20 +435,22 @@ public class RobotContainer {
         
         new ConditionalCommand(
           
-          new ParallelRaceGroup(
-            new DriveArcade(() -> 0.0,() -> 0.0, m_drivetrain),
-            new ShootingSequence(m_shooter, m_turret, m_gate, m_lifter, m_loader)),
+          new ShootingSequence(m_shooter, m_turret, m_gate, m_lifter, m_loader),
             
-            new InstantCommand(()-> {}, m_shooter),
+          new InstantCommand(()-> {}, m_shooter),
             
-            () -> (m_turret.limelightHasValidTarget() && (m_lifter.getColorUpper() != "None"))),
+          () -> (m_turret.limelightHasValidTarget() && (m_lifter.getColorUpper() != "None"))),
             
-            () -> operatorStick.getRawAxis(3) < -0.8)); 
+        () -> operatorStick.getRawAxis(3) < -0.8)); 
             
-        turretAimToggleButton = new JoystickButton(operatorStick, Constants.Buttons.AIM_TOGGLE);
-        turretAimToggleButton.toggleWhenPressed(new TurnTurretWithJoystick(() -> operatorStick.getZ(), m_turret));
-        
-        
+            turretAimToggleButton = new JoystickButton(operatorStick, Constants.Buttons.AIM_TOGGLE);
+            turretAimToggleButton.toggleWhenPressed(new TurnTurretWithJoystick(() -> operatorStick.getZ(), m_turret));
+            
+            turnTurretToZeroButton = new JoystickButton(operatorStick, Constants.Buttons.TURRET_TO_ZERO);
+            turnTurretToZeroButton.whenPressed(new TurnTurretToAngle(
+              Constants.Turret.ZERO,
+              m_turret).andThen(new RunCommand(() -> {}, m_turret)));
+            
         // pullRobotUpButton = new POVButton(operatorStick, ELEVATOR_DOWN);
         // pullRobotUpButton.whenPressed(new ConditionalCommand(new PullUpStep2(m_hanger), new PullUpStep1(m_hanger), ()-> m_hanger.getHangerPosition() < STEP_1+10));
 
@@ -469,10 +471,6 @@ public class RobotContainer {
     //   () -> Constants.Lifter.DEFAULT_SPEED
     //   ));
      
-    // turnTurretToZeroButton = new JoystickButton(operatorStick, Constants.Buttons.TURRET_TO_ZERO);
-    // turnTurretToZeroButton.whenPressed(new TurnTurretToAngle(
-    //   Constants.Turret.ZERO,
-    //   m_turret));
       
     // shootSliderButton = new JoystickButton(operatorStick, Constants.Buttons.SHOOT_WITH_SLIDER);
     // shootSliderButton.whileHeld(new ShootDefault(() -> m_shooter.getSliderValue(), m_shooter, () -> Constants.Lifter.DEFAULT_SPEED, m_lifter, m_turret));

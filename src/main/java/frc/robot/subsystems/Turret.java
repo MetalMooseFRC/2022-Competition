@@ -11,6 +11,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
@@ -32,7 +33,7 @@ public class Turret extends SubsystemBase {
   public void periodic() {
     
     // SmartDashboard.putNumber("Distance(Imperial)", limelightGetDistance()/2.54/12);
-    // SmartDashboard.putNumber("Distance(Metric)", limelightGetDistance());
+    SmartDashboard.putNumber("Distance(Metric)", limelightGetDistance());
     // SmartDashboard.putNumber("Turret Angel", getTurretAngle());
     // SmartDashboard.putNumber("Ty", limelightGetTy());
     // SmartDashboard.putNumber("distance Without Correction", (Constants.Limelight.TARGET_HEIGHT - Constants.Limelight.LIMELIGHT_HEIGHT)/Math.tan((limelightGetTy() + Constants.Limelight.LIMELIGHT_ANGLE)*Math.PI/180));
@@ -100,7 +101,9 @@ public class Turret extends SubsystemBase {
 
   public double getRequiredVelocity() {
     double dis = getTurretDistance();
-    double velocity = 4033 + -10*dis + 0.0214*Math.pow(dis,2);
+    // double velocity = 4194 + -11.1*dis + 0.0229*Math.pow(dis, 2);
+    // double velocity = 4528 + -12.7*dis + 0.0248*Math.pow(dis, 2);
+    double velocity = 4554 + -12.6*dis + 0.0242*Math.pow(dis, 2);
     return velocity;
   }
 

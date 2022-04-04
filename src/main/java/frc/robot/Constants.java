@@ -111,12 +111,12 @@ public final class Constants {
         public static final double DRIVE_DEADBAND = 0.02;
         public static final double TURN_DEADBAND = 0.02;
         public static final double DRIVE_LIMITER = 50; // 2
-        public static final double TURN_LIMITER = 1.6; // 1.5
+        public static final double TURN_LIMITER = 2; // 1.5
 
         public static final double P_TURN = 0.02;
         public static final double I_TURN = 0.005;
         public static final double D_TURN = 0;
-        public static final double TOLERANCE_TURN = 3.51; // degrees
+        public static final double TOLERANCE_TURN = 4; // degrees
         public static final double TOLERANCE_TURN_RATE = 4; // degrees per second
         public static final double FEED_TURN = 0.05; // 5;
     }
@@ -144,7 +144,7 @@ public final class Constants {
         public static final double SHOOTER_DEFAULT_SPEED = 3000; // 0.58;
         public static final double ADJUST_INCREMENT = 0.05;
         public static final double MAX_SHOOTER_POWER = 0.75;
-        public static final double SHOOTING_SPEED_THRESHOLD = 0.8;
+        public static final double SHOOTING_SPEED_THRESHOLD = 0.85;
     }
 
     public final class Lifter {
