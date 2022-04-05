@@ -476,6 +476,10 @@ public class RobotContainer {
         //pullRobotUpWithPitchButton = new POVButton(operatorStick, ELEVATOR_UP);
         //pullRobotUpWithPitchButton.whenPressed(new PullRobotUpWithPitch(m_hanger, m_drivetrain));
 
+    //Raises hanger to max reach for bar
+    hangerToMaxReachButton = new POVButton(operatorStick, ELEVATOR_UP);
+    hangerToMaxHeightButton.whenPressed(new ConditionalCommand(new RaiseHangerToHeight(MAX_HEIGHT-2, m_hanger), 
+    new InstantCommand(() -> {}), () -> driverStick.getRawAxis(3) < -0.8));
       // turnTestButton = new JoystickButton(operatorStick, 9);
       // turnTestButton.whenPressed(new TurnToAngle(112, m_drivetrain));
 
