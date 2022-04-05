@@ -4,12 +4,12 @@
 
 package frc.robot;
 
-import java.time.Instant;
 import java.util.Map;
 
 import edu.wpi.first.cscore.VideoCamera;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DriverStation;
 // import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
@@ -323,9 +323,26 @@ public class RobotContainer {
       () -> -driverStick.getY(),
       () -> driverStick.getZ(),
       m_drivetrain));
-      
+
+
+// 4/4/22 Shooter Spin up default command added
+    // m_shooter.setDefaultCommand(
+    //     new InstantCommand(() -> {
+    //       if (
+    //         m_turret.limelightHasValidTarget() 
+    //         && (m_turret.getTurretDistance()<425) 
+    //         && (m_turret.getTurretDistance()>275) 
+    //         && m_lifter.getColorUpper() == DriverStation.getAlliance().toString()
+    //         ) {
+    //         m_shooter.setShooterSpeed(m_turret.getRequiredVelocity());
+    //       }
+    //     }
+    //     ));
+      // 4/4/22 end code edit
+
+
     // Run gate by default
-    m_gate.setDefaultCommand(new AutoRunGate(m_lifter, m_gate, m_collector));
+    // m_gate.setDefaultCommand(new AutoRunGate(m_lifter, m_gate, m_collector));
       
     // Track hub w/ limelight by default
     m_turret.setDefaultCommand((new TrackTargetWithLimelight(m_turret)));
@@ -433,23 +450,22 @@ public class RobotContainer {
         //requires hanger so operator can resume control in 'Hang Mode'
         new InstantCommand(() -> {}, m_hanger),
         
+
         new ConditionalCommand(
-          
           new ShootingSequence(m_shooter, m_turret, m_gate, m_lifter, m_loader),
-            
-          new InstantCommand(()-> {}, m_shooter),
-            
+          new InstantCommand(()-> {}/*, m_shooter*/),
           () -> (m_turret.limelightHasValidTarget() && (m_lifter.getColorUpper() != "None"))),
-            
+          
+          
         () -> operatorStick.getRawAxis(3) < -0.8)); 
             
-            turretAimToggleButton = new JoystickButton(operatorStick, Constants.Buttons.AIM_TOGGLE);
-            turretAimToggleButton.toggleWhenPressed(new TurnTurretWithJoystick(() -> operatorStick.getZ(), m_turret));
+    turretAimToggleButton = new JoystickButton(operatorStick, Constants.Buttons.AIM_TOGGLE);
+    turretAimToggleButton.toggleWhenPressed(new TurnTurretWithJoystick(() -> operatorStick.getZ(), m_turret));
             
-            turnTurretToZeroButton = new JoystickButton(operatorStick, Constants.Buttons.TURRET_TO_ZERO);
-            turnTurretToZeroButton.whenPressed(new TurnTurretToAngle(
-              Constants.Turret.ZERO,
-              m_turret).andThen(new RunCommand(() -> {}, m_turret)));
+    turnTurretToZeroButton = new JoystickButton(operatorStick, Constants.Buttons.TURRET_TO_ZERO);
+    turnTurretToZeroButton.whenPressed(new TurnTurretToAngle(
+      Constants.Turret.ZERO,
+      m_turret).andThen(new RunCommand(() -> {}, m_turret)));
             
         // pullRobotUpButton = new POVButton(operatorStick, ELEVATOR_DOWN);
         // pullRobotUpButton.whenPressed(new ConditionalCommand(new PullUpStep2(m_hanger), new PullUpStep1(m_hanger), ()-> m_hanger.getHangerPosition() < STEP_1+10));

@@ -48,7 +48,7 @@ public class ShootingSequence extends SequentialCommandGroup {
       new ConditionalCommand(
 
         new SequentialCommandGroup(
-          new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity()-20), m_shooter),
+          new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity()), m_shooter),
           new WaitUntilCommand(() -> ((m_shooter.getLeftWheelSpeed()) >= (m_turret.getRequiredVelocity()*(Constants.Shooter.SHOOTING_SPEED_THRESHOLD+0.05))))),
 
         new SequentialCommandGroup(
@@ -59,10 +59,20 @@ public class ShootingSequence extends SequentialCommandGroup {
 
 
 
-      new InstantCommand(() -> m_gate.setGate(Constants.Gate.GATE_DEFAULT_SPEED), m_gate),
+        //Code Block 4/4/22 added
+      new ConditionalCommand(
+        new InstantCommand(() -> m_gate.setGate(Constants.Gate.GATE_DEFAULT_SPEED), m_gate),
+        new InstantCommand(() -> m_gate.setGate(-Constants.Gate.GATE_DEFAULT_SPEED), m_gate),
+        () -> (DriverStation.getAlliance().toString() == m_lifter.getColorLower())),
+      //Block end
+
+
+      // new InstantCommand(() -> m_gate.setGate(Constants.Gate.GATE_DEFAULT_SPEED), m_gate),
       new InstantCommand(() -> m_lifter.setMotorPower(Constants.Lifter.LIFTER_DEFAULT_SPEED)),
       new InstantCommand(() -> m_loader.setMotorPower(Constants.Lifter.LIFTER_DEFAULT_SPEED*10/9)),
+
       new WaitCommand(Constants.Auto.LIFTLOAD_AUTO_TIMEOUT-0.15),
+
       // new InstantCommand(() -> m_shooter.setShooterSpeed(0), m_shooter),
       new InstantCommand(() -> m_shooter.setShooterSpeed(2500), m_shooter),
       new InstantCommand(() -> m_gate.setGate(0), m_gate),
