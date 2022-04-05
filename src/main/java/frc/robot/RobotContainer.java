@@ -326,7 +326,8 @@ public class RobotContainer {
 
 
 // 4/4/22 Shooter Spin up default command added
-    // m_shooter.setDefaultCommand(
+    m_shooter.setDefaultCommand(new SpinUpShooter(m_shooter, m_turret, m_lifter));
+     
     //     new InstantCommand(() -> {
     //       if (
     //         m_turret.limelightHasValidTarget() 
@@ -338,6 +339,7 @@ public class RobotContainer {
     //       }
     //     }
     //     ));
+    
       // 4/4/22 end code edit
 
 
@@ -477,9 +479,9 @@ public class RobotContainer {
         //pullRobotUpWithPitchButton.whenPressed(new PullRobotUpWithPitch(m_hanger, m_drivetrain));
 
     //Raises hanger to max reach for bar
-    hangerToMaxReachButton = new POVButton(operatorStick, ELEVATOR_UP);
-    hangerToMaxHeightButton.whenPressed(new ConditionalCommand(new RaiseHangerToHeight(MAX_HEIGHT-2, m_hanger), 
-    new InstantCommand(() -> {}), () -> driverStick.getRawAxis(3) < -0.8));
+    //hangerToMaxReachButton = new POVButton(operatorStick, ELEVATOR_UP);
+    //hangerToMaxHeightButton.whenPressed(new ConditionalCommand(new RaiseHangerToHeight(MAX_HEIGHT-2, m_hanger), 
+    //new InstantCommand(() -> {}), () -> driverStick.getRawAxis(3) < -0.8));
       // turnTestButton = new JoystickButton(operatorStick, 9);
       // turnTestButton.whenPressed(new TurnToAngle(112, m_drivetrain));
 
