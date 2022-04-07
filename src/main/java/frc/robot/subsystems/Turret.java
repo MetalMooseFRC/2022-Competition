@@ -19,6 +19,7 @@ import frc.robot.Constants;
 public class Turret extends SubsystemBase {
   private final NetworkTable m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight-twelve");
   private final MedianFilter m_filter = new MedianFilter(10);
+  private String turretAimMode;
   public final CANSparkMax turretMotor = new CANSparkMax(Constants.CANIDs.TURRET_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
   
   
@@ -40,6 +41,14 @@ public class Turret extends SubsystemBase {
     // SmartDashboard.putNumber("Added Distance", -15.8 + -0.289*getTurretAngle() + 1.53E-03*Math.pow(getTurretAngle(),2) + 9.05E-06*Math.pow(getTurretAngle(),3) + -2.46E-08*Math.pow(getTurretAngle(),4));
 
     // This method will be called once per scheduler run
+  }
+
+  public void setTurretMode(String mode) {
+    turretAimMode = mode;
+  }
+
+  public String getTurretMode() {
+    return turretAimMode;
   }
 
   public double getDeadbandSpeed(double speed) {
@@ -85,18 +94,26 @@ public class Turret extends SubsystemBase {
 
   //calculate the distance based on trig
   public double limelightGetDistance() {
+    double turretAngle = getTurretAngle();
     return (((Constants.Limelight.TARGET_HEIGHT - Constants.Limelight.LIMELIGHT_HEIGHT)/Math.tan((limelightGetTy() + Constants.Limelight.LIMELIGHT_ANGLE)*Math.PI/180))
-    //+ (-16.1 -.65*getTurretAngle() + 6E-03*Math.pow(getTurretAngle(),2) + 2.38E-05*Math.pow(getTurretAngle(),3))
-    + (-15.8 + -0.289*getTurretAngle() + 1.53E-03*Math.pow(getTurretAngle(),2) + 9.05E-06*Math.pow(getTurretAngle(),3) + -2.46E-08*Math.pow(getTurretAngle(),4))
+    + (-15.8 + -0.289*turretAngle + 1.53E-03*Math.pow(turretAngle,2) + 9.05E-06*Math.pow(turretAngle,3) + -2.46E-08*Math.pow(turretAngle,4))
     );
 
 
   }
 
   //gets the distance of the turret based on the limelight
+  // public double getTurretDistance() {
+  //   double offset = 27 * -Math.cos((getTurretAngle() + 31.989)*Math.PI/180);
+  //   return limelightGetDistance() + offset;
+  // }
   public double getTurretDistance() {
-    double offset = 27 * -Math.cos((getTurretAngle() + 31.989)*Math.PI/180);
-    return limelightGetDistance() + offset;
+    double turretAngle = getTurretAngle();
+    double offset = 27 * -Math.cos((turretAngle + 31.989)*Math.PI/180);
+    double limelightDistance = ((Constants.Limelight.TARGET_HEIGHT - Constants.Limelight.LIMELIGHT_HEIGHT)/Math.tan((limelightGetTy() + Constants.Limelight.LIMELIGHT_ANGLE)*Math.PI/180))
+    + (-15.8 + -0.289*turretAngle + 1.53E-03*Math.pow(turretAngle,2) + 9.05E-06*Math.pow(turretAngle,3) + -2.46E-08*Math.pow(turretAngle,4));
+    return limelightDistance + offset;
+
   }
 
   public double getRequiredVelocity() {

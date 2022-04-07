@@ -12,6 +12,7 @@ import frc.robot.Constants;
 
 import edu.wpi.first.wpilibj.I2C;
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 
 import com.revrobotics.ColorSensorV3;
@@ -46,6 +47,7 @@ public class Lifter extends SubsystemBase {
 
   @Override
   public void periodic() {
+    // SmartDashboard.putNumber("Lifter Motor Current", m_motor.getOutputCurrent());
     // This method will be called once per scheduler run
   } 
   // return velocity, in RPM, of left wheel

@@ -23,7 +23,7 @@ import frc.robot.Constants;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 
 // Runs a two ball auto as long as robot is pointed at an alliance-colored ball
-public class AutoTwoBall extends SequentialCommandGroup {
+public class AutoTwoBallNormal extends SequentialCommandGroup {
   /** Creates a new TwoBallAutonomous. */
   private Shooter m_shooter;
   private Drivetrain m_drivetrain;
@@ -33,7 +33,7 @@ public class AutoTwoBall extends SequentialCommandGroup {
   private Collector m_collector;
   private Turret m_turret;
 
-  public AutoTwoBall(Drivetrain drivetrain, Shooter shooter, Lifter lifter, Loader loader, Gate gate, Collector collector, Turret turret) {
+  public AutoTwoBallNormal(Drivetrain drivetrain, Shooter shooter, Lifter lifter, Loader loader, Gate gate, Collector collector, Turret turret) {
     m_shooter = shooter;
     m_drivetrain = drivetrain;
     m_lifter = lifter;

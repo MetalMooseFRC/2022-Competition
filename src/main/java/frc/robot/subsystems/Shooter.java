@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 
 import edu.wpi.first.math.controller.PIDController;
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import static frc.robot.Constants.Shooter.*;
@@ -30,6 +31,9 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
+    // SmartDashboard.putNumber("Shooter Amps", m_motorRight.getOutputCurrent()+m_motorLeft.getOutputCurrent());
+    // SmartDashboard.putNumber("Left Shooter Motor Current", m_motorLeft.getOutputCurrent());
+    // SmartDashboard.putNumber("Right Shooter Motor Current", m_motorRight.getOutputCurrent());
 
     // This method will be called once per scheduler run
   } 

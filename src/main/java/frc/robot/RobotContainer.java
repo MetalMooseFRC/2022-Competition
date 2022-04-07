@@ -63,11 +63,10 @@ public class RobotContainer {
   public static final Joystick operatorStick = new Joystick(Constants.DSPorts.OPERATOR_STICK_PORT);
   JoystickButton shootCargoButton, turnTurretToZeroButton, shootingSpeedUpButton, shootingSpeedDownButton, turretAimToggleButton,
    invertCollectorButton, runShooterToggleButton, shootSliderButton, runLifterReverseButton, turnTestButton, runShooterAtSlider,
-   huntBallAssistButton, holdHangerButton, restartLifterLoaderButton  
-   
+   huntBallAssistButton, holdHangerButton, restartLifterLoaderButton, searchForHubButton, autoShootingButton, manualShootingButton
    ;
   POVButton pullRobotUpButton, pullRobotUpWithPitchButton, incrementHangerUpButton, incrementHangerDownButton, hangerToMaxHeightButton,
-   cancelHangerUpButton, turnTurretTo90Button, turnTurretToN90Button, stopLifterLoaderButton;
+   cancelHangerUpButton, turnTurretTo90Button, turnTurretToN90Button, stopLifterLoaderButton, stopShooterMotorsButton;
 
   // ************  Subsystems  **************
   private Drivetrain m_drivetrain = new Drivetrain(); //Drivetrain. Contains ball tracking limelight
@@ -109,6 +108,12 @@ public class RobotContainer {
   matchTab.addBoolean("Target Acquired", () -> m_turret.limelightHasValidTarget())
   .withPosition(4,0)
   .withSize(4,4);
+
+  SuppliedValueWidget<Boolean> isInSweetSpot = 
+  matchTab.addBoolean("In Sweet Spot", () -> (m_turret.getTurretDistance()<425) 
+  && (m_turret.getTurretDistance()>275))
+  .withPosition(3,2)
+  .withSize(2,2);
   
 // Tells driver/operator what ball is in the upper "slot"
   SuppliedValueWidget<String> upperCargoColor = 
@@ -187,11 +192,14 @@ public class RobotContainer {
     .withSize(2,2);
 
     // Add individual options for autonomous to the chooser
-    autoChooser.setDefaultOption("Wall Five Ball", new AutoFiveBallWall(m_drivetrain, m_shooter, m_lifter, m_loader, m_gate, m_collector, m_turret));
-    autoChooser.addOption("Center Three/Four Ball", new AutoFourBallCenter(m_drivetrain, m_shooter, m_lifter, m_loader, m_gate, m_collector, m_turret));
-    autoChooser.addOption("Wall Three/Four Ball", new AutoFourBallWall(m_drivetrain, m_shooter, m_lifter, m_loader, m_gate, m_collector, m_turret));
-    autoChooser.addOption("Anywhere Two Ball", new AutoTwoBall(m_drivetrain, m_shooter, m_lifter, m_loader, m_gate, m_collector, m_turret));
-    autoChooser.addOption("Taxi and Shoot",new ParallelCommandGroup(
+    autoChooser.setDefaultOption("Normal Five Ball", new AutoFiveBallWall(m_drivetrain, m_shooter, m_lifter, m_loader, m_gate, m_collector, m_turret));
+    autoChooser.addOption("Blue Five Ball", new AutoFiveBallBlue(m_drivetrain, m_shooter, m_lifter, m_loader, m_gate, m_collector, m_turret));
+    autoChooser.addOption("Center Four Ball", new AutoFourBallCenter(m_drivetrain, m_shooter, m_lifter, m_loader, m_gate, m_collector, m_turret));
+    autoChooser.addOption("Wall Four Ball", new AutoFourBallWall(m_drivetrain, m_shooter, m_lifter, m_loader, m_gate, m_collector, m_turret));
+    autoChooser.addOption("Wall Three Ball", new AutoThreeBall(m_drivetrain, m_shooter, m_lifter, m_loader, m_gate, m_collector, m_turret));
+    autoChooser.addOption("Anywhere Two Ball", new AutoTwoBallNormal(m_drivetrain, m_shooter, m_lifter, m_loader, m_gate, m_collector, m_turret));
+    autoChooser.addOption("Wall Two Ball", new AutoTwoBallWall(m_drivetrain, m_shooter, m_lifter, m_loader, m_gate, m_collector, m_turret));
+    autoChooser.addOption("Taxi and Shoot", new ParallelCommandGroup(
         new InstantCommand(() -> m_turret.turretMotor.set(Constants.Turret.DEFAULT_SPEED), m_turret)
           .andThen(new TrackTargetWithLimelight(m_turret)),
         new SequentialCommandGroup(
@@ -258,7 +266,7 @@ public class RobotContainer {
       () -> false , 
       m_lifter));
     // lifterCommands.addNumber("Default Lifter Speed",() -> LIFTER_DEFAULT_SPEED);
-    // lifterCommands.add("Spin Loader Wheels", new RunCommand(() -> m_loader.setMotorSpeed(m_lifter.getMotorSpeed()*10/9), m_loader)); // always follows lifter speed
+    lifterCommands.add("Spin Loader Wheels", new RunCommand(() -> m_loader.setMotorSpeed(m_lifter.getMotorSpeed()*10/9), m_loader)); // always follows lifter speed
     // lifterCommands.add("Idle Loader Wheels", new RunCommand(() -> m_loader.setMotorPower(-0.1)));
 
     // //Shuffleboard Gate Commands
@@ -410,6 +418,9 @@ public class RobotContainer {
     stopLifterLoaderButton = new POVButton(driverStick, ELEVATOR_UP);
     stopLifterLoaderButton.whenPressed(new InstantCommand(() -> m_lifter.setMotorPower(0), m_lifter)
       .andThen(new RunCommand(() -> m_loader.setMotorPower(0),m_loader)));
+
+    stopShooterMotorsButton = new POVButton(driverStick, ELEVATOR_UP);
+    stopShooterMotorsButton.whenPressed(new RunCommand(() -> m_shooter.setShooterSpeed(0), m_shooter).until(() -> driverStick.getRawAxis(3)>0.8));
     
     restartLifterLoaderButton = new JoystickButton(driverStick, 7);
     restartLifterLoaderButton.whenPressed(
@@ -448,26 +459,48 @@ public class RobotContainer {
     
     shootCargoButton = new JoystickButton(operatorStick, Constants.Buttons.SHOOT_ALLIANCE_BALL);
     shootCargoButton.whileHeld(
-      new ConditionalCommand(
-        //requires hanger so operator can resume control in 'Hang Mode'
-        new InstantCommand(() -> {}, m_hanger),
-        
-
         new ConditionalCommand(
-          new ShootingSequence(m_shooter, m_turret, m_gate, m_lifter, m_loader),
-          new InstantCommand(()-> {}/*, m_shooter*/),
-          () -> (m_turret.limelightHasValidTarget() && (m_lifter.getColorUpper() != "None"))),
+          //requires hanger so operator can resume control in 'Hang Mode'
+          new InstantCommand(() -> {}, m_hanger),
+
+          new ConditionalCommand(
+            new ConditionalCommand(
+              new ShootingSequence(m_shooter, m_turret, m_gate, m_lifter, m_loader),
+              new InstantCommand(()-> {}/*, m_shooter*/),
+              () -> (m_turret.limelightHasValidTarget() && (m_lifter.getColorUpper() != "None"))),
+            
+            new ManualShootingSequence(m_shooter, m_turret, m_gate, m_lifter, m_loader),
+
+             () -> m_turret.getTurretMode() == "auto"),
           
           
-        () -> operatorStick.getRawAxis(3) < -0.8)); 
+          () -> operatorStick.getRawAxis(3) < -0.8)); 
             
-    turretAimToggleButton = new JoystickButton(operatorStick, Constants.Buttons.AIM_TOGGLE);
-    turretAimToggleButton.toggleWhenPressed(new TurnTurretWithJoystick(() -> operatorStick.getZ(), m_turret));
-            
-    turnTurretToZeroButton = new JoystickButton(operatorStick, Constants.Buttons.TURRET_TO_ZERO);
-    turnTurretToZeroButton.whenPressed(new TurnTurretToAngle(
-      Constants.Turret.ZERO,
-      m_turret).andThen(new RunCommand(() -> {}, m_turret)));
+          
+          // turretAimToggleButton = new JoystickButton(operatorStick, Constants.Buttons.AIM_TOGGLE);
+          // turretAimToggleButton.toggleWhenPressed(new TurnTurretWithJoystick(() -> operatorStick.getZ(), m_turret));
+          
+          searchForHubButton = new JoystickButton(operatorStick, 2);
+          searchForHubButton.whenPressed(
+            new RunCommand(
+              () -> m_turret.turretMotor.set(0.25),
+              m_turret)
+              .until(
+                () -> m_turret.limelightHasValidTarget()
+                )
+                );
+                
+                
+                autoShootingButton = new JoystickButton(operatorStick, 3);
+                autoShootingButton.whenPressed(new InstantCommand(() -> m_turret.setTurretMode("auto")));
+                
+                manualShootingButton = new JoystickButton(operatorStick, 5);
+                manualShootingButton.whenPressed(new InstantCommand(() -> m_turret.setTurretMode("manual")));
+                
+                turnTurretToZeroButton = new JoystickButton(operatorStick, 5);
+                turnTurretToZeroButton.whenPressed(new TurnTurretToAngle(
+                  Constants.Turret.ZERO,
+            m_turret).andThen(new RunCommand(() -> {}, m_turret)));
             
         // pullRobotUpButton = new POVButton(operatorStick, ELEVATOR_DOWN);
         // pullRobotUpButton.whenPressed(new ConditionalCommand(new PullUpStep2(m_hanger), new PullUpStep1(m_hanger), ()-> m_hanger.getHangerPosition() < STEP_1+10));

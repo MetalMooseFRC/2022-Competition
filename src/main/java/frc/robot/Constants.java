@@ -145,6 +145,7 @@ public final class Constants {
         public static final double ADJUST_INCREMENT = 0.05;
         public static final double MAX_SHOOTER_POWER = 0.75;
         public static final double SHOOTING_SPEED_THRESHOLD = 0.85;
+        public static final double BURP_SPEED = 2000; 
     }
 
     public final class Lifter {

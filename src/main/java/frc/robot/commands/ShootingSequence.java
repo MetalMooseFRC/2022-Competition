@@ -52,7 +52,7 @@ public class ShootingSequence extends SequentialCommandGroup {
           new WaitUntilCommand(() -> ((m_shooter.getLeftWheelSpeed()) >= (m_turret.getRequiredVelocity()*(Constants.Shooter.SHOOTING_SPEED_THRESHOLD+0.05))))),
 
         new SequentialCommandGroup(
-          new InstantCommand(() -> m_shooter.setShooterSpeed(1500), m_shooter),
+          new InstantCommand(() -> m_shooter.setShooterSpeed(Constants.Shooter.BURP_SPEED), m_shooter),
           new WaitUntilCommand(() -> ((m_shooter.getLeftWheelSpeed()) >= (1000)))),
 
         () -> (DriverStation.getAlliance().toString() == m_lifter.getColorUpper())),
