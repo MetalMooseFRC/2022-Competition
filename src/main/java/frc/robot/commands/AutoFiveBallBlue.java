@@ -66,12 +66,13 @@ public class AutoFiveBallBlue extends SequentialCommandGroup {
           new InstantCommand(() -> m_lifter.setMotorPower(Constants.Lifter.LIFTER_DEFAULT_SPEED), m_lifter),
           new InstantCommand(() -> m_loader.setMotorPower(Constants.Lifter.LIFTER_DEFAULT_SPEED*-10/9), m_loader),
           
-          new DriveToBall(() -> 0.55, m_drivetrain).until(() -> m_lifter.getColorLower() != "None").withTimeout(3),
+          new DriveToBall(() -> 0.65, m_drivetrain).until(() -> m_lifter.getColorLower() != "None").withTimeout(3),
           
           // new DriveArcade(() -> AUTO_DRIVE_SPEED-0.15, () -> 0, m_drivetrain).until(() -> (m_lifter.getColorLower() != "None")).withTimeout(1),
           new InstantCommand(() -> m_lifter.setMotorPower(0), m_lifter),
           new InstantCommand(() -> m_loader.setMotorPower(0), m_loader),
           new AutonomousShootingSequence(m_shooter, m_turret, m_gate, m_lifter, m_loader),
+          new TurnToBall(() -> 0, m_drivetrain).withTimeout(0.5),
           //Shoot 1 Ball
 
           // new DriveStraight(m_drivetrain, 2, AUTO_DRIVE_SPEED),
@@ -80,7 +81,7 @@ public class AutoFiveBallBlue extends SequentialCommandGroup {
           // new TurnToBall(() -> 0, m_drivetrain).withTimeout(0.5),
           new DriveStraight(m_drivetrain, 1.5, AUTO_DRIVE_SPEED),
           new DriveStraight(m_drivetrain, 5, AUTO_DRIVE_SPEED+0.1),
-          new DriveStraight(m_drivetrain, 2, AUTO_DRIVE_SPEED),
+          new DriveStraight(m_drivetrain, 3, AUTO_DRIVE_SPEED),
           new InstantCommand(() -> m_gate.setGate(GATE_DEFAULT_SPEED), m_gate),
 
           //Pickup Sequence
@@ -94,7 +95,7 @@ public class AutoFiveBallBlue extends SequentialCommandGroup {
             new SequentialCommandGroup(
               new TurnToBall(() -> 0, m_drivetrain).withTimeout(0.5),
               new DriveStraight(m_drivetrain, 2.8, 0.4).until(() -> m_lifter.getColorLower() != "None"),
-              new DriveStraight(m_drivetrain, -1, -0.3).withTimeout(1),
+              new DriveStraight(m_drivetrain, -1, -0.3).withTimeout(0.7),
               new InstantCommand(() -> m_drivetrain.resetYaw()),
               new TurnToAngle(15, m_drivetrain)
               )))),

@@ -63,7 +63,8 @@ public class RobotContainer {
   public static final Joystick operatorStick = new Joystick(Constants.DSPorts.OPERATOR_STICK_PORT);
   JoystickButton shootCargoButton, turnTurretToZeroButton, shootingSpeedUpButton, shootingSpeedDownButton, turretAimToggleButton,
    invertCollectorButton, runShooterToggleButton, shootSliderButton, runLifterReverseButton, turnTestButton, runShooterAtSlider,
-   huntBallAssistButton, holdHangerButton, restartLifterLoaderButton, searchForHubButton, autoShootingButton, manualShootingButton
+   huntBallAssistButton, holdHangerButton, restartLifterLoaderButton, searchForHubButton, autoShootingButton, manualShootingButton,
+   lifterLoaderRunButton, turnRobotToHubButton
    ;
   POVButton pullRobotUpButton, pullRobotUpWithPitchButton, incrementHangerUpButton, incrementHangerDownButton, hangerToMaxHeightButton,
    cancelHangerUpButton, turnTurretTo90Button, turnTurretToN90Button, stopLifterLoaderButton, stopShooterMotorsButton;
@@ -110,8 +111,8 @@ public class RobotContainer {
   .withSize(4,4);
 
   SuppliedValueWidget<Boolean> isInSweetSpot = 
-  matchTab.addBoolean("In Sweet Spot", () -> (m_turret.getTurretDistance()<425) 
-  && (m_turret.getTurretDistance()>275))
+  matchTab.addBoolean("In Sweet Spot", () -> (m_turret.getTurretDistance()<475) 
+  && (m_turret.getTurretDistance()>310))
   .withPosition(3,2)
   .withSize(2,2);
   
@@ -403,10 +404,13 @@ public class RobotContainer {
           );
           
           // Help driver by locking onto the closer ball (center robot w/ ball)
-          huntBallAssistButton = new JoystickButton(driverStick, 2);
-          huntBallAssistButton.whileHeld(new TurnToBall(
-            () -> -driverStick.getY(),
-            m_drivetrain));
+    huntBallAssistButton = new JoystickButton(driverStick, 2);
+    huntBallAssistButton.whileHeld(new TurnToBall(
+      () -> -driverStick.getY(),
+      m_drivetrain));
+
+    turnRobotToHubButton = new JoystickButton(driverStick, 5);
+    turnRobotToHubButton.whenHeld(new TurnToHub(() -> -driverStick.getY(), m_drivetrain, m_turret));
             
     //Raises hanger to max height
     hangerToMaxHeightButton = new POVButton(driverStick, ELEVATOR_UP);
@@ -450,6 +454,9 @@ public class RobotContainer {
     //Hanger pneumatics buttons 
     hangerPneumaticsReverseButton = new JoystickButton(operatorStick, Constants.Buttons.HANGER_PNEUMATICS_REVERSE);
     hangerPneumaticsReverseButton.whenPressed(m_hanger::pullHangerIn);
+
+    lifterLoaderRunButton = new JoystickButton(operatorStick, 9);
+    lifterLoaderRunButton.whenHeld(new RunLifterLoader(m_lifter, LIFTER_DEFAULT_SPEED, m_loader, LIFTER_DEFAULT_SPEED*10/9));
     
     hangerPneumaticsForwardButton = new JoystickButton(operatorStick, Constants.Buttons.HANGER_PNEUMATICS_FORWARD);
     hangerPneumaticsForwardButton.whenPressed(m_hanger::pushHangerOut);

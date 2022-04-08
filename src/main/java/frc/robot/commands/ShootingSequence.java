@@ -35,6 +35,7 @@ public class ShootingSequence extends SequentialCommandGroup {
     m_loader = loader;
     m_gate = gate;
     m_turret = turret;
+    addRequirements(m_shooter);
     // new RunShooterWithTurret(m_shooter, m_turret),
     //         new SequentialCommandGroup(
     //           new WaitUntilCommand(

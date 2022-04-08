@@ -158,7 +158,7 @@ public final class Constants {
     }
 
     public final class Collector {
-        public static final double COLLECTOR_DEFAULT_SPEED = 0.55;
+        public static final double COLLECTOR_DEFAULT_SPEED = 0.7;
     }
 
     public final class Gate {

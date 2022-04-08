@@ -36,8 +36,8 @@ public class SpinUpShooter extends CommandBase {
   public void execute() {
     
     if (m_turret.limelightHasValidTarget() 
-        && (m_turret.getTurretDistance()<425) 
-        && (m_turret.getTurretDistance()>275) 
+        && (m_turret.getTurretDistance()<475) 
+        && (m_turret.getTurretDistance()>310) 
         && m_lifter.getColorUpper() == DriverStation.getAlliance().toString())
       {
         m_shooter.setShooterSpeed(m_turret.getRequiredVelocity());
