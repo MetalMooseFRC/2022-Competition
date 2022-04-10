@@ -118,12 +118,19 @@ public class Turret extends SubsystemBase {
 
   public double getRequiredVelocity() {
     double dis = getTurretDistance();
-    // double velocity = 4194 + -11.1*dis + 0.0229*Math.pow(dis, 2);
-    double velocity = 4528 + -12.7*dis + 0.0248*Math.pow(dis, 2);
-    // double velocity = 4554 + -12.6*dis + 0.0242*Math.pow(dis, 2);
-    // double velocity = 4952 + -14.3*dis + 0.026*Math.pow(dis, 2);
-    // double velocity = 4828 + -12.9*dis + 0.0238*Math.pow(dis, 2);
-    // double velocity = 2917 + -2.14*dis + 0.00654*Math.pow(dis, 2);
+    // double velocity = 4194 + -11.1*dis + 0.0229*Math.pow(dis, 2);  
+    // double velocity = 4528 + -12.7*dis + 0.0248*Math.pow(dis, 2);  
+    // double velocity = 4554 + -12.6*dis + 0.0242*Math.pow(dis, 2);  //Bensalem Power (Consistently short at Lehigh)
+    // double velocity = 4952 + -14.3*dis + 0.026*Math.pow(dis, 2);   
+    // double velocity = 4828 + -12.9*dis + 0.0238*Math.pow(dis, 2);  
+    // double velocity = 2917 + -2.14*dis + 0.00654*Math.pow(dis, 2); //Second to Last match day 1 Lehigh
+    // double velocity = 4256 + -9.08*dis + 0.0145*Math.pow(dis, 2);     //Previous without first data point 4/8/22 8:25 (good until past 400cm)
+    // double velocity = 4646 + -11.6*dis + 0.0185*Math.pow(dis, 2); // Adjusted previous for long shots 4/8/22 morning after practice field 1
+    // double velocity = 5351 + -15.9*dis +0.025*Math.pow(dis, 2); //Adjusted previous long shots after practice field 2 4/8/22 10:01
+    // double velocity = 4760 + -12.8*dis + 0.0212*Math.pow(dis, 2); // Functioning in sweet spot 4/8/22 after last match 5:20
+    // double velocity = 4659 + -12.5*dis + 0.0214*Math.pow(dis, 2); //4/8/22 5:26
+    double velocity = 4252 + -10.6*dis + 0.0193*Math.pow(dis, 2);
+
     return velocity;
   }
 

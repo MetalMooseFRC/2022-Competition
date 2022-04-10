@@ -143,7 +143,7 @@ public final class Constants {
         // Percent of max speed
         public static final double SHOOTER_DEFAULT_SPEED = 3000; // 0.58;
         public static final double ADJUST_INCREMENT = 0.05;
-        public static final double MAX_SHOOTER_POWER = 0.75;
+        public static final double MAX_SHOOTER_POWER = 0.85;
         public static final double SHOOTING_SPEED_THRESHOLD = 0.85;
         public static final double BURP_SPEED = 2000; 
     }
@@ -162,7 +162,7 @@ public final class Constants {
     }
 
     public final class Gate {
-        public static final double GATE_DEFAULT_SPEED = 0.8;
+        public static final double GATE_DEFAULT_SPEED = 0.9;
     }
 
     public final class Hanger {

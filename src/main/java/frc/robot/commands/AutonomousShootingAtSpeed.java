@@ -37,7 +37,7 @@ public class AutonomousShootingAtSpeed extends SequentialCommandGroup {
       //FIXME: BEFORE COMPETITION MAKE SURE TO SWAP THE COMMENTING ON THIS SO THAT OUR BALLS ACTUALLY MAKE IT IN INSTEAD OF BEING BURPED
       new SequentialCommandGroup(
         new InstantCommand(() -> m_shooter.setShooterSpeed(speed), m_shooter),
-        new WaitUntilCommand(() -> ((m_shooter.getLeftWheelSpeed()) >= (speed*Constants.Shooter.SHOOTING_SPEED_THRESHOLD)))),
+        new WaitUntilCommand(() -> ((m_shooter.getLeftWheelSpeed()) >= (speed*(Constants.Shooter.SHOOTING_SPEED_THRESHOLD+0.05))))),
 
       // new SequentialCommandGroup(
       //   new InstantCommand(() -> m_shooter.setShooterSpeed(2500), m_shooter),

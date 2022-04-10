@@ -50,7 +50,7 @@ public class ShootingSequence extends SequentialCommandGroup {
 
         new SequentialCommandGroup(
           new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity()), m_shooter),
-          new WaitUntilCommand(() -> ((m_shooter.getLeftWheelSpeed()) >= (m_turret.getRequiredVelocity()*(Constants.Shooter.SHOOTING_SPEED_THRESHOLD+0.05))))),
+          new WaitUntilCommand(() -> ((m_shooter.getLeftWheelSpeed()) >= (m_turret.getRequiredVelocity()*(Constants.Shooter.SHOOTING_SPEED_THRESHOLD+0.01))))),
 
         new SequentialCommandGroup(
           new InstantCommand(() -> m_shooter.setShooterSpeed(Constants.Shooter.BURP_SPEED), m_shooter),
