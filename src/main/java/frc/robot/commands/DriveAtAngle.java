@@ -15,7 +15,7 @@ import frc.robot.subsystems.Drivetrain;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 
 // Drive the robot straight for a specified distance (in feet)
-public class DriveStraight extends PIDCommand {
+public class DriveAtAngle extends PIDCommand {
   
   private final Drivetrain m_drivetrain;
   private final double m_distance;
@@ -23,9 +23,9 @@ public class DriveStraight extends PIDCommand {
   @Override 
   public void initialize() {
     m_drivetrain.resetEncoders();
-    m_drivetrain.resetYaw();
   }
-  public DriveStraight(Drivetrain drivetrain, double distance, double speed) {  //distance in feet
+  
+  public DriveAtAngle(Drivetrain drivetrain, double distance, double speed, double angle) {  //distance in feet
     super(
 
         // The controller that the command will use
@@ -33,7 +33,7 @@ public class DriveStraight extends PIDCommand {
         // This should return the measurement
         drivetrain::getAngle,
         // This should return the setpoint (can also be a constant)
-        0.0,
+        angle,
         // This uses the output
         output -> {
 
@@ -55,7 +55,7 @@ public class DriveStraight extends PIDCommand {
 
     // Configure additional PID options by calling `getController` here.
     getController().enableContinuousInput(-180, 180);
-    getController().setTolerance(Constants.Drivetrain.TOLERANCE_TURN/*, Constants.Drivetrain.TOLERANCE_TURN_RATE*/);
+    getController().setTolerance(Constants.Drivetrain.TOLERANCE_TURN);
 
     m_distance = distance;
     m_drivetrain = drivetrain;

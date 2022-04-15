@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 // import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -107,6 +108,8 @@ public class Drivetrain extends SubsystemBase {
     m_navxAngleEntry.setDouble(navx.getAngle());
     m_navxYawEntry.setDouble(navx.getYaw());
 
+    SmartDashboard.putNumber("Navx Yaw", navx.getYaw());
+
     // m_oldPitch = m_newPitch;
     // m_newPitch = navx.getPitch();
 
@@ -115,16 +118,6 @@ public class Drivetrain extends SubsystemBase {
 
     // m_pitchRate = (m_oldPitch - m_newPitch)/(m_oldCount - m_newCount) *  navx.getActualUpdateRate();
 
-
-    // SmartDashboard.putNumber("Drive Amps", 
-    //   m_motorLeftBack.getOutputCurrent()+m_motorLeftFront.getOutputCurrent()+m_motorLeftMiddle.getOutputCurrent()
-    //   +m_motorRightBack.getOutputCurrent()+m_motorRightFront.getOutputCurrent()+m_motorRightMiddle.getOutputCurrent());
-    // SmartDashboard.putNumber("Left Back Motor Current", m_motorLeftBack.getOutputCurrent());
-    // SmartDashboard.putNumber("LMid dt Amps", m_motorLeftMiddle.getOutputCurrent());
-    // SmartDashboard.putNumber("Left Front Motor Current", m_motorLeftFront.getOutputCurrent());
-    // SmartDashboard.putNumber("Right Back Motor Current", m_motorRightBack.getOutputCurrent());
-    // SmartDashboard.putNumber("RMid dt Amps", m_motorRightMiddle.getOutputCurrent());
-    // SmartDashboard.putNumber("Right Front Motor Current", m_motorRightFront.getOutputCurrent());
     // SmartDashboard.putNumber("Vel X", navx.getVelocityX());
     // SmartDashboard.putNumber("Vel Y", navx.getVelocityY());
     // SmartDashboard.putNumber("count", navx.getUpdateCount());

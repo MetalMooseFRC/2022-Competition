@@ -9,7 +9,6 @@ import java.util.Map;
 import edu.wpi.first.cscore.VideoCamera;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DriverStation;
 // import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
@@ -28,7 +27,6 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -36,8 +34,6 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import static frc.robot.Constants.Buttons.*;
 import static frc.robot.Constants.Shooter.*;
 import static frc.robot.Constants.Lifter.*;
-import static frc.robot.Constants.Gate.*;
-import static frc.robot.Constants.Collector.*;
 import static frc.robot.Constants.Hanger.*;
 
 import frc.robot.commands.*;
@@ -59,15 +55,18 @@ public class RobotContainer {
   public static final Joystick driverStick = new Joystick(Constants.DSPorts.DRIVER_STICK_PORT);
   JoystickButton huntForBallsButton;
   JoystickButton hangerPneumaticsReverseButton, hangerPneumaticsForwardButton; //armToggleButton, armCollectButton;
+
+  public static final Joystick driverTurnStick = new Joystick(2);
   
   public static final Joystick operatorStick = new Joystick(Constants.DSPorts.OPERATOR_STICK_PORT);
   JoystickButton shootCargoButton, turnTurretToZeroButton, shootingSpeedUpButton, shootingSpeedDownButton, turretAimToggleButton,
    invertCollectorButton, runShooterToggleButton, shootSliderButton, runLifterReverseButton, turnTestButton, runShooterAtSlider,
    huntBallAssistButton, holdHangerButton, restartLifterLoaderButton, searchForHubButton, autoShootingButton, manualShootingButton,
-   lifterLoaderRunButton, turnRobotToHubButton
+   lifterLoaderRunButton, turnRobotToHubButton, burpButton
    ;
-  POVButton pullRobotUpButton, pullRobotUpWithPitchButton, incrementHangerUpButton, incrementHangerDownButton, hangerToMaxHeightButton,
-   cancelHangerUpButton, turnTurretTo90Button, turnTurretToN90Button, stopLifterLoaderButton, stopShooterMotorsButton;
+  POVButton pullRobotUpButton, pullRobotHalfwayUpButton, incrementHangerUpButton, incrementHangerDownButton, hangerToMaxHeightButton,
+   cancelHangerUpButton, turnTurretTo90Button, turnTurretToN90Button, stopLifterLoaderButton, stopShooterMotorsButton,
+   turn180Button;
 
   // ************  Subsystems  **************
   private Drivetrain m_drivetrain = new Drivetrain(); //Drivetrain. Contains ball tracking limelight
@@ -89,7 +88,7 @@ public class RobotContainer {
   //********** Shuffleboard Tabs **********//
   private final ShuffleboardTab matchTab = Shuffleboard.getTab("Matches");    //for during matches
   // private final ShuffleboardTab commandTab = Shuffleboard.getTab("Commands"); //for testing commands
-  private final ShuffleboardTab devTab = Shuffleboard.getTab("Development");  //for all else
+  // private final ShuffleboardTab devTab = Shuffleboard.getTab("Development");  //for all else
   
   //********** Shuffleboard Widgets **********//
   
@@ -193,13 +192,12 @@ public class RobotContainer {
     .withSize(2,2);
 
     // Add individual options for autonomous to the chooser
-    autoChooser.setDefaultOption("Normal Five Ball", new AutoFiveBallWall(m_drivetrain, m_shooter, m_lifter, m_loader, m_gate, m_collector, m_turret));
-    autoChooser.addOption("Blue Five Ball", new AutoFiveBallBlue(m_drivetrain, m_shooter, m_lifter, m_loader, m_gate, m_collector, m_turret));
-    autoChooser.addOption("Center Four Ball", new AutoFourBallCenter(m_drivetrain, m_shooter, m_lifter, m_loader, m_gate, m_collector, m_turret));
-    autoChooser.addOption("Wall Four Ball", new AutoFourBallWall(m_drivetrain, m_shooter, m_lifter, m_loader, m_gate, m_collector, m_turret));
-    autoChooser.addOption("Wall Three Ball", new AutoThreeBall(m_drivetrain, m_shooter, m_lifter, m_loader, m_gate, m_collector, m_turret));
+    autoChooser.setDefaultOption("New Five Ball", new AutoFiveBallBlue(m_drivetrain, m_shooter, m_lifter, m_loader, m_gate, m_collector, m_turret));
+    autoChooser.addOption("Center Four Ball", new AutoFourBallCenterFixed(m_drivetrain, m_shooter, m_lifter, m_loader, m_gate, m_collector, m_turret));
     autoChooser.addOption("Anywhere Two Ball", new AutoTwoBallNormal(m_drivetrain, m_shooter, m_lifter, m_loader, m_gate, m_collector, m_turret));
     autoChooser.addOption("Wall Two Ball", new AutoTwoBallWall(m_drivetrain, m_shooter, m_lifter, m_loader, m_gate, m_collector, m_turret));
+    autoChooser.addOption("Wall Four Ball", new AutoFourBallWall(m_drivetrain, m_shooter, m_lifter, m_loader, m_gate, m_collector, m_turret));
+    autoChooser.addOption("Wall Three Ball", new AutoThreeBall(m_drivetrain, m_shooter, m_lifter, m_loader, m_gate, m_collector, m_turret));
     autoChooser.addOption("Taxi and Shoot", new ParallelCommandGroup(
         new InstantCommand(() -> m_turret.turretMotor.set(Constants.Turret.DEFAULT_SPEED), m_turret)
           .andThen(new TrackTargetWithLimelight(m_turret)),
@@ -328,32 +326,17 @@ public class RobotContainer {
    
     // ************  DEFAULT COMMANDS  ***************
     // Standard driving command. Be very sure you know what you're doing before you change this
+    // m_drivetrain.setDefaultCommand(new DriveArcade(
+    //   () -> -driverStick.getY(),
+    //   () -> driverStick.getZ(),
+    //   m_drivetrain));
     m_drivetrain.setDefaultCommand(new DriveArcade(
       () -> -driverStick.getY(),
       () -> driverStick.getZ(),
       m_drivetrain));
 
-
 // 4/4/22 Shooter Spin up default command added
-    m_shooter.setDefaultCommand(new SpinUpShooter(m_shooter, m_turret, m_lifter));
-     
-    //     new InstantCommand(() -> {
-    //       if (
-    //         m_turret.limelightHasValidTarget() 
-    //         && (m_turret.getTurretDistance()<425) 
-    //         && (m_turret.getTurretDistance()>275) 
-    //         && m_lifter.getColorUpper() == DriverStation.getAlliance().toString()
-    //         ) {
-    //         m_shooter.setShooterSpeed(m_turret.getRequiredVelocity());
-    //       }
-    //     }
-    //     ));
-    
-      // 4/4/22 end code edit
-
-
-    // Run gate by default
-    // m_gate.setDefaultCommand(new AutoRunGate(m_lifter, m_gate, m_collector));
+    // m_shooter.setDefaultCommand(new SpinUpShooter(m_shooter, m_turret, m_lifter));
       
     // Track hub w/ limelight by default
     m_turret.setDefaultCommand((new TrackTargetWithLimelight(m_turret)));
@@ -369,13 +352,7 @@ public class RobotContainer {
       m_lifter,
      () -> LIFTER_DEFAULT_SPEED,
      m_loader,
-     () -> -10/9*m_lifter.getMotorSpeed())); 
-      
-    // Gate and collector testing (at specific values)
-    //   m_collector.setDefaultCommand(new RunCollectorVariable(
-    //     () -> m_collector.getArmSliderValue(),
-    //     () -> m_collector.getGateSliderValue(),  
-    //  m_collector));
+     () -> -10/9*m_lifter.getMotorSpeed()));
      
     }
     
@@ -408,6 +385,9 @@ public class RobotContainer {
     huntBallAssistButton.whileHeld(new TurnToBall(
       () -> -driverStick.getY(),
       m_drivetrain));
+
+    turn180Button = new POVButton(driverStick, 0);  
+    turn180Button.whenHeld(new InstantCommand(() -> m_drivetrain.resetYaw()).andThen(new TurnToAngle(180, m_drivetrain)));
 
     turnRobotToHubButton = new JoystickButton(driverStick, 5);
     turnRobotToHubButton.whenHeld(new TurnToHub(() -> -driverStick.getY(), m_drivetrain, m_turret));
@@ -452,87 +432,67 @@ public class RobotContainer {
     
     // ************  OPERATOR STICK  ***************
     //Hanger pneumatics buttons 
-    hangerPneumaticsReverseButton = new JoystickButton(operatorStick, Constants.Buttons.HANGER_PNEUMATICS_REVERSE);
-    hangerPneumaticsReverseButton.whenPressed(m_hanger::pullHangerIn);
-
-    lifterLoaderRunButton = new JoystickButton(operatorStick, 9);
-    lifterLoaderRunButton.whenHeld(new RunLifterLoader(m_lifter, LIFTER_DEFAULT_SPEED, m_loader, LIFTER_DEFAULT_SPEED*10/9));
-    
-    hangerPneumaticsForwardButton = new JoystickButton(operatorStick, Constants.Buttons.HANGER_PNEUMATICS_FORWARD);
-    hangerPneumaticsForwardButton.whenPressed(m_hanger::pushHangerOut);
-    
-    pullRobotUpButton = new POVButton(operatorStick, ELEVATOR_DOWN);
-    pullRobotUpButton.whenPressed(new PullUpToMidBar(m_hanger));
     
     shootCargoButton = new JoystickButton(operatorStick, Constants.Buttons.SHOOT_ALLIANCE_BALL);
     shootCargoButton.whileHeld(
+      new ConditionalCommand(
+        new InstantCommand(()-> {}, m_hanger),
         new ConditionalCommand(
-          //requires hanger so operator can resume control in 'Hang Mode'
-          new InstantCommand(() -> {}, m_hanger),
-
+          new ShootingSequenceAtSpeed(3400.0, m_shooter, m_gate, m_lifter, m_loader), 
           new ConditionalCommand(
-            new ConditionalCommand(
-              new ShootingSequence(m_shooter, m_turret, m_gate, m_lifter, m_loader),
-              new InstantCommand(()-> {}/*, m_shooter*/),
-              () -> (m_turret.limelightHasValidTarget() && (m_lifter.getColorUpper() != "None"))),
+            new ShootingSequenceAtSpeed(3000.0, m_shooter, m_gate, m_lifter, m_loader),
+            new ShootingSequenceAtSpeed(3200.0, m_shooter, m_gate, m_lifter, m_loader),
+            () -> (operatorStick.getY() > 0.3)), 
+          () -> (operatorStick.getY() < -0.3)),
+        () -> operatorStick.getRawAxis(3) < 0.8));
             
-            new ManualShootingSequence(m_shooter, m_turret, m_gate, m_lifter, m_loader),
+    burpButton = new JoystickButton(operatorStick, 11);
+    burpButton.whenPressed(new ShootingSequenceAtSpeed(2000.0, m_shooter, m_gate, m_lifter, m_loader));
+    
+    lifterLoaderRunButton = new JoystickButton(operatorStick, 9);
+    lifterLoaderRunButton.whenHeld(new RunLifterLoader(m_lifter, LIFTER_DEFAULT_SPEED, m_loader, LIFTER_DEFAULT_SPEED*10/9));
 
-             () -> m_turret.getTurretMode() == "auto"),
-          
-          
-          () -> operatorStick.getRawAxis(3) < -0.8)); 
-            
-          
-          // turretAimToggleButton = new JoystickButton(operatorStick, Constants.Buttons.AIM_TOGGLE);
-          // turretAimToggleButton.toggleWhenPressed(new TurnTurretWithJoystick(() -> operatorStick.getZ(), m_turret));
-          
-          searchForHubButton = new JoystickButton(operatorStick, 2);
-          searchForHubButton.whenPressed(
-            new RunCommand(
-              () -> m_turret.turretMotor.set(0.25),
-              m_turret)
-              .until(
-                () -> m_turret.limelightHasValidTarget()
-                )
-                );
-                
-                
-                autoShootingButton = new JoystickButton(operatorStick, 3);
-                autoShootingButton.whenPressed(new InstantCommand(() -> m_turret.setTurretMode("auto")));
-                
-                manualShootingButton = new JoystickButton(operatorStick, 5);
-                manualShootingButton.whenPressed(new InstantCommand(() -> m_turret.setTurretMode("manual")));
-                
-                turnTurretToZeroButton = new JoystickButton(operatorStick, 5);
-                turnTurretToZeroButton.whenPressed(new TurnTurretToAngle(
-                  Constants.Turret.ZERO,
-            m_turret).andThen(new RunCommand(() -> {}, m_turret)));
-            
-        // pullRobotUpButton = new POVButton(operatorStick, ELEVATOR_DOWN);
-        // pullRobotUpButton.whenPressed(new ConditionalCommand(new PullUpStep2(m_hanger), new PullUpStep1(m_hanger), ()-> m_hanger.getHangerPosition() < STEP_1+10));
+    hangerPneumaticsReverseButton = new JoystickButton(operatorStick, Constants.Buttons.HANGER_PNEUMATICS_REVERSE);
+    hangerPneumaticsReverseButton.whenPressed(m_hanger::pullHangerIn);
+    
+    hangerPneumaticsForwardButton = new JoystickButton(operatorStick, Constants.Buttons.HANGER_PNEUMATICS_FORWARD);
+    hangerPneumaticsForwardButton.whenPressed(m_hanger::pushHangerOut);
 
-        // holdHangerButton = new JoystickButton(operatorStick, 2);
-        // holdHangerButton.whenPressed(new ControlHanger(() -> 0.07, () -> operatorStick.getRawAxis(3), m_hanger));
+    // pullRobotHalfwayUpButton = new POVButton(operatorStick, 0);
+    // pullRobotHalfwayUpButton.whenHeld(new ConditionalCommand(
+    //   new PullUpHalfway(m_hanger),
+    //   new InstantCommand(() -> {}),
+    //   () -> operatorStick.getRawAxis(3)<-0.8));
+    
+    // pullRobotUpButton = new POVButton(operatorStick, ELEVATOR_DOWN);
+    // pullRobotUpButton.whenPressed(new PullUpToMidBar(m_hanger));
+  
+    searchForHubButton = new JoystickButton(operatorStick, 2);
+    searchForHubButton.whenPressed(
+      new RunCommand(() -> m_turret.turretMotor.set(0.25), m_turret)
+        .until(() -> m_turret.limelightHasValidTarget()));
         
-        //pullRobotUpWithPitchButton = new POVButton(operatorStick, ELEVATOR_UP);
-        //pullRobotUpWithPitchButton.whenPressed(new PullRobotUpWithPitch(m_hanger, m_drivetrain));
+        
+    autoShootingButton = new JoystickButton(operatorStick, 3);
+    autoShootingButton.whenPressed(new InstantCommand(() -> m_turret.setTurretMode("auto"), m_turret));
+    
+    manualShootingButton = new JoystickButton(operatorStick, 5);
+    manualShootingButton.whenPressed(new InstantCommand(() -> m_turret.setTurretMode("manual"))
+      .andThen(new TurnTurretToAngle(Constants.Turret.ZERO, m_turret)
+      .andThen(new RunCommand(() -> {}, m_turret))));
+    
+    // turnTurretToZeroButton = new JoystickButton(operatorStick, 5);
+    // turnTurretToZeroButton.whenPressed(new TurnTurretToAngle(Constants.Turret.ZERO, m_turret)
+    //   .andThen(new RunCommand(() -> {}, m_turret)));
+            
+    // pullRobotUpButton = new POVButton(operatorStick, ELEVATOR_DOWN);
+    // pullRobotUpButton.whenPressed(new ConditionalCommand(new PullUpStep2(m_hanger), new PullUpStep1(m_hanger), ()-> m_hanger.getHangerPosition() < STEP_1+10));
 
-    //Raises hanger to max reach for bar
-    //hangerToMaxReachButton = new POVButton(operatorStick, ELEVATOR_UP);
-    //hangerToMaxHeightButton.whenPressed(new ConditionalCommand(new RaiseHangerToHeight(MAX_HEIGHT-2, m_hanger), 
-    //new InstantCommand(() -> {}), () -> driverStick.getRawAxis(3) < -0.8));
-      // turnTestButton = new JoystickButton(operatorStick, 9);
-      // turnTestButton.whenPressed(new TurnToAngle(112, m_drivetrain));
-
-    // operatorStick.getRawAxis(3) < -0.8
-    // new InstantCommand(() -> {}, m_hanger)
-
-    // shootCargoButton.whileHeld(new RunLifter(
-    //   m_lifter,
-    //   () -> Constants.Lifter.DEFAULT_SPEED
-    //   ));
-     
+    // holdHangerButton = new JoystickButton(operatorStick, 2);
+    // holdHangerButton.whenPressed(new ControlHanger(() -> 0.07, () -> operatorStick.getRawAxis(3), m_hanger));
+    
+    //pullRobotUpWithPitchButton = new POVButton(operatorStick, ELEVATOR_UP);
+    //pullRobotUpWithPitchButton.whenPressed(new PullRobotUpWithPitch(m_hanger, m_drivetrain));
       
     // shootSliderButton = new JoystickButton(operatorStick, Constants.Buttons.SHOOT_WITH_SLIDER);
     // shootSliderButton.whileHeld(new ShootDefault(() -> m_shooter.getSliderValue(), m_shooter, () -> Constants.Lifter.DEFAULT_SPEED, m_lifter, m_turret));

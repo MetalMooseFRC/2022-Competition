@@ -32,11 +32,11 @@ public class PullUpHalfway extends CommandBase {
   public void execute() {
     m_currentPosition = m_hanger.getHangerPosition();
     if(m_currentPosition >= m_startPosition* 0.8) {                                    // hanger in first segment of climb
-      m_hanger.set(5*MAX_PULL_POWER*((m_currentPosition/m_startPosition)-1) - 0.1);  
+      m_hanger.set(5*MAX_PULL_POWER*((m_currentPosition/m_startPosition)-1) - 0.2);  
     } else if (m_currentPosition <= m_startPosition*0.7) {                             // hanger in last segment of climb
-      m_hanger.set(5*MAX_PULL_POWER*(0.5-(m_currentPosition/m_startPosition)) - 0.1);
+      m_hanger.set(5*MAX_PULL_POWER*(0.5-(m_currentPosition/m_startPosition)) - 0.2);
     } else {                                                                           // hanger in middle segment of climb
-      m_hanger.set(MAX_PULL_POWER - 0.1);
+      m_hanger.set(-MAX_PULL_POWER - 0.2);
     }
   }
 

@@ -47,8 +47,8 @@ public class AutoTwoBallWall extends ParallelCommandGroup {
   new SequentialCommandGroup(
     new InstantCommand(() -> m_collector.collect(), m_collector),
         new InstantCommand(() -> m_gate.setGate(GATE_DEFAULT_SPEED), m_gate),
-        new DriveStraight(m_drivetrain, 1.1, AUTO_DRIVE_SPEED+0.1),
-        new DriveStraight(m_drivetrain, 1, AUTO_DRIVE_SPEED-0.15).until(() -> (m_lifter.getColorLower() != "None")),
+        new DriveAtAngle(m_drivetrain, 1.1, AUTO_DRIVE_SPEED+0.1, 0),
+        new DriveAtAngle(m_drivetrain, 1, AUTO_DRIVE_SPEED-0.15, 0),
         new WaitCommand(0.2),
         new AutonomousShootingAtSpeed(3000, m_shooter, m_gate, m_lifter, m_loader)));
   }

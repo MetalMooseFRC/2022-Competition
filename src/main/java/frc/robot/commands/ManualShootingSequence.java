@@ -26,14 +26,14 @@ public class ManualShootingSequence extends SequentialCommandGroup {
   private Lifter m_lifter;
   private Loader m_loader;
   private Gate m_gate;
-  private Turret m_turret;
+  // private Turret m_turret;
   /** Creates a new ShootingSequence. */
   public ManualShootingSequence(Shooter shooter, Turret turret, Gate gate, Lifter lifter, Loader loader) {
     m_shooter = shooter;
     m_lifter = lifter;
     m_loader = loader;
     m_gate = gate;
-    m_turret = turret;
+    // m_turret = turret;
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(

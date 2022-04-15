@@ -55,65 +55,55 @@ public class AutoFiveBallBlue extends SequentialCommandGroup {
           new DriveStraight(m_drivetrain, 1.1, AUTO_DRIVE_SPEED+0.1),
           new DriveStraight(m_drivetrain, 1, AUTO_DRIVE_SPEED-0.15).until(() -> (m_lifter.getColorLower() != "None")),
           new WaitCommand(0.2),
-          new AutonomousShootingSequence(m_shooter, m_turret, m_gate, m_lifter, m_loader),
+          new AutonomousShootingAtSpeed(3000, m_shooter, m_gate, m_lifter, m_loader),
           //Shoot 2 balls
 
-          new InstantCommand(() -> m_drivetrain.resetYaw(), m_drivetrain),
-          new TurnToAngle(115, m_drivetrain),
+          new TurnToAngle(99, m_drivetrain),
+          // new TurnToAngleWithPID(99, m_drivetrain, 0.015, 0.005, 0.00),
+          new DriveAtAngle(m_drivetrain, 5, AUTO_DRIVE_SPEED+0.1, 99),
           // new DriveStraight(m_drivetrain, 5.25, AUTO_DRIVE_SPEED+0.1),
 
           new InstantCommand(() -> m_gate.setGate(GATE_DEFAULT_SPEED), m_gate),
           new InstantCommand(() -> m_lifter.setMotorPower(Constants.Lifter.LIFTER_DEFAULT_SPEED), m_lifter),
           new InstantCommand(() -> m_loader.setMotorPower(Constants.Lifter.LIFTER_DEFAULT_SPEED*-10/9), m_loader),
           
-          new DriveToBall(() -> 0.65, m_drivetrain).until(() -> m_lifter.getColorLower() != "None").withTimeout(3),
-          
+          new DriveAtAngle(m_drivetrain, 1.5, AUTO_DRIVE_SPEED-0.15, 99),
           // new DriveArcade(() -> AUTO_DRIVE_SPEED-0.15, () -> 0, m_drivetrain).until(() -> (m_lifter.getColorLower() != "None")).withTimeout(1),
           new InstantCommand(() -> m_lifter.setMotorPower(0), m_lifter),
           new InstantCommand(() -> m_loader.setMotorPower(0), m_loader),
-          new AutonomousShootingSequence(m_shooter, m_turret, m_gate, m_lifter, m_loader),
-          new TurnToBall(() -> 0, m_drivetrain).withTimeout(0.5),
+          new AutonomousShootingAtSpeed(3200, m_shooter, m_gate, m_lifter, m_loader),
           //Shoot 1 Ball
 
-          // new DriveStraight(m_drivetrain, 2, AUTO_DRIVE_SPEED),
-          // new InstantCommand(() -> m_drivetrain.resetYaw(), m_drivetrain),
-          // new TurnToAngle(-18, m_drivetrain),
-          // new TurnToBall(() -> 0, m_drivetrain).withTimeout(0.5),
-          new DriveStraight(m_drivetrain, 1.5, AUTO_DRIVE_SPEED),
-          new DriveStraight(m_drivetrain, 5, AUTO_DRIVE_SPEED+0.1),
-          new DriveStraight(m_drivetrain, 3, AUTO_DRIVE_SPEED),
+          new DriveAtAngle(m_drivetrain, 9.7, AUTO_DRIVE_SPEED+0.1, 95),
           new InstantCommand(() -> m_gate.setGate(GATE_DEFAULT_SPEED), m_gate),
 
-          //Pickup Sequence
           new ParallelCommandGroup(
             new SequentialCommandGroup(
               new InstantCommand(() -> m_lifter.setMotorPower(Constants.Lifter.LIFTER_DEFAULT_SPEED), m_lifter),
               new InstantCommand(() -> m_loader.setMotorPower(Constants.Lifter.LIFTER_DEFAULT_SPEED*-10/9), m_loader),
-              new WaitUntilCommand(() -> m_lifter.getColorUpper() != "None").withTimeout(3),
+              new WaitUntilCommand(() -> m_lifter.getColorUpper() != "None").withTimeout(2),
               new InstantCommand(() -> m_lifter.setMotorPower(0), m_lifter),
-              new InstantCommand(() -> m_loader.setMotorPower(0), m_loader)),
+              new InstantCommand(() -> m_loader.setMotorPower(0), m_loader)
+            ),
             new SequentialCommandGroup(
-              new TurnToBall(() -> 0, m_drivetrain).withTimeout(0.5),
-              new DriveStraight(m_drivetrain, 2.8, 0.4).until(() -> m_lifter.getColorLower() != "None"),
-              new DriveStraight(m_drivetrain, -1, -0.3).withTimeout(0.7),
-              new InstantCommand(() -> m_drivetrain.resetYaw()),
-              new TurnToAngle(15, m_drivetrain)
-              )))),
-
-          //Picks up 2 balls
-      new ParallelCommandGroup(
-        new InstantCommand(() -> m_turret.turretMotor.set(Constants.Turret.DEFAULT_SPEED)).until(() -> m_turret.limelightHasValidTarget() == true).andThen(new TrackTargetWithLimelight(m_turret)),
-        new SequentialCommandGroup(
-          new InstantCommand(() -> m_drivetrain.resetYaw(), m_drivetrain),
-          new DriveStraight(m_drivetrain, -7, -AUTO_DRIVE_SPEED-0.6).withTimeout(2),
-          new InstantCommand(() -> m_gate.setGate(0), m_gate),
-          new DriveStraight(m_drivetrain, -2, -AUTO_DRIVE_SPEED-0.2).withTimeout(2),
-          new DriveStraight(m_drivetrain, -1.5, -AUTO_DRIVE_SPEED+0.2),
-          new WaitCommand(0.2).withTimeout(0.2),
-          new AutonomousShootingSequence(m_shooter, m_turret, m_gate, m_lifter, m_loader),
-          new InstantCommand(() -> m_gate.setGate(0), m_gate),
-          new InstantCommand(() -> m_collector.stopCollecting()))
-      )
+              new TurnToAngle(45, m_drivetrain).withTimeout(0.5),
+              new DriveAtAngle(m_drivetrain, 4.2, AUTO_DRIVE_SPEED-0.2, 45),
+              new DriveAtAngle(m_drivetrain, -0.75, -0.4, 45),
+              new WaitCommand(0.5)
+              )
+            )
+          )),
+        new TurnToAngle(75, m_drivetrain),
+        new DriveAtAngle(m_drivetrain, -7, -AUTO_DRIVE_SPEED-0.1, 85),
+        new ParallelRaceGroup(
+          new SequentialCommandGroup(
+            new InstantCommand(() -> m_turret.turretMotor.set(0.3)),
+            new TrackTargetWithLimelight(m_turret)
+          ),
+          new DriveAtAngle(m_drivetrain, -4, -AUTO_DRIVE_SPEED+0.1, 85)
+        ),
+        new WaitCommand(0.3),
+        new AutonomousShootingAtSpeed(3300, m_shooter, m_gate, m_lifter, m_loader)
     );
   }
 }

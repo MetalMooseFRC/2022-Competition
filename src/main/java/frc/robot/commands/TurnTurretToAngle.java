@@ -25,7 +25,7 @@ public class TurnTurretToAngle extends CommandBase {
     addRequirements(m_turret);
 
     turretController.enableContinuousInput(-180,180);
-    turretController.setTolerance(Constants.Turret.PID.TOLERANCE, Constants.Turret.PID.TOLERANCE_BUFFER);
+    turretController.setTolerance(Constants.Turret.PID.TOLERANCE/*, Constants.Turret.PID.TOLERANCE_BUFFER*/);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

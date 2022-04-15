@@ -12,13 +12,13 @@ import java.util.function.DoubleSupplier;
 public class xxRunCollectorVariable extends CommandBase {
 
   private final Collector m_collector;
-  private final DoubleSupplier m_collectorArmSupplier, m_collectorGateSupplier ;
+  private final DoubleSupplier m_collectorArmSupplier/*, m_collectorGateSupplier */;
 
   /** Creates a new RunCollectorVariable. */
-  public xxRunCollectorVariable(DoubleSupplier armSupplier, DoubleSupplier gateSupplier, Collector collector) {
+  public xxRunCollectorVariable(DoubleSupplier armSupplier,/* DoubleSupplier gateSupplier,*/ Collector collector) {
     m_collector = collector;
     m_collectorArmSupplier = armSupplier;
-    m_collectorGateSupplier = gateSupplier;
+    // m_collectorGateSupplier = gateSupplier;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_collector);

@@ -89,7 +89,7 @@ public final class Constants {
     public final class Preferences {
         public static final double DEADBAND = 0.05;
         public static final double JOYSTICK_SPEED_FACTOR = 1;
-        public static final double JOYSTICK_TURN_FACTOR = 0.6; // Change this to like 1
+        public static final double JOYSTICK_TURN_FACTOR = 0.8; // Change this to like 1
     }
 
     public final class Auto {
@@ -110,15 +110,15 @@ public final class Constants {
     public final class Drivetrain {
         public static final double DRIVE_DEADBAND = 0.02;
         public static final double TURN_DEADBAND = 0.02;
-        public static final double DRIVE_LIMITER = 50; // 2
-        public static final double TURN_LIMITER = 2; // 1.5
+        public static final double DRIVE_LIMITER = 2; // 2
+        public static final double TURN_LIMITER = 50; // 1.5
 
         public static final double P_TURN = 0.02;
         public static final double I_TURN = 0.005;
         public static final double D_TURN = 0;
         public static final double TOLERANCE_TURN = 4; // degrees
         public static final double TOLERANCE_TURN_RATE = 4; // degrees per second
-        public static final double FEED_TURN = 0.05; // 5;
+        public static final double FEED_TURN = 0.02; // 5;
     }
 
     public final class Turret {
@@ -158,7 +158,7 @@ public final class Constants {
     }
 
     public final class Collector {
-        public static final double COLLECTOR_DEFAULT_SPEED = 0.7;
+        public static final double COLLECTOR_DEFAULT_SPEED = 0.5;
     }
 
     public final class Gate {
