@@ -180,6 +180,8 @@ public final class Constants {
         public static final double HANGER_PULL_kI = 0.005;
         public static final double HANGER_PULL_kD = 0.0;
 
+        public static final double MAX_PULL_POWER = 0.5;  //saved as a positive number...
+
         public static final double STEP_1 = 44;
         public static final double STEP_2 = 4;
         // public static final double STEP_3 = 95;
