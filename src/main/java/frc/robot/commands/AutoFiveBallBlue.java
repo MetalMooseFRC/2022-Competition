@@ -55,7 +55,7 @@ public class AutoFiveBallBlue extends SequentialCommandGroup {
           new DriveStraight(m_drivetrain, 1.1, AUTO_DRIVE_SPEED+0.1),
           new DriveStraight(m_drivetrain, 1, AUTO_DRIVE_SPEED-0.15).until(() -> (m_lifter.getColorLower() != "None")),
           new WaitCommand(0.2),
-          new AutonomousShootingAtSpeed(3000, m_shooter, m_gate, m_lifter, m_loader),
+          new AutonomousShootingAtSpeed(3060, m_shooter, m_gate, m_lifter, m_loader),
           //Shoot 2 balls
 
           new TurnToAngle(99, m_drivetrain),
@@ -77,21 +77,17 @@ public class AutoFiveBallBlue extends SequentialCommandGroup {
           new DriveAtAngle(m_drivetrain, 9.7, AUTO_DRIVE_SPEED+0.1, 95),
           new InstantCommand(() -> m_gate.setGate(GATE_DEFAULT_SPEED), m_gate),
 
-          new ParallelCommandGroup(
-            new SequentialCommandGroup(
-              new InstantCommand(() -> m_lifter.setMotorPower(Constants.Lifter.LIFTER_DEFAULT_SPEED), m_lifter),
-              new InstantCommand(() -> m_loader.setMotorPower(Constants.Lifter.LIFTER_DEFAULT_SPEED*-10/9), m_loader),
-              new WaitUntilCommand(() -> m_lifter.getColorUpper() != "None").withTimeout(2),
-              new InstantCommand(() -> m_lifter.setMotorPower(0), m_lifter),
-              new InstantCommand(() -> m_loader.setMotorPower(0), m_loader)
-            ),
-            new SequentialCommandGroup(
-              new TurnToAngle(45, m_drivetrain).withTimeout(0.5),
-              new DriveAtAngle(m_drivetrain, 4.2, AUTO_DRIVE_SPEED-0.2, 45),
-              new DriveAtAngle(m_drivetrain, -0.75, -0.4, 45),
-              new WaitCommand(0.5)
-              )
-            )
+          new InstantCommand(() -> m_lifter.setMotorPower(Constants.Lifter.LIFTER_DEFAULT_SPEED), m_lifter),
+          new InstantCommand(() -> m_loader.setMotorPower(Constants.Lifter.LIFTER_DEFAULT_SPEED*-10/9), m_loader),
+              
+          new TurnToAngle(45, m_drivetrain).withTimeout(0.5),
+          new DriveAtAngle(m_drivetrain, 4.2, AUTO_DRIVE_SPEED-0.2, 45),
+          new DriveAtAngle(m_drivetrain, -0.75, -0.4, 45),
+          new WaitCommand(0.5),
+          new InstantCommand(() -> m_lifter.setMotorPower(0), m_lifter),
+          new InstantCommand(() -> m_loader.setMotorPower(0), m_loader)
+          
+            
           )),
         new TurnToAngle(75, m_drivetrain),
         new DriveAtAngle(m_drivetrain, -7, -AUTO_DRIVE_SPEED-0.1, 85),
@@ -103,7 +99,7 @@ public class AutoFiveBallBlue extends SequentialCommandGroup {
           new DriveAtAngle(m_drivetrain, -4, -AUTO_DRIVE_SPEED+0.1, 85)
         ),
         new WaitCommand(0.3),
-        new AutonomousShootingAtSpeed(3300, m_shooter, m_gate, m_lifter, m_loader)
+        new AutonomousShootingAtSpeed(3650, m_shooter, m_gate, m_lifter, m_loader)
     );
   }
 }

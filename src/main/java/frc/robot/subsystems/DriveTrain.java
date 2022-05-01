@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 // import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -108,7 +108,7 @@ public class Drivetrain extends SubsystemBase {
     m_navxAngleEntry.setDouble(navx.getAngle());
     m_navxYawEntry.setDouble(navx.getYaw());
 
-    SmartDashboard.putNumber("Navx Yaw", navx.getYaw());
+    // SmartDashboard.putNumber("Navx Yaw", navx.getYaw());
 
     // m_oldPitch = m_newPitch;
     // m_newPitch = navx.getPitch();

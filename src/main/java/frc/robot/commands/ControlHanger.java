@@ -38,7 +38,7 @@ public class ControlHanger extends CommandBase {
     OKtoHang = m_sliderAxis3Supplier.getAsDouble() < -0.8;  //slider up to hang
     if(OKtoHang){
     m_hanger.set(m_speedSupplier.getAsDouble());
-    SmartDashboard.putNumber("Hanger Set V", m_speedSupplier.getAsDouble());
+    // SmartDashboard.putNumber("Hanger Set V", m_speedSupplier.getAsDouble());
     }
     else{
       m_hanger.set(0);

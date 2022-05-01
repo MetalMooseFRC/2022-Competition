@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class Hanger extends SubsystemBase {
@@ -59,7 +59,7 @@ public class Hanger extends SubsystemBase {
     // SmartDashboard.putNumber("encoder average -1", encoderAverage);
     // SmartDashboard.putNumber("Left Encoder", leftEncoder.getPosition());
     // SmartDashboard.putNumber("Right Encoder", rightEncoder.getPosition());
-    SmartDashboard.putNumber("Hanger Thingy", m_motorClimberRight.getAppliedOutput());
+    // SmartDashboard.putNumber("Hanger Thingy", m_motorClimberRight.getAppliedOutput());
 
     // This method will be called once per scheduler run
   }
