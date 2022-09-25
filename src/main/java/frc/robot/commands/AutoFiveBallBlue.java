@@ -81,7 +81,7 @@ public class AutoFiveBallBlue extends SequentialCommandGroup {
           new InstantCommand(() -> m_loader.setMotorPower(Constants.Lifter.LIFTER_DEFAULT_SPEED*-10/9), m_loader),
               
           new TurnToAngle(45, m_drivetrain).withTimeout(0.5),
-          new DriveAtAngle(m_drivetrain, 4.2, AUTO_DRIVE_SPEED-0.2, 45),
+          new DriveAtAngle(m_drivetrain, 4.2, AUTO_DRIVE_SPEED-0.2, 45).withTimeout(1),
           new DriveAtAngle(m_drivetrain, -0.75, -0.4, 45),
           new WaitCommand(0.5),
           new InstantCommand(() -> m_lifter.setMotorPower(0), m_lifter),
