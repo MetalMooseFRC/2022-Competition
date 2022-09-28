@@ -46,17 +46,11 @@ public class ShootingSequence extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new ConditionalCommand(
+      
 
-        new SequentialCommandGroup(
-          new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity()), m_shooter),
-          new WaitUntilCommand(() -> ((m_shooter.getLeftWheelSpeed()) >= (m_turret.getRequiredVelocity()*(Constants.Shooter.SHOOTING_SPEED_THRESHOLD+0.01))))),
-
-        new SequentialCommandGroup(
-          new InstantCommand(() -> m_shooter.setShooterSpeed(Constants.Shooter.BURP_SPEED), m_shooter),
-          new WaitUntilCommand(() -> ((m_shooter.getLeftWheelSpeed()) >= (1000)))),
-
-        () -> (DriverStation.getAlliance().toString() == m_lifter.getColorUpper())),
+      new SequentialCommandGroup(
+        new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity()), m_shooter),
+        new WaitUntilCommand(() -> ((m_shooter.getLeftWheelSpeed()) >= (m_turret.getRequiredVelocity()*(Constants.Shooter.SHOOTING_SPEED_THRESHOLD+0.01))))),
 
 
 

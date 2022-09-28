@@ -64,20 +64,24 @@ public class ShootWhileMoving extends ParallelCommandGroup {
             () -> ((m_turret.getTurretAngle()>60) && (m_turret.getTurretAngle()<120))),
           () -> (m_turret.getTurretAngle()>=120||m_turret.getTurretAngle()<=-120||(m_turret.getTurretAngle()<=60&&m_turret.getTurretAngle()>=-60))),
         () -> m_driverStickY.getAsDouble() <= 0.0),
+// TURRET ADJUSTMENT ^^^^
+
       new ConditionalCommand(
         new DriveArcade(() -> m_driveSpeed,() ->  0, m_drivetrain),
         new DriveArcade(() -> -m_driveSpeed, () -> 0, m_drivetrain),
         (() -> (m_driverStickY.getAsDouble() <= 0.0))),
+
+// 
       new SequentialCommandGroup(
         new ConditionalCommand(
           new ConditionalCommand(
             new ConditionalCommand(
-              new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity()-200), m_shooter),
-              new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity()+150), m_shooter),
+              new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity()*1.15), m_shooter),
+              new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity()*0.95), m_shooter),
               () -> m_driverStickY.getAsDouble() > 0),
             new ConditionalCommand(
-              new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity()-200), m_shooter),
-              new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity()+150), m_shooter),
+              new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity()*1.15), m_shooter),
+              new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity()*0.95), m_shooter),
               () -> m_driverStickY.getAsDouble() <= 0),
             () -> (m_turret.getTurretAngle()< 40 && m_turret.getTurretAngle() > -40)),
           new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity())),

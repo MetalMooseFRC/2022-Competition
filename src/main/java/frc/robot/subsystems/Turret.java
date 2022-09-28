@@ -113,7 +113,8 @@ public class Turret extends SubsystemBase {
   // }
   public double getTurretDistance() {
     double turretAngle = getTurretAngle();
-    double offset = 27 * -Math.cos((turretAngle + 31.989)*Math.PI/180);
+    // double offset = 27 * -Math.cos((turretAngle + 31.989)*Math.PI/180); // This is off
+    double offset = (-24 * Math.cos((turretAngle-60)/56))-5;
     double limelightDistance = ((Constants.Limelight.TARGET_HEIGHT - Constants.Limelight.LIMELIGHT_HEIGHT)/Math.tan((limelightGetTy() + Constants.Limelight.LIMELIGHT_ANGLE)*Math.PI/180))
     + (-15.8 + -0.289*turretAngle + 1.53E-03*Math.pow(turretAngle,2) + 9.05E-06*Math.pow(turretAngle,3) + -2.46E-08*Math.pow(turretAngle,4));
     return limelightDistance + offset;
@@ -136,13 +137,16 @@ public class Turret extends SubsystemBase {
     //  velocity = 4659 + -12.5*dis + 0.0214*Math.pow(dis, 2); //4/8/22 5:26
 
     //piecewise function for velocity if polynomial doesn't work ↓
-    if (dis<400){
-      velocity = 3300;
-    } else if (dis<450) {
+    if (dis<300){
+      velocity = 3150;
+    } else if (dis<350) {
+      velocity = dis + 2850;
+    } else if ( dis<450){
       velocity = 2*dis + 2500;
-    } else if ( dis<550){
+    } else {
       velocity = 5*dis + 1150;
-    } else{ velocity = 3900;}
+    } 
+    velocity += -100;
     //  velocity = 4252 + -10.6*dis + 0.0193*Math.pow(dis, 2);
     // if (m_distanceRate == 0) {
     // }
