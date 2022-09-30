@@ -12,8 +12,8 @@ import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 // import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+// import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+// import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -26,7 +26,7 @@ import static frc.robot.Constants.CANIDs.*;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
+// import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
@@ -66,21 +66,21 @@ public class Drivetrain extends SubsystemBase {
     
     
     //Set up shuffleboard
-    private ShuffleboardTab m_tab = Shuffleboard.getTab("Development");
+    // private ShuffleboardTab m_tab = Shuffleboard.getTab("Development");
     // private ComplexWidget z_tab = Shuffleboard.getTab("Development")
     // .add("NavX", navx);
     
     
     
-    // put the navx on the shuffleboard
-    private NetworkTableEntry m_navxAngleEntry = m_tab
-    .add("NavX Angle", 0)
-    //.withWidget(BuiltInWidgets.kGyro)
-    .getEntry();
-    private NetworkTableEntry m_navxYawEntry = m_tab
-    .add("NavX Yaw", 0)
-    //.withWidget(BuiltInWidgets.kGyro)
-    .getEntry();
+    // // put the navx on the shuffleboard
+    // private NetworkTableEntry m_navxAngleEntry = m_tab
+    // .add("NavX Angle", 0)
+    // //.withWidget(BuiltInWidgets.kGyro)
+    // .getEntry();
+    // private NetworkTableEntry m_navxYawEntry = m_tab
+    // .add("NavX Yaw", 0)
+    // //.withWidget(BuiltInWidgets.kGyro)
+    // .getEntry();
     
     
     /** Creates a new Drivetrain. */
@@ -105,8 +105,8 @@ public class Drivetrain extends SubsystemBase {
   @Override
   public void periodic() {
 
-    m_navxAngleEntry.setDouble(navx.getAngle());
-    m_navxYawEntry.setDouble(navx.getYaw());
+    // m_navxAngleEntry.setDouble(navx.getAngle());
+    // m_navxYawEntry.setDouble(navx.getYaw());
 
     // SmartDashboard.putNumber("Navx Yaw", navx.getYaw());
 
