@@ -9,13 +9,15 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Turret;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.math.MathUtil;
 
 // PID Loop to track (spin turret to) the hub with limelight
 public class TrackTargetLimelightSetpoint extends CommandBase {
 
   private final Turret m_turret;
-  private final Double m_setpoint;
+  private final DoubleSupplier m_setpoint;
   // private final Shooter m_shooter;
   private final PIDController turretController = new PIDController(Constants.Turret.PID.kP, Constants.Turret.PID.kI, Constants.Turret.PID.kD);
 
@@ -26,7 +28,7 @@ public class TrackTargetLimelightSetpoint extends CommandBase {
   
   
   /** Creates a new TrackTargetWithLimelight. */
-  public TrackTargetLimelightSetpoint(Turret turret, Double setpoint) {
+  public TrackTargetLimelightSetpoint(Turret turret, DoubleSupplier setpoint) {
 
     // m_shooter = shooter;
     m_turret = turret;
@@ -40,7 +42,7 @@ public class TrackTargetLimelightSetpoint extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    turretController.setSetpoint(m_setpoint);
+    turretController.setSetpoint(m_setpoint.getAsDouble());
     m_turret.setLimelightLights(3);
     //offBy = 1;  //arbitrary starting point, used to establish direction of search
 
@@ -55,6 +57,7 @@ public class TrackTargetLimelightSetpoint extends CommandBase {
     // m_shooter.m_motorLeft.set(shooterSpeed);
     // m_shooter.m_motorRight.set(shooterSpeed);
     if(m_turret.limelightHasValidTarget()) {
+      turretController.setSetpoint(m_setpoint.getAsDouble());
       // System.out.println("Not at setpoint");
       offBy = m_turret.limelightGetTx();
       //offBy = turretFilter.calculate(offBy); // take median of last 5 readings

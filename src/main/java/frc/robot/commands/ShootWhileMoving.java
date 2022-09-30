@@ -49,17 +49,17 @@ public class ShootWhileMoving extends ParallelCommandGroup {
     addCommands(
       new ConditionalCommand(
         new ConditionalCommand(
-          new TrackTargetLimelightSetpoint(m_turret, 0.0), 
+          new TrackTargetLimelightSetpoint(m_turret, () -> 0.0), 
           new ConditionalCommand(
-            new TrackTargetLimelightSetpoint(m_turret, -m_turretAdjustment), 
-            new TrackTargetLimelightSetpoint(m_turret, m_turretAdjustment), 
+            new TrackTargetLimelightSetpoint(m_turret, () -> -m_turretAdjustment), 
+            new TrackTargetLimelightSetpoint(m_turret, () -> m_turretAdjustment), 
             () -> (m_turret.getTurretAngle()>60 && m_turret.getTurretAngle()<120)),
           () -> (m_turret.getTurretAngle()>=120||m_turret.getTurretAngle()<=-120||(m_turret.getTurretAngle()<=60&&m_turret.getTurretAngle()>=-60))),
         new ConditionalCommand(
-          new TrackTargetLimelightSetpoint(m_turret, 0.0), 
+          new TrackTargetLimelightSetpoint(m_turret, () -> 0.0), 
           new ConditionalCommand(
-            new TrackTargetLimelightSetpoint(m_turret, m_turretAdjustment), 
-            new TrackTargetLimelightSetpoint(m_turret, -m_turretAdjustment), 
+            new TrackTargetLimelightSetpoint(m_turret, () -> m_turretAdjustment), 
+            new TrackTargetLimelightSetpoint(m_turret, () -> -m_turretAdjustment), 
             () -> ((m_turret.getTurretAngle()>60) && (m_turret.getTurretAngle()<120))),
           () -> (m_turret.getTurretAngle()>=120||m_turret.getTurretAngle()<=-120||(m_turret.getTurretAngle()<=60&&m_turret.getTurretAngle()>=-60))),
         () -> m_driverStickY.getAsDouble() <= 0.0),

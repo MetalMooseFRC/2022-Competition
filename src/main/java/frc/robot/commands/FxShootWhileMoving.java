@@ -49,8 +49,8 @@ public class FxShootWhileMoving extends ParallelCommandGroup {
     addCommands(
       //first check if the hub is in front or directly behind (we can adjust turret based on that)
       new ConditionalCommand(
-        new TrackTargetLimelightSetpoint(m_turret, (400/m_turret.getTurretDistance())*12*Math.sin(m_turret.getTurretAngle()*Math.PI/180)),
-        new TrackTargetLimelightSetpoint(m_turret, (400/m_turret.getTurretDistance())*-12*Math.sin(m_turret.getTurretAngle()*Math.PI/180)),
+        new TrackTargetLimelightSetpoint(m_turret, () -> -10 * Math.pow(Math.sin(m_turret.getTurretAngle()*Math.PI/180), 2) * Math.signum(m_turret.getTurretAngle()) ),
+        new TrackTargetLimelightSetpoint(m_turret, () -> 10 * Math.pow(Math.sin(m_turret.getTurretAngle()*Math.PI/180), 2)  * Math.signum(m_turret.getTurretAngle()) ),
         () -> m_driverStickY.getAsDouble()<=0),
 // TURRET ADJUSTMENT ^^^^
 
@@ -63,8 +63,8 @@ public class FxShootWhileMoving extends ParallelCommandGroup {
       
       new SequentialCommandGroup(
         new ConditionalCommand(
-          new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity() * (m_driveSpeed/0.43*-0.09*Math.cos(m_turret.getTurretAngle()*Math.PI/180)+1.04)), m_shooter),
-          new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity() * (m_driveSpeed/0.43*0.09*Math.cos(m_turret.getTurretAngle()*Math.PI/180)+1.04)), m_shooter),
+          new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity() * (m_driveSpeed/0.43*-0.09*Math.cos(m_turret.getTurretAngle()*Math.PI/180)+1.03)), m_shooter),
+          new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity() * (m_driveSpeed/0.43*0.09*Math.cos(m_turret.getTurretAngle()*Math.PI/180)+1.03)), m_shooter),
           () -> (m_driverStickY.getAsDouble() <= 0)),
 // SHOOTER SPEED ^^^^
 
