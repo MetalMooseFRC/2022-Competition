@@ -4,12 +4,9 @@
 
 package frc.robot.commands;
 
-import java.util.concurrent.locks.Condition;
-import java.util.function.BooleanSupplier;
 // import java.util.concurrent.locks.Condition;
 import java.util.function.DoubleSupplier;
 
-import javax.print.attribute.standard.OrientationRequested;
 
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -34,12 +31,12 @@ public class FxShootWhileMoving extends ParallelCommandGroup {
   private Drivetrain m_drivetrain;
   private Lifter m_lifter;
   private Loader m_loader;
-  private Double m_driveSpeed, m_turretAdjustment;
+  private Double m_driveSpeed;
   private DoubleSupplier m_driverStickY;
   private Gate m_gate;
   private Turret m_turret;
    
-  public FxShootWhileMoving(Drivetrain drivetrain, Shooter shooter, Lifter lifter, Loader loader, DoubleSupplier driverStickY, Double driveSpeed, Gate gate, Turret turret, Double turretAdjustment) {
+  public FxShootWhileMoving(Drivetrain drivetrain, Shooter shooter, Lifter lifter, Loader loader, DoubleSupplier driverStickY, Double driveSpeed, Gate gate, Turret turret) {
     m_drivetrain = drivetrain;
     m_shooter = shooter;
     m_lifter = lifter;
@@ -48,13 +45,12 @@ public class FxShootWhileMoving extends ParallelCommandGroup {
     m_driveSpeed = driveSpeed;
     m_gate = gate;
     m_turret = turret;
-    m_turretAdjustment = turretAdjustment;
 
     addCommands(
       //first check if the hub is in front or directly behind (we can adjust turret based on that)
       new ConditionalCommand(
-        new TrackTargetLimelightSetpoint(m_turret, 10*Math.sin(m_turret.getTurretAngle()*Math.PI/180)),
-        new TrackTargetLimelightSetpoint(m_turret, -10*Math.sin(m_turret.getTurretAngle()*Math.PI/180)),
+        new TrackTargetLimelightSetpoint(m_turret, (400/m_turret.getTurretDistance())*12*Math.sin(m_turret.getTurretAngle()*Math.PI/180)),
+        new TrackTargetLimelightSetpoint(m_turret, (400/m_turret.getTurretDistance())*-12*Math.sin(m_turret.getTurretAngle()*Math.PI/180)),
         () -> m_driverStickY.getAsDouble()<=0),
 // TURRET ADJUSTMENT ^^^^
 
@@ -63,16 +59,19 @@ public class FxShootWhileMoving extends ParallelCommandGroup {
         new DriveArcade(() -> -m_driveSpeed, () -> 0, m_drivetrain),
         () -> (m_driverStickY.getAsDouble() <= 0.0)),
 
-// 
+// DRIVE DIRECTION ^^^^
       
       new SequentialCommandGroup(
         new ConditionalCommand(
-          new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity() * (-m_turret.getShotMultiplier()+1.04)), m_shooter),
-          new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity() * (m_turret.getShotMultiplier()+1.04)), m_shooter),
+          new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity() * (m_driveSpeed/0.43*-0.09*Math.cos(m_turret.getTurretAngle()*Math.PI/180)+1.04)), m_shooter),
+          new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity() * (m_driveSpeed/0.43*0.09*Math.cos(m_turret.getTurretAngle()*Math.PI/180)+1.04)), m_shooter),
           () -> (m_driverStickY.getAsDouble() <= 0)),
+// SHOOTER SPEED ^^^^
+
         new WaitCommand(0.5),
         new RunLifterLoader(m_lifter, Constants.Lifter.LIFTER_DEFAULT_SPEED, m_loader, Constants.Lifter.LIFTER_DEFAULT_SPEED*10/9),
         new InstantCommand(() -> m_gate.setGate(Constants.Gate.GATE_DEFAULT_SPEED)))
+// SHOOTING SEQUENCE ^^^^ 
     );
   }
   @Override

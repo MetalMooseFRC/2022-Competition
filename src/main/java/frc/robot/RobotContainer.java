@@ -403,7 +403,7 @@ public class RobotContainer {
     // shootMidWhileDriving.whenHeld(new ShootWhileMoving(m_drivetrain, m_shooter, m_lifter, m_loader, () -> driverStick.getY(), 0.43, m_gate, m_turret, 9.35));
 
     shootHighWhileDriving = new JoystickButton(driverStick, 11);
-    shootHighWhileDriving.whenHeld(new FxShootWhileMoving(m_drivetrain, m_shooter, m_lifter, m_loader, () -> driverStick.getY(), 0.43, m_gate, m_turret, 9.35));
+    shootHighWhileDriving.whenHeld(new FxShootWhileMoving(m_drivetrain, m_shooter, m_lifter, m_loader, () -> driverStick.getY(), 0.43, m_gate, m_turret));
 
     shootFromFarButton = new JoystickButton(driverStick, 9);
     shootFromFarButton.whenHeld(new ShootFromFAR(m_drivetrain, m_shooter, m_lifter, m_loader, () -> driverStick.getY(), 0.6, m_gate, m_turret));
