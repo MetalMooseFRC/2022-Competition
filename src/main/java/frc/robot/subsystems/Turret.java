@@ -26,7 +26,7 @@ public class Turret extends SubsystemBase {
   
   /** Creates a new Turret. */
   public Turret() {
-    turretMotor.getEncoder().setPosition(0);
+    turretMotor.getEncoder().setPosition(20);
     //turretMotor.setOpenLoopRampRate(Constants.Turret.RAMP_RATE);
     turretMotor.setOpenLoopRampRate(0.0);
   }
@@ -60,13 +60,8 @@ public class Turret extends SubsystemBase {
 
   public double getTurretAngle() {
     //gets the angle of the turret from 180 to -180
-    double pos = ((turretMotor.getEncoder().getPosition() % Constants.Turret.GEAR_RATIO) * 9); //40 * 9 = 360
-    if(pos >= 180) {
-      pos -= 360;
-    } else if(pos < -180) {
-      pos += 360;
-    }
-    return pos;
+    double pos = (((turretMotor.getEncoder().getPosition() * 9) % 360) - 180); //40 * 9 = 360
+    return pos < -180 ? pos + 360 : pos;
   }
 
   public double getLimelightOffset() {
