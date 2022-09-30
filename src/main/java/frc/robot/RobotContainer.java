@@ -62,7 +62,7 @@ public class RobotContainer {
   JoystickButton shootCargoButton, turnTurretToZeroButton, shootingSpeedUpButton, shootingSpeedDownButton, turretAimToggleButton,
    invertCollectorButton, runShooterToggleButton, shootSliderButton, runLifterReverseButton, turnTestButton, runShooterAtSlider,
    huntBallAssistButton, holdHangerButton, restartLifterLoaderButton, searchForHubButton, autoShootingButton, manualShootingButton,
-   lifterLoaderRunButton, turnRobotToHubButton, burpButton, shootHighWhileDriving, shootMidWhileDriving
+   lifterLoaderRunButton, turnRobotToHubButton, burpButton, shootHighWhileDriving, shootMidWhileDriving, shootFromFarButton
    ;
   POVButton pullRobotUpButton, pullRobotHalfwayUpButton, incrementHangerUpButton, incrementHangerDownButton, hangerToMaxHeightButton,
    cancelHangerUpButton, turnTurretTo90Button, turnTurretToN90Button, stopLifterLoaderButton, stopShooterMotorsButton,
@@ -399,11 +399,17 @@ public class RobotContainer {
     // burpButton = new JoystickButton(driverStick, 10);
     // burpButton.whenPressed(new ShootingSequenceAtSpeed(2000.0, m_shooter, m_gate, m_lifter, m_loader));
     
-    shootMidWhileDriving = new JoystickButton(driverStick, 11);
-    shootMidWhileDriving.whenHeld(new ShootWhileMoving(m_drivetrain, m_shooter, m_lifter, m_loader, 3400.0, () -> driverStick.getY(), 0.43, m_gate, m_turret, 9.35));
+    // shootMidWhileDriving = new JoystickButton(driverStick, 11);
+    // shootMidWhileDriving.whenHeld(new ShootWhileMoving(m_drivetrain, m_shooter, m_lifter, m_loader, () -> driverStick.getY(), 0.43, m_gate, m_turret, 9.35));
+
+    shootHighWhileDriving = new JoystickButton(driverStick, 11);
+    shootHighWhileDriving.whenHeld(new FxShootWhileMoving(m_drivetrain, m_shooter, m_lifter, m_loader, () -> driverStick.getY(), 0.43, m_gate, m_turret, 9.35));
+
+    shootFromFarButton = new JoystickButton(driverStick, 9);
+    shootFromFarButton.whenHeld(new ShootFromFAR(m_drivetrain, m_shooter, m_lifter, m_loader, () -> driverStick.getY(), 0.6, m_gate, m_turret));
     
     // shootHighWhileDriving = new JoystickButton(driverStick, 12);
-    // shootHighWhileDriving.whenHeld(new ShootWhileMoving(m_drivetrain, m_shooter, m_lifter, m_loader, 3400.0, () -> driverStick.getY(), 0.43, m_gate, m_turret, 5.0));
+    // shootHighWhileDriving.whenHeld(new ShootWhileMoving(m_drivetrain, m_shooter, m_lifter, m_loader, () -> driverStick.getY(), 0.43, m_gate, m_turret, 5.0));
     
     // turn180Button = new POVButton(driverStick, 0);  
     // turn180Button.whenHeld(new InstantCommand(() -> m_drivetrain.resetYaw()).andThen(new TurnToAngle(180, m_drivetrain)));

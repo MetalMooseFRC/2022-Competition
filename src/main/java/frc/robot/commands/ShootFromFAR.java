@@ -24,18 +24,18 @@ import frc.robot.Constants;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ShootWhileMoving extends ParallelCommandGroup {
+public class ShootFromFAR extends ParallelCommandGroup {
   /** Creates a new ShootWhileMoving. */
   private Shooter m_shooter;
   private Drivetrain m_drivetrain;
   private Lifter m_lifter;
   private Loader m_loader;
-  private Double m_driveSpeed, m_turretAdjustment;
+  private Double m_driveSpeed;
   private DoubleSupplier m_driverStickY;
   private Gate m_gate;
   private Turret m_turret;
    
-  public ShootWhileMoving(Drivetrain drivetrain, Shooter shooter, Lifter lifter, Loader loader, DoubleSupplier driverStickY, Double driveSpeed, Gate gate, Turret turret, Double turretAdjustment) {
+  public ShootFromFAR(Drivetrain drivetrain, Shooter shooter, Lifter lifter, Loader loader, DoubleSupplier driverStickY, Double driveSpeed, Gate gate, Turret turret) {
     m_drivetrain = drivetrain;
     m_shooter = shooter;
     m_lifter = lifter;
@@ -44,27 +44,8 @@ public class ShootWhileMoving extends ParallelCommandGroup {
     m_driveSpeed = driveSpeed;
     m_gate = gate;
     m_turret = turret;
-    m_turretAdjustment = turretAdjustment;
 
     addCommands(
-      new ConditionalCommand(
-        new ConditionalCommand(
-          new TrackTargetLimelightSetpoint(m_turret, 0.0), 
-          new ConditionalCommand(
-            new TrackTargetLimelightSetpoint(m_turret, -m_turretAdjustment), 
-            new TrackTargetLimelightSetpoint(m_turret, m_turretAdjustment), 
-            () -> (m_turret.getTurretAngle()>60 && m_turret.getTurretAngle()<120)),
-          () -> (m_turret.getTurretAngle()>=120||m_turret.getTurretAngle()<=-120||(m_turret.getTurretAngle()<=60&&m_turret.getTurretAngle()>=-60))),
-        new ConditionalCommand(
-          new TrackTargetLimelightSetpoint(m_turret, 0.0), 
-          new ConditionalCommand(
-            new TrackTargetLimelightSetpoint(m_turret, m_turretAdjustment), 
-            new TrackTargetLimelightSetpoint(m_turret, -m_turretAdjustment), 
-            () -> ((m_turret.getTurretAngle()>60) && (m_turret.getTurretAngle()<120))),
-          () -> (m_turret.getTurretAngle()>=120||m_turret.getTurretAngle()<=-120||(m_turret.getTurretAngle()<=60&&m_turret.getTurretAngle()>=-60))),
-        () -> m_driverStickY.getAsDouble() <= 0.0),
-// TURRET ADJUSTMENT ^^^^
-
       new ConditionalCommand(
         new DriveArcade(() -> m_driveSpeed,() ->  0, m_drivetrain),
         new DriveArcade(() -> -m_driveSpeed, () -> 0, m_drivetrain),
@@ -73,25 +54,18 @@ public class ShootWhileMoving extends ParallelCommandGroup {
 // 
       new SequentialCommandGroup(
         new ConditionalCommand(
-          // checks the direction of the turret - if facing either side it sets the normal shooter speed
           new ConditionalCommand(
-            //this checks whether we are facing forwards or backwards
             new ConditionalCommand(
-              new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity()*1.15), m_shooter),
+              new InstantCommand(() -> m_shooter.setShooterSpeed(0), m_shooter),
               new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity()*0.95), m_shooter),
-              () -> m_driverStickY.getAsDouble() >= 0),
-            //if we are facing forwards ^^ it then checks the direction the robot is moving and adjusts the power
+              () -> m_driverStickY.getAsDouble() > 0),
             new ConditionalCommand(
-              new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity()*1.15), m_shooter),
+              new InstantCommand(() -> m_shooter.setShooterSpeed(0), m_shooter),
               new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity()*0.95), m_shooter),
-              () -> m_driverStickY.getAsDouble() < 0),
-            //does the same as previous but for if we are facing away ^^
-              () -> (m_turret.getTurretAngle()< 40 && m_turret.getTurretAngle() > -40)),
-          
+              () -> m_driverStickY.getAsDouble() <= 0),
+            () -> (m_turret.getTurretAngle()< 40 && m_turret.getTurretAngle() > -40)),
           new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity())),
-          
-          () -> ((m_turret.getTurretAngle()< 40 && m_turret.getTurretAngle() > -40) ||(m_turret.getTurretAngle()> 140 && m_turret.getTurretAngle() < -140))
-          ),
+          () -> ((m_turret.getTurretAngle()< 40 && m_turret.getTurretAngle() > -40) ||(m_turret.getTurretAngle()> 140 && m_turret.getTurretAngle() < -140))),
         new WaitCommand(0.5),
         new RunLifterLoader(m_lifter, Constants.Lifter.LIFTER_DEFAULT_SPEED, m_loader, Constants.Lifter.LIFTER_DEFAULT_SPEED*10/9),
         new InstantCommand(() -> m_gate.setGate(Constants.Gate.GATE_DEFAULT_SPEED)))

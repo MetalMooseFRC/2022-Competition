@@ -72,6 +72,15 @@ public class Turret extends SubsystemBase {
     return pos;
   }
 
+  public double getLimelightOffset() {
+    return 10*Math.sin(getTurretAngle()*Math.PI/180)+1.75;
+  }
+
+  public double getShotMultiplier() {
+    return 0.09*Math.cos(getTurretAngle()*Math.PI/180);
+  }
+
+
   public double limelightGetTx() {
       // System.out.println("Giving Tx");
       // System.out.println(m_limelightTable.getEntry("tx").getDouble(0.0));
@@ -143,10 +152,12 @@ public class Turret extends SubsystemBase {
       velocity = dis + 2850;
     } else if ( dis<450){
       velocity = 2*dis + 2500;
-    } else {
+    } else if (dis<500){
       velocity = 5*dis + 1150;
-    } 
-    velocity += -100;
+    } else {
+      velocity = dis/2 + 3400;
+    }
+    
     //  velocity = 4252 + -10.6*dis + 0.0193*Math.pow(dis, 2);
     // if (m_distanceRate == 0) {
     // }
