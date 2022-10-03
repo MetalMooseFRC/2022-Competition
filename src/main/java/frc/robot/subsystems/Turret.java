@@ -64,12 +64,14 @@ public class Turret extends SubsystemBase {
     return pos < -180 ? pos + 360 : pos;
   }
 
+  //gets limelight SwM offset needed to account for robot motion
   public double getLimelightOffset() {
-    return 10*Math.sin(getTurretAngle()*Math.PI/180)+1.75;
+    return 10 * Math.pow(Math.sin(getTurretAngle()*Math.PI/180), 2)  * Math.signum(getTurretAngle());
   }
 
+  //gets SwM shot power multiplier to account for robot motion
   public double getShotMultiplier() {
-    return 0.09*Math.cos(getTurretAngle()*Math.PI/180);
+    return 0.09 * Math.cos(getTurretAngle()*Math.PI/180)+1.03;
   }
 
 
@@ -111,14 +113,15 @@ public class Turret extends SubsystemBase {
   public double getTurretDistance() {
     double turretAngle = getTurretAngle();
     double offset = (-24 * Math.cos((turretAngle-60)/56))-5;
-    double limelightDistance = ((Constants.Limelight.TARGET_HEIGHT - Constants.Limelight.LIMELIGHT_HEIGHT)/Math.tan((limelightGetTy() + Constants.Limelight.LIMELIGHT_ANGLE)*Math.PI/180))
-    + (-15.8 + -0.289*turretAngle + 1.53E-03*Math.pow(turretAngle,2) + 9.05E-06*Math.pow(turretAngle,3) + -2.46E-08*Math.pow(turretAngle,4));
+    double limelightDistance = ((Constants.Limelight.TARGET_HEIGHT - Constants.Limelight.LIMELIGHT_HEIGHT)/Math.tan((limelightGetTy() + Constants.Limelight.LIMELIGHT_ANGLE)*Math.PI/180));
+    // + (-15.8 + -0.289*turretAngle + 1.53E-03*Math.pow(turretAngle,2) + 9.05E-06*Math.pow(turretAngle,3) + -2.46E-08*Math.pow(turretAngle,4)); //NEED TO REMOVE THIS LINE AND RE-TUNE SHOOTER
     return limelightDistance + offset;
   }
 
   public double getRequiredVelocity() {
     double dis = getTurretDistance();
     double velocity;
+    //Piecewise f(x) to determine flywheel velocity required to shoot ball correctly
     if (dis<300){
       velocity = 3150;
     } else if (dis<350) {
@@ -130,7 +133,7 @@ public class Turret extends SubsystemBase {
     } else {
       velocity = dis/2 + 4075;
     }
-   
+    velocity += 100;
     return velocity;
   }
 

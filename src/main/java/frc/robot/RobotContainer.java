@@ -73,7 +73,7 @@ public class RobotContainer {
 
   // Shooting subsystems: 
   private Collector m_collector = new Collector(); // Arm w/ wheels
-  private Gate m_gate = new Gate(); // Vertical shaft
+  private Gate m_gate = new Gate(); // Vertical shafts
   private Lifter m_lifter = new Lifter(); // Top two black wheels
   private Loader m_loader = new Loader(); // Isolated section (originally part of the lifter) that helps gives more control over when to shoot
   private Shooter m_shooter = new Shooter(); // Flywheels
@@ -91,17 +91,6 @@ public class RobotContainer {
   // private final ShuffleboardTab devTab = Shuffleboard.getTab("Development");  //for all else
   
   //********** Shuffleboard Widgets **********//
-  
-  // Manually view shooter speed and turret's distance to target
-  // Useful for recalculating power function for shooting
-  // SuppliedValueWidget<Double> turretDistance = 
-  // commandTab.addNumber("Turret Distance", () -> m_turret.getTurretDistance())
-  // .withPosition(0, 3)
-  // .withSize(1,1);
-  // SuppliedValueWidget<Double> shooterSpeed =
-  // commandTab.addNumber("Shooter Speed", () -> m_shooter.getLeftWheelSpeed())
-  // .withPosition(1,3)
-  // .withSize(1,1);
 
 // Lets driver/operator know if limelight has target
   SuppliedValueWidget<Boolean> hasTargetEntry = 
@@ -226,13 +215,6 @@ public class RobotContainer {
       interrupted -> m_shooter.setShooterSpeed(0), 
       () -> false , 
       m_shooter));
-    // shooterCommands.add("Shooter Default", new FunctionalCommand(
-    //   ()->{},
-    //   () -> m_shooter.setShooterSpeed(SHOOTER_DEFAULT_SPEED), 
-    //   interrupted -> m_shooter.setShooterSpeed(0), 
-    //   () -> false , 
-    //   m_shooter));
-    // shooterCommands.addNumber("Default Shooter Speed",() -> SHOOTER_DEFAULT_SPEED);
     
     
     // //Shuffleboard Lifter Commands
@@ -241,20 +223,7 @@ public class RobotContainer {
       .withSize(2,3)
       .withPosition(2,0)
       .withProperties(Map.of("Label Position", "LEFT"));
-    // NetworkTableEntry lifterSpeedEntry = 
-    //   lifterCommands.add("Lifter Speed", 0)
-    //     .withWidget(BuiltInWidgets.kNumberSlider)
-    //     .withProperties(Map.of("min", -1, "max", 1))
-    //     .getEntry();
-    // lifterCommands.add("Lifter Slider", new FunctionalCommand(
-    //   ()->{},
-    //   () -> m_lifter.setMotorPower(lifterSpeedEntry.getDouble(0)), 
-    //   interrupted -> {
-    //     m_lifter.setMotorPower(0);
-    //     //m_loader.setMotorPower(0);
-    //   },
-    //   () -> false ,
-      //  m_lifter));
+  
     lifterCommands.add("Lifter Default", new FunctionalCommand(
       ()->{},
       () -> m_lifter.setMotorPower(LIFTER_DEFAULT_SPEED), 
@@ -267,76 +236,13 @@ public class RobotContainer {
     // lifterCommands.addNumber("Default Lifter Speed",() -> LIFTER_DEFAULT_SPEED);
     lifterCommands.add("Spin Loader Wheels", new RunCommand(() -> m_loader.setMotorSpeed(m_lifter.getMotorSpeed()*10/9), m_loader)); // always follows lifter speed
     // lifterCommands.add("Idle Loader Wheels", new RunCommand(() -> m_loader.setMotorPower(-0.1)));
-
-    // //Shuffleboard Gate Commands
-    // ShuffleboardLayout gateCommands = Shuffleboard.getTab("Commands")
-    //   .getLayout("Gate", BuiltInLayouts.kList)
-    //   .withSize(2,2)
-    //   .withPosition(6,0)
-    //   .withProperties(Map.of("Label Position", "LEFT"));
-    // NetworkTableEntry gateSpeedEntry = 
-    //   gateCommands.add("Gate Speed", 0)
-    //     .withWidget(BuiltInWidgets.kNumberSlider)
-    //     .withProperties(Map.of("min", -1, "max", 1))
-    //     .getEntry();
-    // gateCommands.add("Gate Slider", new FunctionalCommand(
-    //   ()->{},
-    //   () -> m_gate.setGate(gateSpeedEntry.getDouble(0)), 
-    //   interrupted -> m_gate.setGate(0), 
-    //   () -> false , 
-    //   m_gate));
-    // gateCommands.add("Gate Default", new FunctionalCommand(
-    //   ()->{},
-    //   () -> m_gate.setGate(GATE_DEFAULT_SPEED), 
-    //   interrupted -> m_gate.setGate(0), 
-    //   () -> false , 
-    //   m_gate));
-    // gateCommands.addNumber("Default Gate Speed",() -> GATE_DEFAULT_SPEED);
-
-    // //Shuffleboard Collector Commands to ShuffleBoard
-    // ShuffleboardLayout collectorCommands = Shuffleboard.getTab("Commands")
-    //   .getLayout("Collector", BuiltInLayouts.kList)
-    //   .withSize(2,3)
-    //   .withPosition(4,0)
-    //   .withProperties(Map.of("Label Position", "LEFT"));
-    // NetworkTableEntry armSpeedEntry = 
-    //   collectorCommands.add("Arm Speed", 0)
-    //     .withWidget(BuiltInWidgets.kNumberSlider)
-    //     .withProperties(Map.of("min", -1, "max", 1))
-    //     .getEntry();
-    // collectorCommands.add("Collector Slider", new FunctionalCommand(
-    //   ()->{},
-    //   () -> m_collector.setArm(armSpeedEntry.getDouble(0)), 
-    //   interrupted -> m_collector.setArm(0), 
-    //   () -> false , 
-    //   m_collector));
-    // collectorCommands.add("Collector Default", new FunctionalCommand(
-    //   ()->{},
-    //   () -> m_collector.setArm(COLLECTOR_DEFAULT_SPEED), 
-    //   interrupted -> m_collector.setArm(0), 
-    //   () -> false , 
-    //   m_collector));
-    // collectorCommands.addNumber("Default Arm Speed",() -> COLLECTOR_DEFAULT_SPEED);
-    // collectorCommands.add("forward", new InstantCommand(m_collector::pushCollectorOut));
-    // collectorCommands.add("reverse", new InstantCommand(m_collector::pullCollectorIn));
-
-    // devTab.add("Drive for 5", new DriveArcade(() ->.5, () -> 0.0, m_drivetrain).withTimeout(5));
-    // devTab.add("Drive for 2", new DriveArcade(()->.5, () -> 0.0, m_drivetrain).withTimeout(2));
-    // devTab.add("Turn to Angle", new TurnToAngle(targetAngleEntry.getDouble(0.0), m_drivetrain));
    
     // ************  DEFAULT COMMANDS  ***************
     // Standard driving command. Be very sure you know what you're doing before you change this
-    // m_drivetrain.setDefaultCommand(new DriveArcade(
-    //   () -> -driverStick.getY(),
-    //   () -> driverStick.getZ(),
-    //   m_drivetrain));
     m_drivetrain.setDefaultCommand(new DriveArcade(
       () -> -driverStick.getY(),
       () -> driverStick.getZ(),
       m_drivetrain));
-
-// 4/4/22 Shooter Spin up default command added
-    // m_shooter.setDefaultCommand(new SpinUpShooter(m_shooter, m_turret, m_lifter));
       
     // Track hub w/ limelight by default
     m_turret.setDefaultCommand((new TrackTargetWithLimelight(m_turret)));
