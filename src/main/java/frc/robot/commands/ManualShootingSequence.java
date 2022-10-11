@@ -63,8 +63,8 @@ public class ManualShootingSequence extends SequentialCommandGroup {
   }
   @Override
   public void end(boolean interrupted) {
-    // m_shooter.setShooterSpeed(0);
-    m_shooter.setShooterSpeed(2500);
+    m_shooter.setShooterSpeed(0);
+    // m_shooter.setShooterSpeed(2500);
     m_gate.setGate(0);
     m_lifter.setMotorPower(0);
     m_loader.setMotorPower(0);

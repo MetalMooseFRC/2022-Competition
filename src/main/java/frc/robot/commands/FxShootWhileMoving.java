@@ -63,8 +63,8 @@ public class FxShootWhileMoving extends ParallelCommandGroup {
       
       new SequentialCommandGroup(
         new ConditionalCommand(
-          new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity() * (m_driveSpeed/0.43*-0.09*Math.cos(m_turret.getTurretAngle()*Math.PI/180)+1.03)), m_shooter),
-          new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity() * (m_driveSpeed/0.43*0.09*Math.cos(m_turret.getTurretAngle()*Math.PI/180)+1.03)), m_shooter),
+          new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity() * (m_driveSpeed/0.43*-0.09*Math.cos(m_turret.getTurretAngle()*Math.PI/180)+1.03) - 100), m_shooter),
+          new InstantCommand(() -> m_shooter.setShooterSpeed(m_turret.getRequiredVelocity() * (m_driveSpeed/0.43* 0.09*Math.cos(m_turret.getTurretAngle()*Math.PI/180)+1.03) - 100), m_shooter),
           () -> (m_driverStickY.getAsDouble() <= 0)),
 // SHOOTER SPEED ^^^^
 

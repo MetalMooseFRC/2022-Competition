@@ -9,6 +9,7 @@ import java.util.Map;
 import edu.wpi.first.cscore.VideoCamera;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DriverStation;
 // import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
@@ -98,6 +99,7 @@ public class RobotContainer {
   .withPosition(4,0)
   .withSize(4,4);
 
+//is green when in between the two distances
   SuppliedValueWidget<Boolean> isInSweetSpot = 
   matchTab.addBoolean("In Sweet Spot", () -> (m_turret.getTurretDistance()<475) 
   && (m_turret.getTurretDistance()>310))
@@ -105,16 +107,16 @@ public class RobotContainer {
   .withSize(2,2);
   
 // Tells driver/operator what ball is in the upper "slot"
-  SuppliedValueWidget<String> upperCargoColor = 
-  matchTab.addString("Upper Cargo Color", () -> m_lifter.getColorUpper())
-  .withPosition(2, 0)
-  .withSize(2,1);
+  // SuppliedValueWidget<String> upperCargoColor = 
+  // matchTab.addString("Upper Cargo Color", () -> m_lifter.getColorUpper())
+  // .withPosition(2, 0)
+  // .withSize(2,1);
   
 // Tells driver/operator what ball is in the lower "slot" 
-  SuppliedValueWidget<String> lowerCargoColor =
-  matchTab.addString("Lower Cargo Color", () -> m_lifter.getColorLower())
-  .withPosition(2,1)
-  .withSize(2,1);
+  // SuppliedValueWidget<String> lowerCargoColor =
+  // matchTab.addString("Lower Cargo Color", () -> m_lifter.getColorLower())
+  // .withPosition(2,1)
+  // .withSize(2,1);
   
   // Hanger Joystick input for testing
   // Useful for knowing operatorStick input when configuring hanger changes
@@ -168,6 +170,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     
+    //disables livewindow to reduce the amount of code running
     LiveWindow.disableAllTelemetry();
     //set the navx to 0 (at start of match)
     m_drivetrain.resetYaw();  
@@ -259,7 +262,6 @@ public class RobotContainer {
      () -> LIFTER_DEFAULT_SPEED,
      m_loader,
      () -> -10/9*m_lifter.getMotorSpeed()));
-     
     }
     
     /**
@@ -284,6 +286,9 @@ public class RobotContainer {
     //Shoot while moving(suggested for one ball because it doesn't use gate)
     shootHighWhileDriving = new JoystickButton(driverStick, 11);
     shootHighWhileDriving.whenHeld(new FxShootWhileMoving(m_drivetrain, m_shooter, m_lifter, m_loader, () -> driverStick.getY(), 0.43, m_gate, m_turret));
+
+    // shootFromFarButton = new JoystickButton(driverStick, 12);
+    // shootFromFarButton.whenHeld(new FxShootWhileMoving(m_drivetrain, m_shooter, m_lifter, m_loader, () -> driverStick.getY(), 0.53, m_gate, m_turret));
     
     //restarts lifterloader motors
     restartLifterLoaderButton = new JoystickButton(driverStick, 7);
