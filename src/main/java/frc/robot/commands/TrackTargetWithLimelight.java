@@ -63,7 +63,7 @@ public class TrackTargetWithLimelight extends CommandBase {
       m_turret.turretMotor.set(-power);
     } else {
       // System.out.println("Searching");
-      // m_turret.turretMotor.set(Constants.Limelight.SEARCH_SPEED);
+      m_turret.turretMotor.set(0.2);
       // m_turret.turretMotor.set(-Constants.Limelight.SEARCH_SPEED*Math.abs(offBy)/offBy); //move in direction of last known target
     }
   }

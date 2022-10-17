@@ -121,19 +121,23 @@ public class Turret extends SubsystemBase {
   public double getRequiredVelocity() {
     double dis = getTurretDistance();
     double velocity;
-    //Piecewise f(x) to determine flywheel velocity required to shoot ball correctly
-    if (dis<300){
-      velocity = 3150;
-    } else if (dis<350) {
-      velocity = dis + 2850;
-    } else if ( dis<450){
-      velocity = 2*dis + 2500;
-    } else if (dis<650){
-      velocity = 5*dis + 1150;
+    if (dis>300){ 
+    velocity = 4552 + -10.6*dis + 0.0193*Math.pow(dis, 2);
     } else {
-      velocity = dis/2 + 4075;
+      velocity = 3109;
     }
-    velocity += 100;
+    //Piecewise f(x) to determine flywheel velocity required to shoot ball correctly
+    // if (dis<300){
+    //   velocity = 3150;
+    // } else if (dis<350) {
+    //   velocity = dis + 2850;
+    // } else if ( dis<450){
+    //   velocity = 2*dis + 2500;
+    // } else if (dis<650){
+    //   velocity = 5*dis + 1150;
+    // } else {
+    //   velocity = dis/2 + 4075;
+    // }
     return velocity;
   }
 

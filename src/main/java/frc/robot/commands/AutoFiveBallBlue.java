@@ -93,7 +93,7 @@ public class AutoFiveBallBlue extends SequentialCommandGroup {
         new DriveAtAngle(m_drivetrain, -7, -AUTO_DRIVE_SPEED-0.1, 85),
         new ParallelRaceGroup(
           new SequentialCommandGroup(
-            new InstantCommand(() -> m_turret.turretMotor.set(0.3)),
+            new TurnTurretToAngle(-180, m_turret).until(() -> m_turret.limelightHasValidTarget()),
             new TrackTargetWithLimelight(m_turret)
           ),
           new DriveAtAngle(m_drivetrain, -4, -AUTO_DRIVE_SPEED+0.1, 85)

@@ -105,16 +105,16 @@ public class RobotContainer {
   .withSize(2,2);
   
 // Tells driver/operator what ball is in the upper "slot"
-  // SuppliedValueWidget<String> upperCargoColor = 
-  // matchTab.addString("Upper Cargo Color", () -> m_lifter.getColorUpper())
-  // .withPosition(2, 0)
-  // .withSize(2,1);
+  SuppliedValueWidget<String> upperCargoColor = 
+  matchTab.addString("Upper Cargo Color", () -> m_lifter.getColorUpper())
+  .withPosition(2, 0)
+  .withSize(2,1);
   
 // Tells driver/operator what ball is in the lower "slot" 
-  // SuppliedValueWidget<String> lowerCargoColor =
-  // matchTab.addString("Lower Cargo Color", () -> m_lifter.getColorLower())
-  // .withPosition(2,1)
-  // .withSize(2,1);
+  SuppliedValueWidget<String> lowerCargoColor =
+  matchTab.addString("Lower Cargo Color", () -> m_lifter.getColorLower())
+  .withPosition(2,1)
+  .withSize(2,1);
   
   // Hanger Joystick input for testing
   // Useful for knowing operatorStick input when configuring hanger changes
@@ -216,6 +216,7 @@ public class RobotContainer {
       interrupted -> m_shooter.setShooterSpeed(0), 
       () -> false , 
       m_shooter));
+    shooterCommands.add("Distance(Metric)", m_turret.limelightGetDistance());
     
     
     // //Shuffleboard Lifter Commands
@@ -346,6 +347,9 @@ public class RobotContainer {
     manualShootingButton.whenPressed(new InstantCommand(() -> m_turret.setTurretMode("manual"))
       .andThen(new TurnTurretToAngle(Constants.Turret.ZERO, m_turret)
       .andThen(new RunCommand(() -> {}, m_turret))));
+    
+    // shootSliderButton = new JoystickButton(operatorStick, 12);
+    // shootSliderButton.whenHeld(new RunLifterLoader(m_lifter, LIFTER_DEFAULT_SPEED, m_loader, LIFTER_DEFAULT_SPEED*10/9));
   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
