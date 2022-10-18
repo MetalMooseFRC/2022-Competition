@@ -61,10 +61,10 @@ public class RobotContainer {
   JoystickButton shootCargoButton, turnTurretToZeroButton, manualShootButton, turretAimToggleButton,
    invertCollectorButton, runShooterToggleButton, shootSliderButton, runLifterReverseButton, turnTestButton, runShooterAtSlider,
    huntBallAssistButton, holdHangerButton, restartLifterLoaderButton, searchForHubButton, autoShootingButton, manualShootingButton,
-   lifterLoaderRunButton, turnRobotToHubButton, burpButton, shootHighWhileDriving, shootMidWhileDriving, shootFromFarButton
+   lifterLoaderRunButton, turnRobotToHubButton, burpButton, shootHighWhileDriving, shootMidWhileDriving, shootFromFarButton, increaseShooterPowerButton, decreaseShooterPowerButton
    ;
   POVButton pullRobotUpButton, pullRobotHalfwayUpButton, incrementHangerUpButton, incrementHangerDownButton, hangerToMaxHeightButton,
-   cancelHangerUpButton, turnTurretTo90Button, turnTurretToN90Button, stopLifterLoaderButton, stopShooterMotorsButton,
+   cancelHangerUpButton, turnTurretTo90Button, turnTurretToN90Button, turnTurretTo180Button, stopLifterLoaderButton, stopShooterMotorsButton,
    turn180Button;
 
   // ************  Subsystems  **************
@@ -94,27 +94,27 @@ public class RobotContainer {
 // Lets driver/operator know if limelight has target
   SuppliedValueWidget<Boolean> hasTargetEntry = 
   matchTab.addBoolean("Target Acquired", () -> m_turret.limelightHasValidTarget())
-  .withPosition(4,0)
-  .withSize(4,4);
+  .withPosition(0,2)
+  .withSize(3,1);
 
 //is green when in between the two distances
   SuppliedValueWidget<Boolean> isInSweetSpot = 
   matchTab.addBoolean("In Sweet Spot", () -> (m_turret.getTurretDistance()<475) 
   && (m_turret.getTurretDistance()>310))
-  .withPosition(3,2)
-  .withSize(2,2);
+  .withPosition(0,3)
+  .withSize(3,1);
   
 // Tells driver/operator what ball is in the upper "slot"
   SuppliedValueWidget<String> upperCargoColor = 
-  matchTab.addString("Upper Cargo Color", () -> m_lifter.getColorUpper())
+  matchTab.addString("Upper Cargo", () -> m_lifter.getColorUpper())
   .withPosition(2, 0)
-  .withSize(2,1);
+  .withSize(1,1);
   
 // Tells driver/operator what ball is in the lower "slot" 
   SuppliedValueWidget<String> lowerCargoColor =
-  matchTab.addString("Lower Cargo Color", () -> m_lifter.getColorLower())
+  matchTab.addString("Lower Cargo", () -> m_lifter.getColorLower())
   .withPosition(2,1)
-  .withSize(2,1);
+  .withSize(1,1);
   
   // Hanger Joystick input for testing
   // Useful for knowing operatorStick input when configuring hanger changes
@@ -348,6 +348,20 @@ public class RobotContainer {
       .andThen(new TurnTurretToAngle(Constants.Turret.ZERO, m_turret)
       .andThen(new RunCommand(() -> {}, m_turret))));
     
+    increaseShooterPowerButton = new JoystickButton(operatorStick, 10);
+    increaseShooterPowerButton.whenPressed(new InstantCommand(() -> m_turret.shooterAdjustment += 50));
+
+    decreaseShooterPowerButton = new JoystickButton(operatorStick, 9);
+    decreaseShooterPowerButton.whenPressed(new InstantCommand(() -> m_turret.shooterAdjustment -= 50));
+
+    // turnTurretTo180Button = new POVButton(operatorStick, 180);
+    // turnTurretTo180Button.whenPressed(new TurnTurretToAngle(-180, m_turret));
+
+    // turnTurretTo90Button = new POVButton(operatorStick, 90);
+    // turnTurretTo90Button.whenPressed(new TurnTurretToAngle(90, m_turret));
+
+    // turnTurretToN90Button = new POVButton(operatorStick, 270);
+    // turnTurretToN90Button.whenPressed(new TurnTurretToAngle(-90, m_turret));
     // shootSliderButton = new JoystickButton(operatorStick, 12);
     // shootSliderButton.whenHeld(new RunLifterLoader(m_lifter, LIFTER_DEFAULT_SPEED, m_loader, LIFTER_DEFAULT_SPEED*10/9));
   }

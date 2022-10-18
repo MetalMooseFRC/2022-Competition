@@ -58,7 +58,7 @@ public class ShootingSequence extends SequentialCommandGroup {
       new ConditionalCommand(
         new InstantCommand(() -> m_gate.setGate(Constants.Gate.GATE_DEFAULT_SPEED), m_gate),
         new InstantCommand(() -> m_gate.setGate(-Constants.Gate.GATE_DEFAULT_SPEED), m_gate),
-        () -> (DriverStation.getAlliance().toString() == m_lifter.getColorLower())),
+        () -> (DriverStation.getAlliance().toString() == m_lifter.getColorLower())||(m_lifter.getColorLower()=="None")),
       //Block end
 
 
@@ -68,8 +68,8 @@ public class ShootingSequence extends SequentialCommandGroup {
 
       new WaitCommand(Constants.Auto.LIFTLOAD_AUTO_TIMEOUT-0.15),
 
-      // new InstantCommand(() -> m_shooter.setShooterSpeed(0), m_shooter),
-      new InstantCommand(() -> m_shooter.setShooterSpeed(2500), m_shooter),
+      new InstantCommand(() -> m_shooter.setShooterSpeed(0), m_shooter),
+      // new InstantCommand(() -> m_shooter.setShooterSpeed(2500), m_shooter),
       new InstantCommand(() -> m_gate.setGate(0), m_gate),
       new InstantCommand(() -> m_lifter.setMotorPower(0), m_lifter),
       new InstantCommand(() -> m_loader.setMotorPower(0), m_loader)

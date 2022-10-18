@@ -130,7 +130,7 @@ public final class Constants {
         public static final double RAMP_RATE = 3;
 
         public final class PID {
-            public static final double kP = 0.007; // .0086;
+            public static final double kP = 0.008; // .0086;0.007
             public static final double kI = 0.002; // 0.0;
             public static final double kD = 0.0;
             public static final double FF = 0.05;

@@ -21,6 +21,7 @@ public class Turret extends SubsystemBase {
   private final NetworkTable m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight-twelve");
   private final MedianFilter m_filter = new MedianFilter(10);
   private String turretAimMode;
+  public Double shooterAdjustment = 0.0; // allows on the fly change of shooter power
   public final CANSparkMax turretMotor = new CANSparkMax(Constants.CANIDs.TURRET_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
   // private double m_oldDistance, m_newDistance, m_distanceRate;
   
@@ -29,6 +30,7 @@ public class Turret extends SubsystemBase {
     turretMotor.getEncoder().setPosition(20);
     //turretMotor.setOpenLoopRampRate(Constants.Turret.RAMP_RATE);
     turretMotor.setOpenLoopRampRate(0.0);
+
   }
 
   @Override
@@ -122,9 +124,9 @@ public class Turret extends SubsystemBase {
     double dis = getTurretDistance();
     double velocity;
     if (dis>300){ 
-    velocity = 4552 + -10.6*dis + 0.0193*Math.pow(dis, 2);
+    velocity = 4552 + -10.6*dis + 0.0193*Math.pow(dis, 2) + shooterAdjustment;
     } else {
-      velocity = 3109;
+      velocity = 3109 + shooterAdjustment;
     }
     //Piecewise f(x) to determine flywheel velocity required to shoot ball correctly
     // if (dis<300){
@@ -141,7 +143,7 @@ public class Turret extends SubsystemBase {
     return velocity;
   }
 
-
+  
   //sets the lights on the limelight to a setting(on/off)
   public void setLimelightLights(int setting) {
     m_limelightTable.getEntry("ledMode").setNumber(setting);
